@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: '/family-tree',
   images: {
     unoptimized: true,
     remotePatterns: [
