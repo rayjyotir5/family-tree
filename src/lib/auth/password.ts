@@ -1,6 +1,6 @@
 // Static password for the family tree site
 // Change this to your desired password
-const STATIC_PASSWORD = 'family';
+const STATIC_PASSWORD = 'deep-blr';
 
 export function verifyPassword(password: string): boolean {
   return password === STATIC_PASSWORD;
