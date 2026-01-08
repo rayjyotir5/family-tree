@@ -17,7 +17,7 @@ interface UpcomingEvent {
 }
 
 export default function EventsPage() {
-  const { data, getRelationship, rootPersonId, setRootPersonId } = useFamilyTree();
+  const { data, getRelationshipWithChain, rootPersonId, setRootPersonId } = useFamilyTree();
 
   const events = useMemo(() => {
     const upcoming: UpcomingEvent[] = [];
@@ -175,7 +175,7 @@ export default function EventsPage() {
                               {event.eventType === 'memorial' && `Would be ${event.yearsAgo}`}
                             </p>
                             <p className="text-xs text-warm-400 mt-0.5">
-                              {getRelationship(rootPersonId, event.personId)}
+                              {getRelationshipWithChain(rootPersonId, event.personId)}
                             </p>
                           </div>
 

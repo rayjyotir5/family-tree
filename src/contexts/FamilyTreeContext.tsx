@@ -22,6 +22,7 @@ interface FamilyTreeContextType {
   getIndividual: (id: string) => Individual | undefined;
   getFamily: (id: string) => Family | undefined;
   getRelationship: (fromId: string, toId: string) => string;
+  getRelationshipWithChain: (fromId: string, toId: string) => string;
   getAllIndividuals: () => Individual[];
   searchIndividuals: (query: string) => Individual[];
   calculator: RelationshipCalculator | null;
@@ -78,6 +79,150 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
     const result = calculator.findRelationship(fromId, toId);
     return result.label;
   }, [calculator]);
+
+  // Helper function to get the step relation between two adjacent people in the tree
+  const getStepRelation = useCallback((fromId: string, toId: string): string => {
+    const fromPerson = data.individuals[fromId];
+    const toPerson = data.individuals[toId];
+    if (!fromPerson || !toPerson) return '';
+
+    const sex = toPerson.sex;
+
+    // Check if toPerson is fromPerson's parent
+    if (fromPerson.familyAsChild) {
+      const family = data.families[fromPerson.familyAsChild];
+      if (family && (family.husband === toId || family.wife === toId)) {
+        return sex === 'M' ? 'Father' : sex === 'F' ? 'Mother' : 'Parent';
+      }
+    }
+
+    // Check if toPerson is fromPerson's child
+    for (const familyId of fromPerson.familyAsSpouse) {
+      const family = data.families[familyId];
+      if (family && family.children.includes(toId)) {
+        return sex === 'M' ? 'Son' : sex === 'F' ? 'Daughter' : 'Child';
+      }
+    }
+
+    // Check if toPerson is fromPerson's spouse
+    for (const familyId of fromPerson.familyAsSpouse) {
+      const family = data.families[familyId];
+      if (family) {
+        const spouseId = family.husband === fromId ? family.wife : family.wife === fromId ? family.husband : null;
+        if (spouseId === toId) {
+          return sex === 'M' ? 'Husband' : sex === 'F' ? 'Wife' : 'Spouse';
+        }
+      }
+    }
+
+    // Check if toPerson is fromPerson's sibling
+    if (fromPerson.familyAsChild) {
+      const family = data.families[fromPerson.familyAsChild];
+      if (family && family.children.includes(toId)) {
+        return sex === 'M' ? 'Brother' : sex === 'F' ? 'Sister' : 'Sibling';
+      }
+    }
+
+    return '';
+  }, [data]);
+
+  // Get relationship with chain fallback for unknown relations
+  const getRelationshipWithChain = useCallback((fromId: string, toId: string): string => {
+    if (!calculator) return 'Unknown';
+
+    const result = calculator.findRelationship(fromId, toId);
+
+    // If the relationship is known, return it
+    if (result.relationship.type !== 'unknown') {
+      return result.label;
+    }
+
+    // Find the shortest path between the two people
+    if (fromId === toId) return 'Self';
+
+    // BFS to find shortest path
+    const visited = new Set<string>();
+    const queue: Array<{ id: string; path: string[] }> = [{ id: fromId, path: [fromId] }];
+
+    const getConnectedPeople = (personId: string): string[] => {
+      const person = data.individuals[personId];
+      if (!person) return [];
+
+      const connected: string[] = [];
+
+      // Parents
+      if (person.familyAsChild) {
+        const family = data.families[person.familyAsChild];
+        if (family) {
+          if (family.husband) connected.push(family.husband);
+          if (family.wife) connected.push(family.wife);
+          // Siblings
+          family.children.forEach(childId => {
+            if (childId !== personId) connected.push(childId);
+          });
+        }
+      }
+
+      // Spouse and children
+      person.familyAsSpouse.forEach(familyId => {
+        const family = data.families[familyId];
+        if (family) {
+          if (family.husband && family.husband !== personId) connected.push(family.husband);
+          if (family.wife && family.wife !== personId) connected.push(family.wife);
+          family.children.forEach(childId => connected.push(childId));
+        }
+      });
+
+      return connected;
+    };
+
+    let path: string[] = [];
+    while (queue.length > 0) {
+      const { id, path: currentPath } = queue.shift()!;
+
+      if (visited.has(id)) continue;
+      visited.add(id);
+
+      const connected = getConnectedPeople(id);
+
+      for (const connectedId of connected) {
+        if (connectedId === toId) {
+          path = [...currentPath, connectedId];
+          break;
+        }
+        if (!visited.has(connectedId)) {
+          queue.push({ id: connectedId, path: [...currentPath, connectedId] });
+        }
+      }
+      if (path.length > 0) break;
+    }
+
+    // If no path found, return Unknown
+    if (path.length === 0) {
+      return 'Unknown Relation';
+    }
+
+    // Build the relationship chain
+    const chain: string[] = [];
+    for (let i = 0; i < path.length - 1; i++) {
+      const relation = getStepRelation(path[i], path[i + 1]);
+      if (relation) {
+        chain.push(relation);
+      }
+    }
+
+    if (chain.length === 0) {
+      return 'Unknown Relation';
+    }
+
+    // Format as possessive chain: "Father's Brother's Wife"
+    return chain.map((rel, idx) => {
+      if (idx === chain.length - 1) {
+        return rel;
+      }
+      return rel + "'s";
+    }).join(' ');
+  }, [calculator, data, getStepRelation]);
 
   const getAllIndividuals = useCallback(() => {
     return Object.values(data.individuals);
@@ -439,6 +584,7 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
       getIndividual,
       getFamily,
       getRelationship,
+      getRelationshipWithChain,
       getAllIndividuals,
       searchIndividuals,
       calculator,
