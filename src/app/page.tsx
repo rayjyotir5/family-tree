@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Header } from '@/components/ui/Header';
 import { TreeCanvas } from '@/components/tree/TreeCanvas';
@@ -110,20 +111,20 @@ function PersonDetailPanel({ personId, onClose }: { personId: string; onClose: (
               </button>
 
               {personId !== rootPersonId && (
-                <a
+                <Link
                   href={`/path?from=${rootPersonId}&to=${personId}`}
                   className="block w-full px-4 py-3 bg-accent-500 text-white rounded-xl text-center font-medium hover:bg-accent-600 transition-colors"
                 >
                   View Path to {person.name.given}
-                </a>
+                </Link>
               )}
 
-              <a
+              <Link
                 href={`/edit/person/${personId}`}
                 className="block w-full px-4 py-3 border border-warm-300 text-warm-700 rounded-xl text-center font-medium hover:bg-warm-50 transition-colors"
               >
                 Edit Details
-              </a>
+              </Link>
             </div>
           </div>
         </div>

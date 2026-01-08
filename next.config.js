@@ -2,6 +2,7 @@
 const nextConfig = {
   output: 'export',
   basePath: '/family-tree',
+  assetPrefix: '/family-tree',
   images: {
     unoptimized: true,
     remotePatterns: [
