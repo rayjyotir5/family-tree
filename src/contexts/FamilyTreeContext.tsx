@@ -43,7 +43,9 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
 
   // Load data from public folder
   useEffect(() => {
-    fetch('/family-tree.json')
+    // Use basePath for GitHub Pages deployment
+    const basePath = process.env.NODE_ENV === 'production' ? '/family-tree' : '';
+    fetch(`${basePath}/family-tree.json`)
       .then(res => res.json())
       .then((loadedData: FamilyTreeData) => {
         setData(loadedData);
