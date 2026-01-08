@@ -1,0 +1,4789 @@
+{
+  "meta": {
+    "version": "1.0",
+    "exportDate": "2026-01-08",
+    "source": "GEDCOM Import",
+    "totalIndividuals": 207,
+    "totalFamilies": 83
+  },
+  "individuals": {
+    "I500001": {
+      "id": "I500001",
+      "name": {
+        "full": "Jyotirmoy Ray",
+        "given": "Jyotirmoy",
+        "surname": "Ray"
+      },
+      "sex": "U",
+      "photos": [
+        {
+          "id": "P500090",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWJiMmFiMTBiMzJlM2Q0YzFhZTVmYzRjMzVhMTNmNGUxMTAyZTFlMzgxYzUwNGRmYjhmZTkzYzJiYzViMTczNjcmZT0xNzY4NDkyODAw/148/712/6572/500090_752409pf6c93006k614lv4_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500089",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTE0Yjc1MDQ0NmUyZjFmZTY4YjQyNDc2OWFiMDQ5YjBlNDg3YTNhNWY2MmRkOWI3MGJmMWE2MmU4NjYxOWJiMDEmZT0xNzY4NDkyODAw/148/712/6572/500089_958974469m06193vu40acm_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715519543.37872+8923989740444765535.jpeg"
+        },
+        {
+          "id": "P500001",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPThlZTc4Nzg2YTJhYTY0MWViNDg2ZmYyMmUwODJhODQ2NjIzZDU5MDQ3YzA2NTBiYWY0M2RmNjM2MzEyNDdiZjcmZT0xNzY4NDkyODAw/148/712/6572/500001_476345l22134c8c569w03y_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670169927.7902188+9097159880763460039.jpeg",
+          "date": "4 DEC 2022",
+          "place": "Bengaluru, Karnataka, India"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500023"
+      ],
+      "birth": {
+        "date": "1995-10-14",
+        "dateDisplay": "14 OCT 1995",
+        "approximate": false
+      },
+      "contact": {
+        "email": "8kq8hg72t9@@privaterelay.appleid.com"
+      },
+      "familyAsChild": "F500001"
+    },
+    "I500002": {
+      "id": "I500002",
+      "name": {
+        "full": "Parna Chakrabarti",
+        "given": "Parna",
+        "surname": "Chakrabarti"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500008",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTJmMzZkNjljZjkzZjEzMzI1M2Q5NzUzOGU0NjcyYWU4NDFkNmU0ODg0NTEwODNhYzA5YzEzZjYwYjBmMThhZDQmZT0xNzY4NDkyODAw/148/712/6572/500008_143330sd6c97icb738em16_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500007",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWY1YzMxNmU2ZWU4MGEzY2M4OWZmMWMxZmI0MWQyNGIwMjk2MmIxYjg1ZTUwN2FmNTAyYmI2ZDc4N2ZlMTkxMDEmZT0xNzY4NDkyODAw/148/712/6572/500007_915724c8766qf3ei7c08f1_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170228.48508+1666212187991773824.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500001"
+      ],
+      "birth": {
+        "date": "1969-03-25",
+        "dateDisplay": "25 MAR 1969",
+        "approximate": false
+      },
+      "contact": {
+        "email": "rayparna4@@gmail.com"
+      },
+      "familyAsChild": "F500002"
+    },
+    "I500003": {
+      "id": "I500003",
+      "name": {
+        "full": "Jayanta Ray",
+        "given": "Jayanta",
+        "surname": "Ray"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500006",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWI4N2JmY2E1NTY2M2I2MDkzZmUzOGY4ZjVjNDdlZWJkMjVjMDQ1NDRiMTczYjc2MDg5OGI3YzYyMTAxZGY0ZTMmZT0xNzY4NDkyODAw/148/712/6572/500006_3466676q46c68tot43801c_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500005",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTY2NmJhNTNjMTk5NjY3YzE3ZWI2NTc1NDI4MmJiYTZjYTcwNzJlMGRmNTM4YzQwMmMzZGIxODgwNzBkNGI4Y2QmZT0xNzY4NDkyODAw/148/712/6572/500005_719988u86xc363c6p0oi14_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170178.2454019+5256979505563922744.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500001"
+      ],
+      "birth": {
+        "date": "1965-10-27",
+        "dateDisplay": "27 OCT 1965",
+        "approximate": false
+      },
+      "contact": {
+        "email": "ayan.1434@@gmail.com"
+      },
+      "familyAsChild": "F500003"
+    },
+    "I500004": {
+      "id": "I500004",
+      "name": {
+        "full": "Purabi Sanyal",
+        "given": "Purabi",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500052",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTM5YjM2NjMxNjJjNTUwZDM4OWQ0NmU0MTUyMGI1OTg4NDAzMTkxMjc2ODdmZjliNGJiN2FhNDY0MGNkMmJjZmQmZT0xNzY4NDkyODAw/148/712/6572/500052_079245136214986cdcmbgp_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500051",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTZlNzU1MTYzNDBlZDUxZmE1MTg4ODYxOTY2M2EwM2U5MDdhOTUyNjA4MTQyODU1Njk5MmU0NTA0MTgxMzVjZDAmZT0xNzY4NDkyODAw/148/712/6572/500051_89588584dm3z01bc6ci1nv_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670172079.1705952+6860013028555777813.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500002"
+      ],
+      "death": {
+        "date": "2013-04-25",
+        "dateDisplay": "25 APR 2013",
+        "approximate": false
+      },
+      "birth": {
+        "date": "1949-11-22",
+        "dateDisplay": "22 NOV 1949",
+        "approximate": false
+      },
+      "familyAsChild": "F500009"
+    },
+    "I500005": {
+      "id": "I500005",
+      "name": {
+        "full": "Prabir Chakrabarti",
+        "given": "Prabir",
+        "surname": "Chakrabarti"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500050",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTA5OWVhNjhmMWRjOTJhN2U4MmMyZGVkMGMxMGU4NmY5NTAzOGUxOGY1ZTZjZDY2OWE5MTIxNTA4NzcxMDVkNjImZT0xNzY4NDkyODAw/148/712/6572/500050_3282094ciepd4368d13c38_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500049",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTBlMzUxMzA0ZmYzY2E4YzA0ZmQ1MWJhMWI5Y2RjMzVhNjU0ZjM3YmRlMzMzYTI1ZTg0MDA0NjIwNmQ0NWRjOTQmZT0xNzY4NDkyODAw/148/712/6572/500049_716383b1y8ac6833d9jce9_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670172045.044845+7295967527961646946.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500002"
+      ],
+      "birth": {
+        "date": "1939-09-10",
+        "dateDisplay": "10 SEP 1939",
+        "approximate": false
+      },
+      "death": {
+        "date": "2005",
+        "dateDisplay": "BEF 2005",
+        "approximate": true
+      },
+      "familyAsChild": "F500008"
+    },
+    "I500006": {
+      "id": "I500006",
+      "name": {
+        "full": "Bela Mukherjee",
+        "given": "Bela",
+        "surname": "Mukherjee"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500024",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTJiOTNlMzllNTU1NzBjNTlmYzhjOTAxMjhlN2Q0ZmJlNGIxMjAzMzQ1MjEwNTQ4NDY2ZjYzMjAzZWI1ODM4MDMmZT0xNzY4NDkyODAw/148/712/6572/500024_9147122c26czfd1s89bs3c_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500023",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTk3YjVlMDliMWRhNTRjNWJmMzk1YmNmMmZmYzgxMTM4ZGEzY2M0MDk0ZmM3MTMyNWJiNTQxYzhiNjdiYmM0MTkmZT0xNzY4NDkyODAw/148/712/6572/500023_753077u6cb98h3ndc15cl2_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171098.471252+5841992444871746105.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500003"
+      ],
+      "birth": {
+        "date": "1943-11-14",
+        "dateDisplay": "14 NOV 1943",
+        "approximate": false,
+        "place": "India"
+      },
+      "death": {
+        "date": "2023-10-13",
+        "dateDisplay": "13 OCT 2023",
+        "approximate": false
+      },
+      "familyAsChild": "F500016"
+    },
+    "I500007": {
+      "id": "I500007",
+      "name": {
+        "full": "Panchanan Ray",
+        "given": "Panchanan",
+        "surname": "Ray"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500022",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTUyZTgxYmNkYzg3MzY2YjNjNmYxN2FmMGU5Njk1NzM0M2Y3YWNkOTdmZDc1ZGFhZDMyZjA0MTE5ZDdiNmU3M2ImZT0xNzY4NDkyODAw/148/712/6572/500022_405979k2618n938fc1wecc_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500021",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTM1ODJjYWI1MjM4NjhlNWE1MTFjNDRhOWIzMGI1OTRmNzZjZjlkOWYwMWU2NGMxN2JhMDI1Mzk5ZTBmZDRiZTEmZT0xNzY4NDkyODAw/148/712/6572/500021_69588111gcc9826c6e13ou_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171070.190448+5365675438023023157.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500003"
+      ],
+      "birth": {
+        "date": "1935-07-23",
+        "dateDisplay": "23 JUL 1935",
+        "approximate": false,
+        "place": "Baital"
+      },
+      "death": {},
+      "familyAsChild": "F500015"
+    },
+    "I500008": {
+      "id": "I500008",
+      "name": {
+        "full": "Joyeeta Ray",
+        "given": "Joyeeta",
+        "surname": "Ray"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500004",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTA0MjM4ZTFhYzk0M2YzZGM5OTUyODdhMjUxZjdhZjk5MThhOTdiZTRkN2M0YTBlYTBlMTRkN2U5MzgxODlmNzEmZT0xNzY4NDkyODAw/148/712/6572/500004_03479451rcc9o86jf0b138_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true,
+          "date": "6 OCT 2022",
+          "place": "Kolkata"
+        },
+        {
+          "id": "P500003",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTI5NjYzYmQzMTc1ZGMyZjYxZjZlNTllZjFkMWE3ZTAwZGYwNDY1ZGI3YzM2Zjg0NTdhNTdlOWMxZjBlMjllMmEmZT0xNzY4NDkyODAw/148/712/6572/500003_5028320cmc1eab16s3a385_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170044.9880362+7750297517168219992.jpeg"
+        }
+      ],
+      "familyAsSpouse": [],
+      "birth": {
+        "date": "1999-07-09",
+        "dateDisplay": "9 JUL 1999",
+        "approximate": false
+      },
+      "contact": {
+        "email": "rayjoyeeta4@@gmail.com",
+        "phone": "9650157180"
+      },
+      "familyAsChild": "F500001"
+    },
+    "I500009": {
+      "id": "I500009",
+      "name": {
+        "full": "Pratyaya Chakrabarti",
+        "given": "Pratyaya",
+        "surname": "Chakrabarti"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500030",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTZhYjhhNzc1MzIyOTJkOTU3YmExZmM4ODIwNDNmYzMxYTJiMDIzYTkwYTU0ZWU1NTdhZmE1NmVmNTRkZTg0NWEmZT0xNzY4NDkyODAw/148/712/6572/500030_52857563p6k4f18ecdcazg_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500029",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTEzZjcwOTBiZTcyYzA1NGM4MzIzM2Y0ZTYzNTkzYzYwZWQ0OTE1OTNkYzZjMDA1NjdmYzEzY2Y5ZmE5ZmJhYTQmZT0xNzY4NDkyODAw/148/712/6572/500029_892942c635c8akd16qxstd_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171354.790559+6502885841938416316.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500005"
+      ],
+      "birth": {
+        "date": "1970",
+        "dateDisplay": "1970",
+        "approximate": false
+      },
+      "familyAsChild": "F500002"
+    },
+    "I500010": {
+      "id": "I500010",
+      "name": {
+        "full": "Pratik Chakrabarti",
+        "given": "Pratik",
+        "surname": "Chakrabarti"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500038",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTFjNmRiNzI1ZGQ1OGVlNDBlMDk0ZWUzM2JhMWFlN2EzNzAxOGFhY2I2NTEwMTI4MWY4OWM2ZjliYmUyZjFiMmYmZT0xNzY4NDkyODAw/148/712/6572/500038_101774alv88rd53cb6br1c_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500037",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTA0Y2JiZjZmMWQzYTkzNDZiNzA3ZWM1ZjkyZWFjZTIyZjNiMmUxYzk0YjBiOWQ1ZDBhMDBhZjcyY2I4MWM5ZWEmZT0xNzY4NDkyODAw/148/712/6572/500037_2633255b1ycc3fab6k8qav_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171577.872422+5778078565306640148.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500006"
+      ],
+      "birth": {
+        "date": "1973",
+        "dateDisplay": "1973",
+        "approximate": false
+      },
+      "familyAsChild": "F500002"
+    },
+    "I500011": {
+      "id": "I500011",
+      "name": {
+        "full": "Ayananta Ray",
+        "given": "Ayananta",
+        "surname": "Ray"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500042",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTg4YzU1YTFiYWVhMjI3YTI0ZjJmNmU3MGNmZjU5MzJhODljYmE4M2ExOTcyN2I5MGNjMmIyNjdkN2Q1MGY1ZmUmZT0xNzY4NDkyODAw/148/712/6572/500042_31268763uw3vcc318c8zc1_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500041",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTNiMWIxMzA1Y2IyN2Q4OTdlMDE1NDQ1YTY1YWUyOGZkZjIwMTliMzE3NDI5MzQ1ZDczODNjZGEzZjY3NDczZTYmZT0xNzY4NDkyODAw/148/712/6572/500041_261311c17md861ct73fcp3_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171671.013588+239505335780502476.jpeg"
+        },
+        {
+          "id": "P500053",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTcwMDZhZDc5MDk3NWIxMjU2ZDg5YjUzMTJiOTk2MDkwNTc4YzIwZjNmOGE5MTEyNWI2NjQzMzQ0YzBlMzY5ZDgmZT0xNzY4NDkyODAw/148/712/6572/500053_9287516c08y08ef117cc3k_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670172271.2592869+698589403728987938.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500007"
+      ],
+      "birth": {
+        "date": "1966-04-26",
+        "dateDisplay": "26 APR 1966",
+        "approximate": false
+      },
+      "familyAsChild": "F500003"
+    },
+    "I500012": {
+      "id": "I500012",
+      "name": {
+        "full": "Madhumita Ray",
+        "given": "Madhumita",
+        "surname": "Ray",
+        "maidenName": "Halder"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500054",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTEyZjIwYWE2NmQwY2U3Yjk1OTJhMGZmYzc3MDJlMjBjODUzZDg0MjFlYzYyZTk4YmZiYWRiMjdkYmJkZjZkMWQmZT0xNzY4NDkyODAw/148/712/6572/500054_133440c0ec87i923621j12_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500053",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTcwMDZhZDc5MDk3NWIxMjU2ZDg5YjUzMTJiOTk2MDkwNTc4YzIwZjNmOGE5MTEyNWI2NjQzMzQ0YzBlMzY5ZDgmZT0xNzY4NDkyODAw/148/712/6572/500053_9287516c08y08ef117cc3k_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670172271.2592869+698589403728987938.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500004"
+      ],
+      "death": {
+        "date": "2009-06-01",
+        "dateDisplay": "1 JUN 2009",
+        "approximate": false
+      },
+      "birth": {
+        "date": "1969-03-03",
+        "dateDisplay": "3 MAR 1969",
+        "approximate": false
+      },
+      "familyAsChild": "F500003"
+    },
+    "I500013": {
+      "id": "I500013",
+      "name": {
+        "full": "Apratim Halder",
+        "given": "Apratim",
+        "surname": "Halder"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500026",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTU3ZGYxMzMxODgyM2Q4MzA4MWRiNTg4NThjMTliZmFhOGUyNGU2MDM4NmEzNTE0ODQxNDNlNGMyY2M3NDVlNTgmZT0xNzY4NDkyODAw/148/712/6572/500026_1610597com5g8k36va2cq1_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500025",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWEyYWEyYzk4ZTk1N2UwMzEzZTk3NjI4MTMyMGIxMzYwNzYyMWQwZTAxYTQ5OWMxYTQxYjk2MjAwMzQ0MjAzZjgmZT0xNzY4NDkyODAw/148/712/6572/500025_9866406c217fpcbx3048ag_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171171.474021+4139359331415311377.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500063"
+      ],
+      "birth": {
+        "date": "1994-01-18",
+        "dateDisplay": "18 JAN 1994",
+        "approximate": false
+      },
+      "contact": {
+        "email": "apratimhalder@@gmail.com"
+      },
+      "familyAsChild": "F500004"
+    },
+    "I500014": {
+      "id": "I500014",
+      "name": {
+        "full": "Tushar Halder",
+        "given": "Tushar",
+        "surname": "Halder"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500048",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTY1YmEyZTBmNWY4NDUzNzhiYjYwOThmZGMxNDU5MGU4ZmIxYzkwNjAxM2Y4ODA5M2RhNWM5YjhjNzUzODAxYjcmZT0xNzY4NDkyODAw/148/712/6572/500048_970676dr78dcgcy6tc23h1_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500047",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWQyMTdiNDhiZmIzODFkZWU1Y2IzMDU2ZmM5MWVjNTFmZjMxNDEwMzgyMTRlMGVkMTNjMjRkNTUwNWM0YjZhOTUmZT0xNzY4NDkyODAw/148/712/6572/500047_868767367491oc2du1ca8c_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171858.213348+7906182038426558784.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500004",
+        "F500064"
+      ],
+      "familyAsChild": "F500061"
+    },
+    "I500015": {
+      "id": "I500015",
+      "name": {
+        "full": "Sudeshna Roychoudhury",
+        "given": "Sudeshna",
+        "surname": "Roychoudhury",
+        "maidenName": "Chakrabarti"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500032",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWRiN2M3N2E0Mjc5MGMwMjA3M2JkZTQ0NTAzYmRjYzljMTk3OGI4NzZhNzUyMzZhZGNiOGY2Njk4NTVlODVhMDgmZT0xNzY4NDkyODAw/148/712/6572/500032_002411je1cv48b53q26cn0_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500031",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTNmZjdjZDY3MjQ0ZjNlNjNlYzVlNzU5NDE5Y2NmM2QxMTc1NTcwMGIwYjE3YzE4OWViNWUzZThhNzFlZmQ3MGYmZT0xNzY4NDkyODAw/148/712/6572/500031_75463761bzecyi0c682m3o_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171404.6440768+6116025752310133802.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500005"
+      ],
+      "birth": {
+        "date": "1970-12-26",
+        "dateDisplay": "26 DEC 1970",
+        "approximate": false
+      },
+      "contact": {
+        "email": "sudeshna_iisc@@rediffmail.com"
+      },
+      "familyAsChild": "F500086"
+    },
+    "I500016": {
+      "id": "I500016",
+      "name": {
+        "full": "Prarthana Chakrabarti",
+        "given": "Prarthana",
+        "surname": "Chakrabarti"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500034",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTVjNWFkNDRkYzBjZDMyNzI1MzQzOTllYzE3ZDhlODEyZmM0MjIyZjM1NjAyZmU2NTIyMmQ5YWI2MDk2YWZmNTAmZT0xNzY4NDkyODAw/148/712/6572/500034_9023748c153c814b2kfc96_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500033",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWNiYmQzMzU0YmI1OTI3MGI4ODM1OWE4MzJlOGY3ZGVmMTMzMGY5OWMyMDc2ZmY4ODRkNzYyMjcwZDE0ZGM0MzUmZT0xNzY4NDkyODAw/148/712/6572/500033_1361573es6b8c418p9cm15_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171458.518223+317793789423394474.jpeg"
+        }
+      ],
+      "familyAsSpouse": [],
+      "birth": {
+        "date": "1999-02-16",
+        "dateDisplay": "16 FEB 1999",
+        "approximate": false
+      },
+      "familyAsChild": "F500005"
+    },
+    "I500017": {
+      "id": "I500017",
+      "name": {
+        "full": "Projato Chakrabarti",
+        "given": "Projato",
+        "surname": "Chakrabarti"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500036",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTgzNDdiZGE5ZjkzYjA3YTlhNGZhY2RlZWE1OGJkN2NiMGM3OWVkYWRmOWQwOWJhMjY4Mjk4ODllMmVhNjE5NzYmZT0xNzY4NDkyODAw/148/712/6572/500036_282280a1o6cca8b13e3386_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500035",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTA1MjkzOTJhODYxNTM4MmZiZjFiMDg2ZGFmYzQzNmNhODAzY2EyMDVlYTNiMmMzMTg1NmZkYjRiMDNkYzM0NTkmZT0xNzY4NDkyODAw/148/712/6572/500035_9415386c6b7nzbce381163_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171495.028796+8015410673642921982.jpeg"
+        }
+      ],
+      "familyAsSpouse": [],
+      "birth": {
+        "date": "2006-08-19",
+        "dateDisplay": "19 AUG 2006",
+        "approximate": false,
+        "place": "Mumbai"
+      },
+      "familyAsChild": "F500005"
+    },
+    "I500018": {
+      "id": "I500018",
+      "name": {
+        "full": "Keka Mukherjee",
+        "given": "Keka",
+        "surname": "Mukherjee",
+        "maidenName": "Chakrabarti"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500040",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTgyNjQxZWI5MDBlZmM2Nzk3Y2Y4ZGQ1MjIwZmVlMTBiMjYwNGRhZDFiZGRkOTI1ZmUyMDM5ZmFhM2U2YjY2N2UmZT0xNzY4NDkyODAw/148/712/6572/500040_3189256b78cvd1f337bcc7_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500039",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTc2ZTVjNjQ1M2Y3OTY4OTViNjFhMGU0ODc5ZjgzMDVhMzFkNzc2OWE5ZDZkMzZkY2YyNzhmYWFkMmUzMmM3NTgmZT0xNzY4NDkyODAw/148/712/6572/500039_00650170c3df1b66m8cj0m_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171614.095233+3060365437082259228.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500006"
+      ],
+      "birth": {
+        "date": "1979-12-09",
+        "dateDisplay": "9 DEC 1979",
+        "approximate": false
+      },
+      "familyAsChild": "F500082"
+    },
+    "I500019": {
+      "id": "I500019",
+      "name": {
+        "full": "Priyam Chakrabarti",
+        "given": "Priyam",
+        "surname": "Chakrabarti"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500028",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWVmYmUzMTBjMmJlMTYxYTZjM2NkZjYzOGMyYTU3NWY5ZWE3ZGRjY2Q1Y2NmMGMxYjY5Mjk1Mzg0MmEwYTg2ZjUmZT0xNzY4NDkyODAw/148/712/6572/500028_754069c8i3c47fy5a7g961_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500027",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTcyMzM5M2RkMzVlZWRhNzFjNjczYWRjZTczOWQ3YWJkOGEyZDc5NjFlODYyMmI4MmJkNzJiNTVmN2NhMDYxNmMmZT0xNzY4NDkyODAw/148/712/6572/500027_1705893pfa7168lp5zecca_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171261.705172+2650139183284217581.jpeg"
+        }
+      ],
+      "familyAsSpouse": [],
+      "birth": {
+        "date": "2010-08-12",
+        "dateDisplay": "12 AUG 2010",
+        "approximate": false,
+        "place": "Kolkata"
+      },
+      "familyAsChild": "F500006"
+    },
+    "I500020": {
+      "id": "I500020",
+      "name": {
+        "full": "Aparna Thakur",
+        "given": "Aparna",
+        "surname": "Thakur",
+        "maidenName": "Ray"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500046",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTIzOTQwYTAwMDE3YjJjOTI0ZTg3MDU4NDU4OGQ2N2M2YzBjN2QyNDI0YjdmZDg4ZWJmYzk3OWUzMGVjZmUzZTImZT0xNzY4NDkyODAw/148/712/6572/500046_3947143616c5cbhc38lfcm_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500045",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTcyZjZiYTY3NzVmYzhmYzM3MGUxNDc0YTY5ZGU3OGMzM2Y3ZjI3NjU0ZWQxMDNmZmVmNTdhYTU3MTNkNmFhOTcmZT0xNzY4NDkyODAw/148/712/6572/500045_4938706sc56ocykc318n2w_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171746.267493+4163950763070305237.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500007"
+      ],
+      "familyAsChild": "F500057"
+    },
+    "I500021": {
+      "id": "I500021",
+      "name": {
+        "full": "Anamitra Ray",
+        "given": "Anamitra",
+        "surname": "Ray"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500044",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTIzMDNhZmY0NjFlNzZlNzczNjJmMWZlNWYzMTIwZjMyODgzYzZhODY1NTI4ODAwZGViOWJiMWU2MGFhMGUxOGQmZT0xNzY4NDkyODAw/148/712/6572/500044_18359138600cc3c19cx3cb_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500043",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTg1YTI1NWM1NWM4MWY2ZjIwZGJiMGU2NTExZDAzMTI2NzFhMDlkYmQ5ZWQzOWUxNjRlMTU1YTRlMzMxODYzY2ImZT0xNzY4NDkyODAw/148/712/6572/500043_220176883cn1v6c93ycp36_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670171703.8238158+7684019787889925582.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500074"
+      ],
+      "birth": {
+        "date": "1996-11-14",
+        "dateDisplay": "14 NOV 1996",
+        "approximate": false
+      },
+      "contact": {
+        "email": "anamitra.ray79@@gmail.com"
+      },
+      "familyAsChild": "F500007"
+    },
+    "I500022": {
+      "id": "I500022",
+      "name": {
+        "full": "Paresh Chandra Chakrabarti",
+        "given": "Paresh Chandra",
+        "surname": "Chakrabarti"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500010",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTAxNDIwM2VhNzdmMjg4MWRiNWM4N2Q2YjhlNWI1YzUwMDA5MjZkMDQ2ZDE3Yjg1NWJlZTAzMThkYjBjMGMzMTAmZT0xNzY4NDkyODAw/148/712/6572/500010_5705081c3wxxc68e1wa1o6_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500009",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWFkNzgzYjgxNGYxYWI1MzAwNjJjMzhhMDIyNTYyNGUxYzJhNGU0MmE4NjgzNjg5MDFjMzk5ODFlZDk3ODU5YzMmZT0xNzY4NDkyODAw/148/712/6572/500009_619250641e33871ct6t9ec_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170344.151032+6296558005772999721.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500008"
+      ],
+      "death": {},
+      "familyAsChild": "F500060"
+    },
+    "I500023": {
+      "id": "I500023",
+      "name": {
+        "full": "Maya Chakrabarti",
+        "given": "Maya",
+        "surname": "Chakrabarti"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500015",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWViNTQ0ZDZiOThjYmQwZTUwMTA1MWY0N2NiMWJjYzU3ODc2MTRjYjI4ZmQ4YzM3ZDdhYjZiYTBjYjdmNmQ1NTEmZT0xNzY4NDkyODAw/148/712/6572/500015_2337572c1237si356ccbo8_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500014",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTQwMTg1N2U2ZDlhNzk3MTlmZjVkNGViMjVkYWNlOGI5OTU1YTdhNWY4MDdiOWVmMTdjMWUzMDlkNmIwZDU4ZWImZT0xNzY4NDkyODAw/148/712/6572/500014_45339715cv3c7428cd96m9_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170563.334857+328903229977693733.jpeg"
+        },
+        {
+          "id": "P500011",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPThkZWRjODU3YzBiNTQ2ODliN2FkOTVlNjZiNTgwNWE4YzVjNDhmYWEwYTgzM2JmOGRmZTQyMzY2YjU3MDk2OWImZT0xNzY4NDkyODAw/148/712/6572/500011_1363471368722ickcyf6h7_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170394.300929+2684124080791416606.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500008"
+      ],
+      "death": {},
+      "birth": {}
+    },
+    "I500024": {
+      "id": "I500024",
+      "name": {
+        "full": "Shyamala Kanto Sanyal",
+        "given": "Shyamala Kanto",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500017",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWU4NjRjMTA1NmZiYzUwODdlZmI5NDc4OWIwNDk5MmRjZjE0MDA2ZDNmYTJjNzc0MDVjMmVkZjczNDhiOGFlZGMmZT0xNzY4NDkyODAw/148/712/6572/500017_2867410c346ut86g1c8xc4_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500016",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTU5NDgyZDgyZDJhMzE3NjI3YjllZjMxMGMxNjRlODMzYzhjMmY5MjkyYmFiMzdhMzJjYTkxNDQ4NWNjNGM4YWEmZT0xNzY4NDkyODAw/148/712/6572/500016_7899728870c634ig85cxc1_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170628.320533+846016299640316653.jpeg"
+        },
+        {
+          "id": "P500020",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTFhMmFiYjQ3M2IxNzgzYjJiYzgxMWQ2ZWEwZTFlNWZiZjcyNGEyYTJhMGJkMWQ1ZDhlYmNiZDZjZTdhMmU2OTMmZT0xNzY4NDkyODAw/148/712/6572/500020_57285568z6f18dc3c4z6c6_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170830.216035+2702524240183302362.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500009"
+      ],
+      "birth": {},
+      "death": {},
+      "familyAsChild": "F500081"
+    },
+    "I500025": {
+      "id": "I500025",
+      "name": {
+        "full": "Latika",
+        "given": "Latika",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500019",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTA4NDI1M2EzODRmNjQxZWVjOGFkYjE0NWViNzA2YWQxYzhiOWY4NDhjNzJiMWE3Njk5YWMyYjgzMjgyYjlhOGMmZT0xNzY4NDkyODAw/148/712/6572/500019_394651b36818cc4svcw8kl_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500018",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWE0Yjg5YzljZmU2MzY0MDNmOWNkYTUyYjNjZmUyNmVhYWU2ZjZkODFhNGJjOWY3OWZiYTE1YjNhZmJhZGVlNjUmZT0xNzY4NDkyODAw/148/712/6572/500018_074070361cy4i838tcv7c8_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170819.239225+6841452078099382427.jpeg"
+        },
+        {
+          "id": "P500020",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTFhMmFiYjQ3M2IxNzgzYjJiYzgxMWQ2ZWEwZTFlNWZiZjcyNGEyYTJhMGJkMWQ1ZDhlYmNiZDZjZTdhMmU2OTMmZT0xNzY4NDkyODAw/148/712/6572/500020_57285568z6f18dc3c4z6c6_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1670170830.216035+2702524240183302362.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500009"
+      ],
+      "birth": {},
+      "death": {}
+    },
+    "I500026": {
+      "id": "I500026",
+      "name": {
+        "full": "Pranab Sanyal",
+        "given": "Pranab",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500010"
+      ],
+      "death": {},
+      "birth": {
+        "date": "1942",
+        "dateDisplay": "1942",
+        "approximate": false
+      },
+      "familyAsChild": "F500009"
+    },
+    "I500028": {
+      "id": "I500028",
+      "name": {
+        "full": "Pradeep Sanyal",
+        "given": "Pradeep",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500018"
+      ],
+      "birth": {
+        "date": "1946",
+        "dateDisplay": "1946",
+        "approximate": false
+      },
+      "familyAsChild": "F500009"
+    },
+    "I500029": {
+      "id": "I500029",
+      "name": {
+        "full": "Prajjyol Sanyal",
+        "given": "Prajjyol",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500078"
+      ],
+      "birth": {
+        "date": "1951",
+        "dateDisplay": "1951",
+        "approximate": false
+      },
+      "death": {},
+      "familyAsChild": "F500009"
+    },
+    "I500030": {
+      "id": "I500030",
+      "name": {
+        "full": "Papiya Sanyal",
+        "given": "Papiya",
+        "surname": "Sanyal",
+        "maidenName": "Dey"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500011"
+      ],
+      "birth": {
+        "date": "1961",
+        "dateDisplay": "1961",
+        "approximate": false
+      },
+      "familyAsChild": "F500009"
+    },
+    "I500031": {
+      "id": "I500031",
+      "name": {
+        "full": "Niva",
+        "given": "Niva",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500010"
+      ]
+    },
+    "I500032": {
+      "id": "I500032",
+      "name": {
+        "full": "Mousumi Sanyal",
+        "given": "Mousumi",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500010"
+    },
+    "I500033": {
+      "id": "I500033",
+      "name": {
+        "full": "Gautami Sanyal",
+        "given": "Gautami",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500010"
+    },
+    "I500034": {
+      "id": "I500034",
+      "name": {
+        "full": "Poulumi Sanyal",
+        "given": "Poulumi",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500010"
+    },
+    "I500035": {
+      "id": "I500035",
+      "name": {
+        "full": "Jayanta Dey",
+        "given": "Jayanta",
+        "surname": "Dey"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500011"
+      ]
+    },
+    "I500037": {
+      "id": "I500037",
+      "name": {
+        "full": "Madan Mohan Mukherjee",
+        "given": "Madan Mohan",
+        "surname": "Mukherjee"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500058",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWYwZmQ4MDIyZDY4YjU4NzczNzBlZWU5ZTdmYTUwYmQwMDU5MTgwYTk5NjM4YTJmNDIxYzVlMTY2YmQ5YTg3Y2EmZT0xNzY4NDkyODAw/148/712/6572/500058_331550ec68ay3715e6fla2_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500057",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTljMjVkOGFjNWQ3MmM3MDYxYzgyNzIxMzE4Yjk1YzYyYmJiMTlmNjRlZGUzZmJiZjA1OTc5MzQ2ZWZjNmQ2MmQmZT0xNzY4NDkyODAw/148/712/6572/500057_565861cad3286026de3d1g_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false
+        }
+      ],
+      "familyAsSpouse": [
+        "F500016",
+        "F500031"
+      ],
+      "death": {}
+    },
+    "I500038": {
+      "id": "I500038",
+      "name": {
+        "full": "Radhagovind Ray",
+        "given": "Radhagovind",
+        "surname": "Ray"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500060",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTNjMGQ4NmViYzgzNDRlMzAwMmYyOGM5MDkwOTE4YTZkNzA4YTRhZDA1MDIzY2ZlYzM0MzAxYjg1MjM0OGFhNDQmZT0xNzY4NDkyODAw/148/712/6572/500060_814923nc516d2z9fe381u3_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500059",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTIxODkxOGVlY2JmNDBhM2JlNWFkNTFmNDM0YjY2ZTMyODZjNDcyZTk0ZGE0Mzc3OWVkZDFhNDBmYWY2YjZjMWMmZT0xNzY4NDkyODAw/148/712/6572/500059_080373d3ec2v4t68qc173f_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false
+        }
+      ],
+      "familyAsSpouse": [
+        "F500015"
+      ],
+      "birth": {},
+      "death": {},
+      "familyAsChild": "F500058"
+    },
+    "I500039": {
+      "id": "I500039",
+      "name": {
+        "full": "Binod Bala",
+        "given": "Binod Bala",
+        "surname": "",
+        "maidenName": "Ray"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500062",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWIwZjZlM2Q2NTc0OTY5ZmYwMGJjMDMwMjIwMGQzMjQ3YzlhNGNhZmM3ODQ0MjVjODI1OGVjOWY0MTQ5ZGY1M2UmZT0xNzY4NDkyODAw/148/712/6572/500062_383915uwe8c3o13w4v276e_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500061",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTkxNzcwMzlhOWIxYWQyMDFjNDU3ZGIyZTExYTI3YmVjMTFkM2ZjNGNkZTFmYzM0MTJlMjRlZWM5OGQ1YzVlZGQmZT0xNzY4NDkyODAw/148/712/6572/500061_60945871r33c148y6e28c8_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false
+        }
+      ],
+      "familyAsSpouse": [
+        "F500015"
+      ],
+      "death": {}
+    },
+    "I500040": {
+      "id": "I500040",
+      "name": {
+        "full": "Nandarani",
+        "given": "Nandarani",
+        "surname": "",
+        "maidenName": "Mukherjee"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500064",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWRkMjQ4ZmQxYjFjOGNjMWQ5ODVjOWY3ZmQ0NjAyZjEwMTc1NDFkZWUyMWVjYjllYzYzZjlhMDMxNzAwZjc2YTgmZT0xNzY4NDkyODAw/148/712/6572/500064_460494c5oc8353d5i36h1e_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500063",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTc5ZGViODMzZmU5OTZlZWU5Y2U3OWRiYjY2YzM2NmJhYTU2MDk2OWUwMzA2NDRjMmJhY2I0ZmVjZTFmOTA0OTEmZT0xNzY4NDkyODAw/148/712/6572/500063_250772c33ludsn038e156g_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false
+        }
+      ],
+      "familyAsSpouse": [
+        "F500016"
+      ],
+      "death": {}
+    },
+    "I500041": {
+      "id": "I500041",
+      "name": {
+        "full": "Payel Dey",
+        "given": "Payel Dey",
+        "surname": "",
+        "maidenName": "Ghosh"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500017"
+      ],
+      "familyAsChild": "F500011"
+    },
+    "I500042": {
+      "id": "I500042",
+      "name": {
+        "full": "Parama Dey",
+        "given": "Parama Dey",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500022"
+      ],
+      "familyAsChild": "F500011"
+    },
+    "I500043": {
+      "id": "I500043",
+      "name": {
+        "full": "Parthasarathi Ghosh",
+        "given": "Parthasarathi",
+        "surname": "Ghosh"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500017"
+      ]
+    },
+    "I500044": {
+      "id": "I500044",
+      "name": {
+        "full": "Kush Ghosh",
+        "given": "Kush",
+        "surname": "Ghosh"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500017"
+    },
+    "I500045": {
+      "id": "I500045",
+      "name": {
+        "full": "Rita",
+        "given": "Rita",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500018"
+      ]
+    },
+    "I500046": {
+      "id": "I500046",
+      "name": {
+        "full": "Pallab Sanyal",
+        "given": "Pallab",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500019"
+      ],
+      "death": {},
+      "familyAsChild": "F500018"
+    },
+    "I500047": {
+      "id": "I500047",
+      "name": {
+        "full": "Piya",
+        "given": "Piya",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500019"
+      ]
+    },
+    "I500048": {
+      "id": "I500048",
+      "name": {
+        "full": "Probal Sanyal",
+        "given": "Probal",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500020"
+      ],
+      "familyAsChild": "F500018"
+    },
+    "I500049": {
+      "id": "I500049",
+      "name": {
+        "full": "Neel Sanyal",
+        "given": "Neel",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500019"
+    },
+    "I500050": {
+      "id": "I500050",
+      "name": {
+        "full": "Aahi Sanyal",
+        "given": "Aahi",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500019"
+    },
+    "I500051": {
+      "id": "I500051",
+      "name": {
+        "full": "Arupa",
+        "given": "Arupa",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500020"
+      ]
+    },
+    "I500052": {
+      "id": "I500052",
+      "name": {
+        "full": "Joy Sanyal",
+        "given": "Joy",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500020"
+    },
+    "I500053": {
+      "id": "I500053",
+      "name": {
+        "full": "Ben Sanyal",
+        "given": "Ben",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500020"
+    },
+    "I500054": {
+      "id": "I500054",
+      "name": {
+        "full": "Piyali Sanyal",
+        "given": "Piyali",
+        "surname": "Sanyal",
+        "maidenName": "Kundu"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500021"
+      ],
+      "familyAsChild": "F500018"
+    },
+    "I500055": {
+      "id": "I500055",
+      "name": {
+        "full": "Debanjan Kundu",
+        "given": "Debanjan",
+        "surname": "Kundu"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500021"
+      ]
+    },
+    "I500056": {
+      "id": "I500056",
+      "name": {
+        "full": "Toy Kundu",
+        "given": "Toy",
+        "surname": "Kundu"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500021"
+    },
+    "I500057": {
+      "id": "I500057",
+      "name": {
+        "full": "Tintin Kundu",
+        "given": "Tintin",
+        "surname": "Kundu"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500021"
+    },
+    "I500058": {
+      "id": "I500058",
+      "name": {
+        "full": "Amit",
+        "given": "Amit",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500022"
+      ]
+    },
+    "I500059": {
+      "id": "I500059",
+      "name": {
+        "full": "Sushmita Chakraborty",
+        "given": "Sushmita",
+        "surname": "Chakraborty",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500074",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWFlNzJiZDRiMDZhMmEzZjJkODAzMDI4ODQ2OGJjYjExZTg5MGM0MGJkYjM0YmJlMTk2ZDJlMWE3ZTIxZDQ5ZTAmZT0xNzY4NDkyODAw/148/712/6572/500074_3320721b664c6k4bba4yf0_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500073",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWFlOWI5ZTJiNmU2MzA1YTc5ODlhNzBiMzY4NDIwNmRmODVhNzI2NzgyODAzNWZiZjQ0M2EwMWExNTA0YmM4ZTMmZT0xNzY4NDkyODAw/148/712/6572/500073_003545760b1aq8t644mbb4_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715518280.7756119+5641137601508446674.jpeg"
+        },
+        {
+          "id": "P500065",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWNiNTZlYTUyOWNkOThiZDE5ZjU4OTIyZWViYTM5MzkxZTBiNDlhZTJjMzI1MGEwNDViODA2MWU1MDU4YWY4ODkmZT0xNzY4NDkyODAw/148/712/6572/500065_688765w6s7l5d1794bm86b_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1687672921.827652+7301427447224401435.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500023"
+      ],
+      "birth": {
+        "date": "1995-11-17",
+        "dateDisplay": "17 NOV 1995",
+        "approximate": false
+      },
+      "familyAsChild": "F500025"
+    },
+    "I500060": {
+      "id": "I500060",
+      "name": {
+        "full": "Timir Baran Chakraborty",
+        "given": "Timir Baran",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500084",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTA2YTUyMjc4MmY4NjkzOWY3ZjhkMTUzNGVlYmM3ZGNjYTc3Y2NiYzVmOWIwZjVjZjcxNGU4OGZjMjM0MjkwYTYmZT0xNzY4NDkyODAw/148/712/6572/500084_0454816bb9xl21on4p06e5_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500083",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTQ1OWJkODAwNGJmNGUwYzYxMTFlOTA5Njc1ZGU4YjA2NTc3NjI1YTNhNjQ5Yzk3MmFkNzE1NWViOWZmY2E0YTUmZT0xNzY4NDkyODAw/148/712/6572/500083_83963301o495bg626q3pei_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715519017.036415+4800841665856812033.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500025"
+      ],
+      "birth": {
+        "date": "1965-11-10",
+        "dateDisplay": "10 NOV 1965",
+        "approximate": false
+      },
+      "familyAsChild": "F500066"
+    },
+    "I500061": {
+      "id": "I500061",
+      "name": {
+        "full": "Aparna ( Shipra) Lahiri",
+        "given": "Aparna ( Shipra)",
+        "surname": "Lahiri",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500076",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWZlYmZjN2RiODc0MDcyNDI2YzkwYTMxNzI3YjY1ZjZjMmY4MDdjNmI4MGNmODgwYjA5YzQ3M2JkZTQzNWE5MzQmZT0xNzY4NDkyODAw/148/712/6572/500076_221840o460021c580bbg96_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500075",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTkzZWJjOTYzMDk1ZGViYmVjNmI3ZGZjM2U0MjQ1ZDk3YjM2ZDRjYWI2Yzk1NjgwZGYzNzgwNDhhZThhNGRkOGImZT0xNzY4NDkyODAw/148/712/6572/500075_436053bp2x6b6r0b4ft1fg_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715518399.527952+5944584521369125928.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500025"
+      ],
+      "birth": {
+        "date": "1976-10-29",
+        "dateDisplay": "29 OCT 1976",
+        "approximate": false
+      },
+      "familyAsChild": "F500068"
+    },
+    "I500062": {
+      "id": "I500062",
+      "name": {
+        "full": "Siddharth Chakraborty",
+        "given": "Siddharth",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500082",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTY1ZTI1ZjhmMTVmNmEwMTNmYjE2MTY3YmRlYjg2NTA3MjY5ZTg0ZjkwZmRlNTQ5NWE0YWU3NTNlYjVjNzI2MzAmZT0xNzY4NDkyODAw/148/712/6572/500082_4944564id6bsv1o46c6g0n_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500081",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTgyZTQ1ZTQzM2FjZjMwY2NhMTkwMTBjNDAyYzA0ODg5YzJjMWVjMmY4MzZlZjNmMTAzZGFkNmViNzEyYWY4MzkmZT0xNzY4NDkyODAw/148/712/6572/500081_16423341b1y8b46jdq5066_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715518826.4844232+3057129167372463662.jpeg"
+        }
+      ],
+      "familyAsSpouse": [],
+      "birth": {
+        "date": "2005-11-11",
+        "dateDisplay": "11 NOV 2005",
+        "approximate": false
+      },
+      "familyAsChild": "F500025"
+    },
+    "I500063": {
+      "id": "I500063",
+      "name": {
+        "full": "Bula",
+        "given": "Bula",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500026"
+      ],
+      "familyAsChild": "F500016"
+    },
+    "I500064": {
+      "id": "I500064",
+      "name": {
+        "full": "Raja",
+        "given": "Raja",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500027"
+      ],
+      "familyAsChild": "F500026"
+    },
+    "I500065": {
+      "id": "I500065",
+      "name": {
+        "full": "Choto Dadu",
+        "given": "Choto Dadu",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500026"
+      ]
+    },
+    "I500066": {
+      "id": "I500066",
+      "name": {
+        "full": "Ankita",
+        "given": "Ankita",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500027"
+      ]
+    },
+    "I500067": {
+      "id": "I500067",
+      "name": {
+        "full": "Ishaan",
+        "given": "Ishaan",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500027"
+    },
+    "I500068": {
+      "id": "I500068",
+      "name": {
+        "full": "Ashok Mukherjee",
+        "given": "Ashok",
+        "surname": "Mukherjee"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500030"
+      ],
+      "familyAsChild": "F500016"
+    },
+    "I500069": {
+      "id": "I500069",
+      "name": {
+        "full": "Tapan Mukherjee",
+        "given": "Tapan",
+        "surname": "Mukherjee"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500028"
+      ],
+      "familyAsChild": "F500016"
+    },
+    "I500070": {
+      "id": "I500070",
+      "name": {
+        "full": "Boro dadu?",
+        "given": "Boro dadu?",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500029"
+      ],
+      "death": {},
+      "familyAsChild": "F500016"
+    },
+    "I500071": {
+      "id": "I500071",
+      "name": {
+        "full": "Ashish",
+        "given": "Ashish",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500089"
+      ],
+      "familyAsChild": "F500028"
+    },
+    "I500072": {
+      "id": "I500072",
+      "name": {
+        "full": "Choto Thamma (Gauri)",
+        "given": "Choto Thamma (Gauri)",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500098",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTgxZGM2MTYzNGRmNzI5MzQ2ZWIxODliNWM1ZGJjNWY3ZTVhMDgwZTAwMWQ1NGI0NmNhM2IyNmViODI1ZGYxN2MmZT0xNzY4NDkyODAw/148/712/6572/500098_6963092v3v63962w57953f_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500097",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWJmZTQwMWE2ZWY4NDU5ODQ1Zjc2YTJmYzI4YzY1OGI4ZjUzNDE1YTc4OWM4Y2NkNTI4YTEwYjI3NTI1ODVkMGImZT0xNzY4NDkyODAw/148/712/6572/500097_05214473ffx5269l2mh526_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1767854950.742614+3201552076315884906.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500028"
+      ]
+    },
+    "I500073": {
+      "id": "I500073",
+      "name": {
+        "full": "Basu",
+        "given": "Basu",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500028"
+    },
+    "I500074": {
+      "id": "I500074",
+      "name": {
+        "full": "Rocket",
+        "given": "Rocket",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500090"
+      ],
+      "familyAsChild": "F500028"
+    },
+    "I500075": {
+      "id": "I500075",
+      "name": {
+        "full": "Raju",
+        "given": "Raju",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500029"
+    },
+    "I500076": {
+      "id": "I500076",
+      "name": {
+        "full": "",
+        "given": "",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500029"
+      ]
+    },
+    "I500077": {
+      "id": "I500077",
+      "name": {
+        "full": "Kajal",
+        "given": "Kajal",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500030"
+    },
+    "I500078": {
+      "id": "I500078",
+      "name": {
+        "full": "Mejo Thamma (Monica)",
+        "given": "Mejo Thamma (Monica)",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500104",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTgwM2M4ZjA3NTZiNmU2Yjg2NzM2NTM3ODI0NWRkMjRkZTk3OTdhMmQ2NDYxMTdmZTRhMzcwMTFiMWMxZjU1ZTAmZT0xNzY4NDkyODAw/148/712/6572/500104_8298377f13s705h9576zh4_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500103",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTVmNTUyMDAxYWEyNTM5YzcwNDdhYzA0Y2UxZjVkMzU5ZDgwNjY4NmYxZmEyMGQ5YzJmYWVlYzM2ZGM2NTVjMzQmZT0xNzY4NDkyODAw/148/712/6572/500103_113159k5957f14d67t3os7_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1767855158.1185899+1248527203373020172.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500030"
+      ]
+    },
+    "I500079": {
+      "id": "I500079",
+      "name": {
+        "full": "Lata",
+        "given": "Lata",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500030"
+    },
+    "I500081": {
+      "id": "I500081",
+      "name": {
+        "full": "Daughter 3",
+        "given": "Daughter 3",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500030"
+    },
+    "I500082": {
+      "id": "I500082",
+      "name": {
+        "full": "Babar Didima",
+        "given": "Babar Didima",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500031"
+      ]
+    },
+    "I500086": {
+      "id": "I500086",
+      "name": {
+        "full": "",
+        "given": "",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500033"
+      ]
+    },
+    "I500087": {
+      "id": "I500087",
+      "name": {
+        "full": "",
+        "given": "",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500033"
+      ]
+    },
+    "I500088": {
+      "id": "I500088",
+      "name": {
+        "full": "Babla",
+        "given": "Babla",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500034"
+      ],
+      "familyAsChild": "F500031"
+    },
+    "I500089": {
+      "id": "I500089",
+      "name": {
+        "full": "Jhuma",
+        "given": "Jhuma",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500034"
+      ]
+    },
+    "I500090": {
+      "id": "I500090",
+      "name": {
+        "full": "Hiru",
+        "given": "Hiru",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500031"
+    },
+    "I500091": {
+      "id": "I500091",
+      "name": {
+        "full": "Rakhohori Ray",
+        "given": "Rakhohori",
+        "surname": "Ray"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500035"
+      ],
+      "familyAsChild": "F500015"
+    },
+    "I500092": {
+      "id": "I500092",
+      "name": {
+        "full": "Mejo Thamma",
+        "given": "Mejo Thamma",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500035"
+      ],
+      "death": {}
+    },
+    "I500093": {
+      "id": "I500093",
+      "name": {
+        "full": "Sejo Dadu Jaganath Ray",
+        "given": "Sejo Dadu",
+        "surname": "Jaganath Ray"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500036"
+      ],
+      "familyAsChild": "F500015"
+    },
+    "I500094": {
+      "id": "I500094",
+      "name": {
+        "full": "Sejo Thamma",
+        "given": "Sejo Thamma",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500036"
+      ]
+    },
+    "I500095": {
+      "id": "I500095",
+      "name": {
+        "full": "Sumanto",
+        "given": "Sumanto",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500037"
+      ],
+      "familyAsChild": "F500035"
+    },
+    "I500096": {
+      "id": "I500096",
+      "name": {
+        "full": "Tanu",
+        "given": "Tanu",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500037"
+      ]
+    },
+    "I500097": {
+      "id": "I500097",
+      "name": {
+        "full": "Khushi",
+        "given": "Khushi",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500037"
+    },
+    "I500098": {
+      "id": "I500098",
+      "name": {
+        "full": "Rudro",
+        "given": "Rudro",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500037"
+    },
+    "I500099": {
+      "id": "I500099",
+      "name": {
+        "full": "Mithu",
+        "given": "Mithu",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500038"
+      ],
+      "familyAsChild": "F500035"
+    },
+    "I500100": {
+      "id": "I500100",
+      "name": {
+        "full": "Chandan",
+        "given": "Chandan",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500038"
+      ]
+    },
+    "I500101": {
+      "id": "I500101",
+      "name": {
+        "full": "Rintu",
+        "given": "Rintu",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500039"
+      ],
+      "familyAsChild": "F500038"
+    },
+    "I500102": {
+      "id": "I500102",
+      "name": {
+        "full": "Sarathi",
+        "given": "Sarathi",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500039"
+      ]
+    },
+    "I500103": {
+      "id": "I500103",
+      "name": {
+        "full": "Rishabh",
+        "given": "Rishabh",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500039"
+    },
+    "I500104": {
+      "id": "I500104",
+      "name": {
+        "full": "Titu",
+        "given": "Titu",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500040"
+      ],
+      "familyAsChild": "F500035"
+    },
+    "I500105": {
+      "id": "I500105",
+      "name": {
+        "full": "Kajal",
+        "given": "Kajal",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500040"
+      ]
+    },
+    "I500106": {
+      "id": "I500106",
+      "name": {
+        "full": "Piya",
+        "given": "Piya",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500040"
+    },
+    "I500107": {
+      "id": "I500107",
+      "name": {
+        "full": "Chintu",
+        "given": "Chintu",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500040"
+    },
+    "I500108": {
+      "id": "I500108",
+      "name": {
+        "full": "Chotu",
+        "given": "Chotu",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500038"
+    },
+    "I500109": {
+      "id": "I500109",
+      "name": {
+        "full": "Tukuni",
+        "given": "Tukuni",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500041"
+      ],
+      "familyAsChild": "F500035"
+    },
+    "I500110": {
+      "id": "I500110",
+      "name": {
+        "full": "Subroto",
+        "given": "Subroto",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500041"
+      ]
+    },
+    "I500111": {
+      "id": "I500111",
+      "name": {
+        "full": "Sanjib",
+        "given": "Sanjib",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500042"
+      ],
+      "familyAsChild": "F500036"
+    },
+    "I500112": {
+      "id": "I500112",
+      "name": {
+        "full": "Sayani",
+        "given": "Sayani",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500042"
+      ]
+    },
+    "I500113": {
+      "id": "I500113",
+      "name": {
+        "full": "Rajib",
+        "given": "Rajib",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500043"
+      ],
+      "familyAsChild": "F500036"
+    },
+    "I500114": {
+      "id": "I500114",
+      "name": {
+        "full": "Munni",
+        "given": "Munni",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500043"
+      ]
+    },
+    "I500115": {
+      "id": "I500115",
+      "name": {
+        "full": "Subhodra Pishi Thamma",
+        "given": "Subhodra",
+        "surname": "Pishi Thamma"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500088"
+      ],
+      "familyAsChild": "F500015"
+    },
+    "I500116": {
+      "id": "I500116",
+      "name": {
+        "full": "Balaram",
+        "given": "Balaram",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500044"
+      ],
+      "familyAsChild": "F500015"
+    },
+    "I500117": {
+      "id": "I500117",
+      "name": {
+        "full": "Choto Thamma",
+        "given": "Choto Thamma",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500044"
+      ]
+    },
+    "I500118": {
+      "id": "I500118",
+      "name": {
+        "full": "Pratul Chandra Chakraborty",
+        "given": "Pratul Chandra",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500045"
+      ],
+      "death": {},
+      "familyAsChild": "F500008"
+    },
+    "I500119": {
+      "id": "I500119",
+      "name": {
+        "full": "Krishna",
+        "given": "Krishna",
+        "surname": "",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500045"
+      ],
+      "death": {}
+    },
+    "I500120": {
+      "id": "I500120",
+      "name": {
+        "full": "Partha Chakraborty",
+        "given": "Partha",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500046"
+      ],
+      "familyAsChild": "F500045"
+    },
+    "I500121": {
+      "id": "I500121",
+      "name": {
+        "full": "Siddhartha Chakraborty",
+        "given": "Siddhartha",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500047"
+      ],
+      "familyAsChild": "F500045"
+    },
+    "I500122": {
+      "id": "I500122",
+      "name": {
+        "full": "Ritwik Chakraborty",
+        "given": "Ritwik",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500048"
+      ],
+      "familyAsChild": "F500045"
+    },
+    "I500123": {
+      "id": "I500123",
+      "name": {
+        "full": "Arundhuti Chakraborty",
+        "given": "Arundhuti",
+        "surname": "Chakraborty",
+        "maidenName": "Basu"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500049"
+      ],
+      "familyAsChild": "F500045"
+    },
+    "I500124": {
+      "id": "I500124",
+      "name": {
+        "full": "Moushumi",
+        "given": "Moushumi",
+        "surname": "",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500046"
+      ]
+    },
+    "I500125": {
+      "id": "I500125",
+      "name": {
+        "full": "Pritha Chakraborty",
+        "given": "Pritha",
+        "surname": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500046"
+    },
+    "I500126": {
+      "id": "I500126",
+      "name": {
+        "full": "Mohua",
+        "given": "Mohua",
+        "surname": "",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500047"
+      ]
+    },
+    "I500127": {
+      "id": "I500127",
+      "name": {
+        "full": "Rik Chakraborty",
+        "given": "Rik",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "death": {},
+      "familyAsChild": "F500047"
+    },
+    "I500128": {
+      "id": "I500128",
+      "name": {
+        "full": "Aparajita Ghoshdas",
+        "given": "Aparajita",
+        "surname": "Ghoshdas",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500048"
+      ]
+    },
+    "I500129": {
+      "id": "I500129",
+      "name": {
+        "full": "Upamanyu Chakraborty",
+        "given": "Upamanyu",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500048"
+    },
+    "I500130": {
+      "id": "I500130",
+      "name": {
+        "full": "Shankhabrata Basu",
+        "given": "Shankhabrata",
+        "surname": "Basu"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500049"
+      ]
+    },
+    "I500131": {
+      "id": "I500131",
+      "name": {
+        "full": "Anushka Basu",
+        "given": "Anushka",
+        "surname": "Basu"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500049"
+    },
+    "I500132": {
+      "id": "I500132",
+      "name": {
+        "full": "Angad Chakraborty",
+        "given": "Angad",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500049"
+    },
+    "I500133": {
+      "id": "I500133",
+      "name": {
+        "full": "Maitreyi Chakraborty",
+        "given": "Maitreyi",
+        "surname": "Chakraborty",
+        "maidenName": "Maitra"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500050"
+      ],
+      "death": {},
+      "familyAsChild": "F500008"
+    },
+    "I500134": {
+      "id": "I500134",
+      "name": {
+        "full": "Arun Kumar Maitra",
+        "given": "Arun Kumar",
+        "surname": "Maitra"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500050"
+      ],
+      "death": {}
+    },
+    "I500135": {
+      "id": "I500135",
+      "name": {
+        "full": "Abhijit Maitra",
+        "given": "Abhijit",
+        "surname": "Maitra"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500051"
+      ],
+      "familyAsChild": "F500050"
+    },
+    "I500136": {
+      "id": "I500136",
+      "name": {
+        "full": "Dipanwita",
+        "given": "Dipanwita",
+        "surname": "",
+        "maidenName": "Maitra"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500051"
+      ]
+    },
+    "I500137": {
+      "id": "I500137",
+      "name": {
+        "full": "Toree Maitra",
+        "given": "Toree",
+        "surname": "Maitra"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500051"
+    },
+    "I500138": {
+      "id": "I500138",
+      "name": {
+        "full": "Ratna Maitra",
+        "given": "Ratna",
+        "surname": "Maitra",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500052"
+      ],
+      "familyAsChild": "F500050"
+    },
+    "I500139": {
+      "id": "I500139",
+      "name": {
+        "full": "Subhomoy Sanyal",
+        "given": "Subhomoy",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500052"
+      ]
+    },
+    "I500140": {
+      "id": "I500140",
+      "name": {
+        "full": "Somoshree Sanyal",
+        "given": "Somoshree",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500052"
+    },
+    "I500141": {
+      "id": "I500141",
+      "name": {
+        "full": "Shuvro Sanyal",
+        "given": "Shuvro",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500052"
+    },
+    "I500142": {
+      "id": "I500142",
+      "name": {
+        "full": "Mamata Chakraborty",
+        "given": "Mamata",
+        "surname": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500053"
+      ],
+      "familyAsChild": "F500008"
+    },
+    "I500143": {
+      "id": "I500143",
+      "name": {
+        "full": "Kamalesh Chakraborty",
+        "given": "Kamalesh",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500053"
+      ]
+    },
+    "I500144": {
+      "id": "I500144",
+      "name": {
+        "full": "Koushik Chakraborty",
+        "given": "Koushik",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500054"
+      ],
+      "familyAsChild": "F500053"
+    },
+    "I500145": {
+      "id": "I500145",
+      "name": {
+        "full": "Rupa",
+        "given": "Rupa",
+        "surname": "",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500054"
+      ]
+    },
+    "I500146": {
+      "id": "I500146",
+      "name": {
+        "full": "Kaberi Chakraborty",
+        "given": "Kaberi",
+        "surname": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500054"
+    },
+    "I500147": {
+      "id": "I500147",
+      "name": {
+        "full": "Kingshuk Chakraborty",
+        "given": "Kingshuk",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500055"
+      ],
+      "familyAsChild": "F500053"
+    },
+    "I500148": {
+      "id": "I500148",
+      "name": {
+        "full": "Towa",
+        "given": "Towa",
+        "surname": "",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500055"
+      ]
+    },
+    "I500149": {
+      "id": "I500149",
+      "name": {
+        "full": "Arko Chakraborty",
+        "given": "Arko",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500055"
+    },
+    "I500150": {
+      "id": "I500150",
+      "name": {
+        "full": "Munmun Chakraborty",
+        "given": "Munmun",
+        "surname": "Chakraborty",
+        "maidenName": "Maitra"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500056"
+      ],
+      "familyAsChild": "F500053"
+    },
+    "I500151": {
+      "id": "I500151",
+      "name": {
+        "full": "Shubhendu Maitra",
+        "given": "Shubhendu",
+        "surname": "Maitra"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500056"
+      ]
+    },
+    "I500152": {
+      "id": "I500152",
+      "name": {
+        "full": "Shubhangi Maitra",
+        "given": "Shubhangi",
+        "surname": "Maitra"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500056"
+    },
+    "I500153": {
+      "id": "I500153",
+      "name": {
+        "full": "Shomendu Maitra",
+        "given": "Shomendu",
+        "surname": "Maitra"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500056"
+    },
+    "I500154": {
+      "id": "I500154",
+      "name": {
+        "full": "Rekha Thakur",
+        "given": "Rekha Thakur",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500057"
+      ]
+    },
+    "I500155": {
+      "id": "I500155",
+      "name": {
+        "full": "Ajit Thakur",
+        "given": "Ajit Thakur",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500057"
+      ],
+      "death": {}
+    },
+    "I500156": {
+      "id": "I500156",
+      "name": {
+        "full": "Shripati Ray",
+        "given": "Shripati",
+        "surname": "Ray"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500058"
+      ],
+      "death": {},
+      "familyAsChild": "F500059"
+    },
+    "I500157": {
+      "id": "I500157",
+      "name": {
+        "full": "Lakshman Ray chatterjee",
+        "given": "Lakshman",
+        "surname": "Ray chatterjee"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500059"
+      ],
+      "birth": {},
+      "death": {}
+    },
+    "I500158": {
+      "id": "I500158",
+      "name": {
+        "full": "Bipin Chandra Chakrabarti",
+        "given": "Bipin Chandra",
+        "surname": "Chakrabarti"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500060"
+      ],
+      "death": {}
+    },
+    "I500159": {
+      "id": "I500159",
+      "name": {
+        "full": "Abani Bhushan Halder",
+        "given": "Abani Bhushan",
+        "surname": "Halder"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500061"
+      ],
+      "death": {}
+    },
+    "I500160": {
+      "id": "I500160",
+      "name": {
+        "full": "Apurbo Thakur",
+        "given": "Apurbo",
+        "surname": "Thakur"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500062"
+      ],
+      "familyAsChild": "F500057"
+    },
+    "I500161": {
+      "id": "I500161",
+      "name": {
+        "full": "Paromita",
+        "given": "Paromita",
+        "surname": "",
+        "maidenName": "Thakur"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500062"
+      ]
+    },
+    "I500162": {
+      "id": "I500162",
+      "name": {
+        "full": "Arkoprobho Thakur",
+        "given": "Arkoprobho",
+        "surname": "Thakur"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500062"
+    },
+    "I500163": {
+      "id": "I500163",
+      "name": {
+        "full": "Adrija Thakur",
+        "given": "Adrija",
+        "surname": "Thakur"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500062"
+    },
+    "I500164": {
+      "id": "I500164",
+      "name": {
+        "full": "Abanteeka Hoare",
+        "given": "Abanteeka",
+        "surname": "Hoare"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500068",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTI3ZDM3M2RjZDY2MWMxNzk3ZWFhZTcxZjE1Yzg5YmQxZTJhMGVhNjc0ZDBhZmI3NzU5MTFkNDA1N2JiNDUxY2YmZT0xNzY4NDkyODAw/148/712/6572/500068_9234807o45a631rc4t76ij_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500067",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWRjZTU4MTFkNjZjNDkzNTlhOGFiMDRiNmFkNzE0ZmRjNGI3MmZjNGMzODcyZDM4NWJlYTQ4MGUwZDA1YzMyNjUmZT0xNzY4NDkyODAw/148/712/6572/500067_06926877a648y4au7y5316_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1714702965.339624+8856665597601493381.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500063"
+      ],
+      "birth": {
+        "date": "1995-04-29",
+        "dateDisplay": "29 APR 1995",
+        "approximate": false
+      }
+    },
+    "I500165": {
+      "id": "I500165",
+      "name": {
+        "full": "Simi",
+        "given": "Simi",
+        "surname": "",
+        "maidenName": "Halder"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500070",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTRkYzljNWU4NzdiZDc1NjdiOTkyNWM1NjIzMjU5MDkyODc2N2ZhYjI2M2NiZDg0YzI0YThkMDRmMGM4ODcxODUmZT0xNzY4NDkyODAw/148/712/6572/500070_87023196646vk34ff7ca1b_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500069",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTQ4ODNlNDM5YjM1ZjExYWM5MmY4M2RmYTI0ZTAxY2Q4ZjU3ZDRjZDBiMzgyN2IxMzExNGJiMGExZDExMWUzOWUmZT0xNzY4NDkyODAw/148/712/6572/500069_505405315ja4x068h6ef46_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false
+        }
+      ],
+      "familyAsSpouse": [
+        "F500064"
+      ]
+    },
+    "I500166": {
+      "id": "I500166",
+      "name": {
+        "full": "Jeet",
+        "given": "Jeet",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500072",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTRhZDJjNWU3ZmUzMmVmZjBkZmUyODZlMDhiMWFiYWExZTc4YjAxNjM4MTRiNzczMDFhOTViNDNhYzU4ZDYyZTQmZT0xNzY4NDkyODAw/148/712/6572/500072_776193er3g2444bi146f6h_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500071",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTkxN2EyY2VhODUxNGViNGVkOTViMjdmZGY1NTAzN2E1ZjE5YTM1YzJmM2JhZWQ2ZjNkZjY3MWNkMDA5YTU1NjEmZT0xNzY4NDkyODAw/148/712/6572/500071_25742421i1244b36d6uw44_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1714703180.736714+3221276956093539131.jpeg"
+        }
+      ],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500064"
+    },
+    "I500167": {
+      "id": "I500167",
+      "name": {
+        "full": "Bibhuti Bhushan Chakraborty",
+        "given": "Bibhuti Bhushan",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500086",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTI5MTBhYWJjNzk1YWFkYzAzMzYyNjc4ZTFhMmNlMmMwZTIzNWI0N2JmMTA4ZTEzZjg1NWJkZmE4YzQ5MThhNzgmZT0xNzY4NDkyODAw/148/712/6572/500086_5792286461gb68p4f2o0bb_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500085",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPThjNGQzNTU4MDc1YTk5MDczNTk0Y2Q2NWEwN2IwZWZmMWY3YWE1NTg1NmUxYzc2NjU0YWNjMmEyYmY4Yzk0YzcmZT0xNzY4NDkyODAw/148/712/6572/500085_015172716ry6f62400cb6k_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715519334.6246738+3823656681815158948.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500066"
+      ],
+      "death": {},
+      "familyAsChild": "F500069"
+    },
+    "I500168": {
+      "id": "I500168",
+      "name": {
+        "full": "Bela Rani",
+        "given": "Bela Rani",
+        "surname": "",
+        "maidenName": "Chakraborty"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500088",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTE3MzY1MjM1NDk3MDkxNDhhMDBjZGRlY2IwNzJiMmVlOTBiMmUyN2Q4ZDhiNjA1NzI3ZmJhZGQ0ODAyNmJhNWEmZT0xNzY4NDkyODAw/148/712/6572/500088_369107f8061b38k664ie1g_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500087",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTFhNjA4NDdjMWFhZWZiNWMzNjlmNzk2NWRmMzI2NTQyMmZjZWIxYTNkYjY3YjNlNWM3ZTkxY2E4ODAyNjcwZTkmZT0xNzY4NDkyODAw/148/712/6572/500087_00421061fzq80s633zbe4r_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715519372.901706+1618287278463936252.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500066"
+      ],
+      "death": {}
+    },
+    "I500169": {
+      "id": "I500169",
+      "name": {
+        "full": "Nirendra Kamal Lahiri",
+        "given": "Nirendra Kamal",
+        "surname": "Lahiri"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500080",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTVhODQxZjVhYjYyMWYyYTI5YzIxM2ViNmU5NzEzM2ZiMzUyYWU3NTJhNDJjNzE5NDZlMjdlNjI5OTQyNTY2OTQmZT0xNzY4NDkyODAw/148/712/6572/500080_008082gy2ib41er6s606hc_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500079",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTU4ZjE1YWNmYTZjZGVhMjI5NzRkNWY4NzAxYjM1OTM1ODY0ZThkNDlmMDYxOTNmNGYyMGVlNGRmZDdkM2M0NmQmZT0xNzY4NDkyODAw/148/712/6572/500079_390726261ced4y6b9605uu_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715518509.182877+1411275270658665818.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500068"
+      ],
+      "death": {},
+      "familyAsChild": "F500070"
+    },
+    "I500170": {
+      "id": "I500170",
+      "name": {
+        "full": "Shukla Bhattacharya",
+        "given": "Shukla",
+        "surname": "Bhattacharya",
+        "maidenName": "Lahiri"
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500078",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWE2YjRkNmQ3ZGM2MTIxODVkMWJhY2YzYTM3MzA5YTMzYTcwOGNjYjBiNmZjZTE4NDc0ODc0MTY5MWUyOTNmNDgmZT0xNzY4NDkyODAw/148/712/6572/500078_499374b0a5oh146bev26at_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500077",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTM0NGZiNjg1NjQxYmE1YzgxMzE3NzljMTAwMGFkMzlmZTQ0NzYyYTQ2ZWY1NmIxMmRhYmNjOGJlZWRjMDA1NDUmZT0xNzY4NDkyODAw/148/712/6572/500077_917206ba6b4qehb620tr1z_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1715518441.4996362+345663016721490859.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500068"
+      ]
+    },
+    "I500171": {
+      "id": "I500171",
+      "name": {
+        "full": "Prakash Chakraborty",
+        "given": "Prakash",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500069"
+      ],
+      "death": {},
+      "familyAsChild": "F500071"
+    },
+    "I500172": {
+      "id": "I500172",
+      "name": {
+        "full": "Narendra Kamal Lahiri",
+        "given": "Narendra Kamal",
+        "surname": "Lahiri"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500070"
+      ],
+      "death": {}
+    },
+    "I500173": {
+      "id": "I500173",
+      "name": {
+        "full": "Girish Chakraborty",
+        "given": "Girish",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500071"
+      ],
+      "death": {},
+      "familyAsChild": "F500072"
+    },
+    "I500174": {
+      "id": "I500174",
+      "name": {
+        "full": "Krishna Chakraborty",
+        "given": "Krishna",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500072"
+      ],
+      "death": {},
+      "familyAsChild": "F500073"
+    },
+    "I500175": {
+      "id": "I500175",
+      "name": {
+        "full": "Muchiram Chakraborty",
+        "given": "Muchiram",
+        "surname": "Chakraborty"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500073"
+      ],
+      "death": {}
+    },
+    "I500176": {
+      "id": "I500176",
+      "name": {
+        "full": "Devindra Nath",
+        "given": "Devindra",
+        "surname": "Nath"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500092",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTU5YTc1NzI3NDU5MjcwNDA0ZDljYmExNGQ3ZTllNjJmNjAwM2FjZjE2ODJhMDFlMWZlZWRkYjdkNjY4ODU0ZWImZT0xNzY4NDkyODAw/148/712/6572/500092_4111662bvy61816d298659_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500091",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWM5ZjU2ZGNmZDE3Y2ZmMTEwZmU2MTU5YWNkOGQwNWU3N2I1YmIwMTgzMzM5ZTAwYzE1ZTIxYTUwMzJmZWM4MTQmZT0xNzY4NDkyODAw/148/712/6572/500091_7761618sed6h269518y597_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false
+        }
+      ],
+      "familyAsSpouse": [],
+      "birth": {
+        "date": "2025-01-20",
+        "dateDisplay": "20 JAN 2025",
+        "approximate": false
+      },
+      "familyAsChild": "F500022"
+    },
+    "I500177": {
+      "id": "I500177",
+      "name": {
+        "full": "Vineet Gupta",
+        "given": "Vineet",
+        "surname": "Gupta"
+      },
+      "sex": "M",
+      "photos": [
+        {
+          "id": "P500094",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWU2MDc2N2ZiMjkxMDllYzYyOWRiYmYxZWJiMTAzZjdjMTdlM2IxZTE4ODM4Y2ZkOGUzMWJhMWFiODBlZmU2NjMmZT0xNzY4NDkyODAw/148/712/6572/500094_783193o5128e6a5wf96c3e_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500093",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWE0Y2Q3Y2VmOGQzMGVhMTVkNDhkNDIyZDM4YWY0ZjNmY2ZjY2E5M2VkMjBiZmRlNjM1NThhOTNkODljNWI0YjcmZT0xNzY4NDkyODAw/148/712/6572/500093_25035912zc6ave863g93z5_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false
+        }
+      ],
+      "familyAsSpouse": [
+        "F500074"
+      ],
+      "birth": {
+        "date": "1992-07-01",
+        "dateDisplay": "1 JUL 1992",
+        "approximate": false
+      },
+      "familyAsChild": "F500084"
+    },
+    "I500179": {
+      "id": "I500179",
+      "name": {
+        "full": "Prabir Sanyal",
+        "given": "Prabir",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500075"
+      ],
+      "death": {},
+      "birth": {
+        "date": "1944",
+        "dateDisplay": "1944",
+        "approximate": false
+      },
+      "familyAsChild": "F500009"
+    },
+    "I500180": {
+      "id": "I500180",
+      "name": {
+        "full": "Mridula",
+        "given": "Mridula",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500075"
+      ]
+    },
+    "I500181": {
+      "id": "I500181",
+      "name": {
+        "full": "Ontora",
+        "given": "Ontora",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500076"
+      ],
+      "familyAsChild": "F500075"
+    },
+    "I500182": {
+      "id": "I500182",
+      "name": {
+        "full": "Promith Sanyal",
+        "given": "Promith",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500077"
+      ],
+      "familyAsChild": "F500075"
+    },
+    "I500183": {
+      "id": "I500183",
+      "name": {
+        "full": "Shorith Chowdhury",
+        "given": "Shorith",
+        "surname": "Chowdhury"
+      },
+      "sex": "U",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500076"
+      ]
+    },
+    "I500184": {
+      "id": "I500184",
+      "name": {
+        "full": "Anushka Chowdhury",
+        "given": "Anushka",
+        "surname": "Chowdhury"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500076"
+    },
+    "I500185": {
+      "id": "I500185",
+      "name": {
+        "full": "Aryashankar Chowdhury",
+        "given": "Aryashankar",
+        "surname": "Chowdhury"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500076"
+    },
+    "I500186": {
+      "id": "I500186",
+      "name": {
+        "full": "Sreyoshi Sanyal",
+        "given": "Sreyoshi",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500077"
+      ]
+    },
+    "I500187": {
+      "id": "I500187",
+      "name": {
+        "full": "Pamir Sanyal",
+        "given": "Pamir",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500077"
+    },
+    "I500188": {
+      "id": "I500188",
+      "name": {
+        "full": "Prisha Sanyal",
+        "given": "Prisha",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500077"
+    },
+    "I500189": {
+      "id": "I500189",
+      "name": {
+        "full": "Aparna",
+        "given": "Aparna",
+        "surname": "",
+        "maidenName": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500078"
+      ]
+    },
+    "I500190": {
+      "id": "I500190",
+      "name": {
+        "full": "Soma Sanyal",
+        "given": "Soma",
+        "surname": "Sanyal"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500079"
+      ],
+      "familyAsChild": "F500078"
+    },
+    "I500191": {
+      "id": "I500191",
+      "name": {
+        "full": "Rahul",
+        "given": "Rahul",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500079"
+      ]
+    },
+    "I500192": {
+      "id": "I500192",
+      "name": {
+        "full": "Vedant",
+        "given": "Vedant",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500079"
+    },
+    "I500193": {
+      "id": "I500193",
+      "name": {
+        "full": "Prodipto Sanyal",
+        "given": "Prodipto",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500080"
+      ],
+      "familyAsChild": "F500078"
+    },
+    "I500194": {
+      "id": "I500194",
+      "name": {
+        "full": "Joyeeta",
+        "given": "Joyeeta",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500080"
+      ]
+    },
+    "I500195": {
+      "id": "I500195",
+      "name": {
+        "full": "Bipin Chandra Sanyal",
+        "given": "Bipin Chandra",
+        "surname": "Sanyal"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500081"
+      ],
+      "death": {}
+    },
+    "I500196": {
+      "id": "I500196",
+      "name": {
+        "full": "Rishika",
+        "given": "Rishika",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500039"
+    },
+    "I500197": {
+      "id": "I500197",
+      "name": {
+        "full": "Debrup Mukherjee",
+        "given": "Debrup",
+        "surname": "Mukherjee"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500083"
+      ],
+      "familyAsChild": "F500082"
+    },
+    "I500198": {
+      "id": "I500198",
+      "name": {
+        "full": "Mukherjee",
+        "given": "",
+        "surname": "Mukherjee"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500082"
+      ]
+    },
+    "I500199": {
+      "id": "I500199",
+      "name": {
+        "full": "Mukherjee",
+        "given": "",
+        "surname": "Mukherjee"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500082"
+      ]
+    },
+    "I500200": {
+      "id": "I500200",
+      "name": {
+        "full": "Tina",
+        "given": "Tina",
+        "surname": "",
+        "maidenName": "Mukherjee"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500083"
+      ]
+    },
+    "I500201": {
+      "id": "I500201",
+      "name": {
+        "full": "Rik Mukherjee",
+        "given": "Rik",
+        "surname": "Mukherjee"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500083"
+    },
+    "I500202": {
+      "id": "I500202",
+      "name": {
+        "full": "Harsha Gupta",
+        "given": "Harsha",
+        "surname": "Gupta"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500085"
+      ],
+      "familyAsChild": "F500084"
+    },
+    "I500203": {
+      "id": "I500203",
+      "name": {
+        "full": "Naresh Gupta",
+        "given": "Naresh",
+        "surname": "Gupta"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500084"
+      ]
+    },
+    "I500204": {
+      "id": "I500204",
+      "name": {
+        "full": "Anju",
+        "given": "Anju",
+        "surname": "",
+        "maidenName": "Gupta"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500084"
+      ]
+    },
+    "I500205": {
+      "id": "I500205",
+      "name": {
+        "full": "Mehul Sanghvi",
+        "given": "Mehul",
+        "surname": "Sanghvi"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500085"
+      ]
+    },
+    "I500206": {
+      "id": "I500206",
+      "name": {
+        "full": "Ruhi Sanghvi",
+        "given": "Ruhi",
+        "surname": "Sanghvi"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500085"
+    },
+    "I500207": {
+      "id": "I500207",
+      "name": {
+        "full": "Samik Roychoudhury",
+        "given": "Samik",
+        "surname": "Roychoudhury"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500087"
+      ],
+      "familyAsChild": "F500086"
+    },
+    "I500208": {
+      "id": "I500208",
+      "name": {
+        "full": "Bimalendu Roychoudhury",
+        "given": "Bimalendu",
+        "surname": "Roychoudhury"
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500086"
+      ]
+    },
+    "I500209": {
+      "id": "I500209",
+      "name": {
+        "full": "Savita",
+        "given": "Savita",
+        "surname": "",
+        "maidenName": "Roychoudhury"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500086"
+      ]
+    },
+    "I500210": {
+      "id": "I500210",
+      "name": {
+        "full": "Archita",
+        "given": "Archita",
+        "surname": "",
+        "maidenName": "Roychoudhury"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500087"
+      ]
+    },
+    "I500211": {
+      "id": "I500211",
+      "name": {
+        "full": "Ashvi Roychoudhury",
+        "given": "Ashvi",
+        "surname": "Roychoudhury"
+      },
+      "sex": "F",
+      "photos": [],
+      "familyAsSpouse": [],
+      "familyAsChild": "F500087"
+    },
+    "I500212": {
+      "id": "I500212",
+      "name": {
+        "full": "Babar Pishemoshai",
+        "given": "Babar Pishemoshai",
+        "surname": ""
+      },
+      "sex": "M",
+      "photos": [],
+      "familyAsSpouse": [
+        "F500088"
+      ],
+      "death": {}
+    },
+    "I500213": {
+      "id": "I500213",
+      "name": {
+        "full": "Pooja",
+        "given": "Pooja",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500100",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWUzMTkxMzgzNmVlY2UzYzljYWNlOTM4NDIwMzZjNzQxMTdiY2UyZDY4M2Q3NzZiNDYzYTY0ZWFmZjI0NGM0MzcmZT0xNzY4NDkyODAw/148/712/6572/500100_184375b52679l3f5538oc5_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500099",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTEwZjNjOWMzNDVjOGI2YWU4YWZhMmI0NTNhMWI3MDk1Y2U5ZTY1YzhhZTRmYzM5Y2NlN2ZkNzYyNDcwMDExZDUmZT0xNzY4NDkyODAw/148/712/6572/500099_0027045f872ec3659b52nz_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1767855050.2403522+2657225455776230676.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500089"
+      ]
+    },
+    "I500214": {
+      "id": "I500214",
+      "name": {
+        "full": "Riya",
+        "given": "Riya",
+        "surname": ""
+      },
+      "sex": "F",
+      "photos": [
+        {
+          "id": "P500102",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPWE0YjU0NDc1M2I4NGI2ODU4YmY5YjdiMjQ5YmRjNDA0OTMxZWQ2NmY1ZTQzYWNlMTU4ZTg2ZjU2MzRmMTMwYmQmZT0xNzY4NDkyODAw/148/712/6572/500102_8732212qf5ks6230n5f7b9_A.jpg",
+          "isPrimary": true,
+          "isPortrait": true
+        },
+        {
+          "id": "P500101",
+          "url": "https://sites-cf.mhcache.com/e/1/az1zaXRlc192MSZzPTFkZTI3ZTNiZTQzNWI4YTNjZThmZWRiZTljNzg0ZWJkNDM0OWFlZTI2NjAwYWVjMzU5Zjk0OTZiYjVhNDMyY2YmZT0xNzY4NDkyODAw/148/712/6572/500101_625676cm396301ftfo2552_A.jpg",
+          "isPrimary": false,
+          "isPortrait": false,
+          "title": "1767855087.2015219+5118668674666985513.jpeg"
+        }
+      ],
+      "familyAsSpouse": [
+        "F500090"
+      ]
+    }
+  },
+  "families": {
+    "F500001": {
+      "id": "F500001",
+      "children": [
+        "I500001",
+        "I500008"
+      ],
+      "husband": "I500003",
+      "wife": "I500002",
+      "marriage": {
+        "date": "1994-04-25",
+        "dateDisplay": "25 APR 1994",
+        "approximate": false,
+        "place": "Kolkata, West Bengal, India"
+      }
+    },
+    "F500002": {
+      "id": "F500002",
+      "children": [
+        "I500002",
+        "I500009",
+        "I500010"
+      ],
+      "husband": "I500005",
+      "wife": "I500004"
+    },
+    "F500003": {
+      "id": "F500003",
+      "children": [
+        "I500003",
+        "I500011",
+        "I500012"
+      ],
+      "husband": "I500007",
+      "wife": "I500006"
+    },
+    "F500004": {
+      "id": "F500004",
+      "children": [
+        "I500013"
+      ],
+      "husband": "I500014",
+      "wife": "I500012",
+      "marriage": {
+        "date": "1991-05-20",
+        "dateDisplay": "20 MAY 1991",
+        "approximate": false
+      }
+    },
+    "F500005": {
+      "id": "F500005",
+      "children": [
+        "I500016",
+        "I500017"
+      ],
+      "husband": "I500009",
+      "wife": "I500015",
+      "marriage": {}
+    },
+    "F500006": {
+      "id": "F500006",
+      "children": [
+        "I500019"
+      ],
+      "husband": "I500010",
+      "wife": "I500018",
+      "marriage": {
+        "date": "2004-11-22",
+        "dateDisplay": "22 NOV 2004",
+        "approximate": false,
+        "place": "Kolkata"
+      }
+    },
+    "F500007": {
+      "id": "F500007",
+      "children": [
+        "I500021"
+      ],
+      "husband": "I500011",
+      "wife": "I500020",
+      "marriage": {
+        "date": "1995-03-03",
+        "dateDisplay": "3 MAR 1995",
+        "approximate": false
+      }
+    },
+    "F500008": {
+      "id": "F500008",
+      "children": [
+        "I500005",
+        "I500118",
+        "I500133",
+        "I500142"
+      ],
+      "husband": "I500022",
+      "wife": "I500023"
+    },
+    "F500009": {
+      "id": "F500009",
+      "children": [
+        "I500026",
+        "I500179",
+        "I500028",
+        "I500004",
+        "I500029",
+        "I500030"
+      ],
+      "husband": "I500024",
+      "wife": "I500025"
+    },
+    "F500010": {
+      "id": "F500010",
+      "children": [
+        "I500032",
+        "I500033",
+        "I500034"
+      ],
+      "husband": "I500026",
+      "wife": "I500031",
+      "marriage": {}
+    },
+    "F500011": {
+      "id": "F500011",
+      "children": [
+        "I500041",
+        "I500042"
+      ],
+      "husband": "I500035",
+      "wife": "I500030",
+      "marriage": {}
+    },
+    "F500015": {
+      "id": "F500015",
+      "children": [
+        "I500007",
+        "I500091",
+        "I500093",
+        "I500115",
+        "I500116"
+      ],
+      "husband": "I500038",
+      "wife": "I500039",
+      "marriage": {}
+    },
+    "F500016": {
+      "id": "F500016",
+      "children": [
+        "I500006",
+        "I500063",
+        "I500068",
+        "I500069",
+        "I500070"
+      ],
+      "husband": "I500037",
+      "wife": "I500040",
+      "marriage": {}
+    },
+    "F500017": {
+      "id": "F500017",
+      "children": [
+        "I500044"
+      ],
+      "husband": "I500043",
+      "wife": "I500041",
+      "marriage": {}
+    },
+    "F500018": {
+      "id": "F500018",
+      "children": [
+        "I500046",
+        "I500048",
+        "I500054"
+      ],
+      "husband": "I500028",
+      "wife": "I500045",
+      "marriage": {}
+    },
+    "F500019": {
+      "id": "F500019",
+      "children": [
+        "I500049",
+        "I500050"
+      ],
+      "husband": "I500046",
+      "wife": "I500047",
+      "marriage": {}
+    },
+    "F500020": {
+      "id": "F500020",
+      "children": [
+        "I500052",
+        "I500053"
+      ],
+      "husband": "I500048",
+      "wife": "I500051",
+      "marriage": {}
+    },
+    "F500021": {
+      "id": "F500021",
+      "children": [
+        "I500056",
+        "I500057"
+      ],
+      "husband": "I500055",
+      "wife": "I500054",
+      "marriage": {}
+    },
+    "F500022": {
+      "id": "F500022",
+      "children": [
+        "I500176"
+      ],
+      "husband": "I500058",
+      "wife": "I500042",
+      "marriage": {}
+    },
+    "F500023": {
+      "id": "F500023",
+      "children": [],
+      "husband": "I500001",
+      "wife": "I500059",
+      "marriage": {
+        "date": "2023-07-05",
+        "dateDisplay": "5 JUL 2023",
+        "approximate": false
+      }
+    },
+    "F500025": {
+      "id": "F500025",
+      "children": [
+        "I500059",
+        "I500062"
+      ],
+      "husband": "I500060",
+      "wife": "I500061",
+      "marriage": {
+        "date": "1993-07-11",
+        "dateDisplay": "11 JUL 1993",
+        "approximate": false
+      }
+    },
+    "F500026": {
+      "id": "F500026",
+      "children": [
+        "I500064"
+      ],
+      "husband": "I500065",
+      "wife": "I500063",
+      "marriage": {}
+    },
+    "F500027": {
+      "id": "F500027",
+      "children": [
+        "I500067"
+      ],
+      "husband": "I500064",
+      "wife": "I500066",
+      "marriage": {}
+    },
+    "F500028": {
+      "id": "F500028",
+      "children": [
+        "I500071",
+        "I500073",
+        "I500074"
+      ],
+      "husband": "I500069",
+      "wife": "I500072",
+      "marriage": {}
+    },
+    "F500029": {
+      "id": "F500029",
+      "children": [
+        "I500075"
+      ],
+      "husband": "I500070",
+      "wife": "I500076",
+      "marriage": {}
+    },
+    "F500030": {
+      "id": "F500030",
+      "children": [
+        "I500077",
+        "I500079",
+        "I500081"
+      ],
+      "husband": "I500068",
+      "wife": "I500078",
+      "marriage": {}
+    },
+    "F500031": {
+      "id": "F500031",
+      "children": [
+        "I500088",
+        "I500090"
+      ],
+      "husband": "I500037",
+      "wife": "I500082",
+      "marriage": {}
+    },
+    "F500033": {
+      "id": "F500033",
+      "children": [],
+      "husband": "I500086",
+      "wife": "I500087",
+      "marriage": {}
+    },
+    "F500034": {
+      "id": "F500034",
+      "children": [],
+      "husband": "I500088",
+      "wife": "I500089",
+      "marriage": {}
+    },
+    "F500035": {
+      "id": "F500035",
+      "children": [
+        "I500095",
+        "I500099",
+        "I500104",
+        "I500109"
+      ],
+      "husband": "I500091",
+      "wife": "I500092",
+      "marriage": {}
+    },
+    "F500036": {
+      "id": "F500036",
+      "children": [
+        "I500111",
+        "I500113"
+      ],
+      "husband": "I500093",
+      "wife": "I500094",
+      "marriage": {}
+    },
+    "F500037": {
+      "id": "F500037",
+      "children": [
+        "I500097",
+        "I500098"
+      ],
+      "husband": "I500095",
+      "wife": "I500096",
+      "marriage": {}
+    },
+    "F500038": {
+      "id": "F500038",
+      "children": [
+        "I500101",
+        "I500108"
+      ],
+      "husband": "I500100",
+      "wife": "I500099",
+      "marriage": {}
+    },
+    "F500039": {
+      "id": "F500039",
+      "children": [
+        "I500103",
+        "I500196"
+      ],
+      "husband": "I500101",
+      "wife": "I500102",
+      "marriage": {}
+    },
+    "F500040": {
+      "id": "F500040",
+      "children": [
+        "I500106",
+        "I500107"
+      ],
+      "husband": "I500105",
+      "wife": "I500104",
+      "marriage": {}
+    },
+    "F500041": {
+      "id": "F500041",
+      "children": [],
+      "husband": "I500110",
+      "wife": "I500109",
+      "marriage": {}
+    },
+    "F500042": {
+      "id": "F500042",
+      "children": [],
+      "husband": "I500111",
+      "wife": "I500112",
+      "marriage": {}
+    },
+    "F500043": {
+      "id": "F500043",
+      "children": [],
+      "husband": "I500113",
+      "wife": "I500114",
+      "marriage": {}
+    },
+    "F500044": {
+      "id": "F500044",
+      "children": [],
+      "husband": "I500116",
+      "wife": "I500117",
+      "marriage": {}
+    },
+    "F500045": {
+      "id": "F500045",
+      "children": [
+        "I500120",
+        "I500121",
+        "I500122",
+        "I500123"
+      ],
+      "husband": "I500118",
+      "wife": "I500119",
+      "marriage": {}
+    },
+    "F500046": {
+      "id": "F500046",
+      "children": [
+        "I500125"
+      ],
+      "husband": "I500120",
+      "wife": "I500124",
+      "marriage": {}
+    },
+    "F500047": {
+      "id": "F500047",
+      "children": [
+        "I500127"
+      ],
+      "husband": "I500121",
+      "wife": "I500126",
+      "marriage": {}
+    },
+    "F500048": {
+      "id": "F500048",
+      "children": [
+        "I500129"
+      ],
+      "husband": "I500122",
+      "wife": "I500128",
+      "marriage": {}
+    },
+    "F500049": {
+      "id": "F500049",
+      "children": [
+        "I500131",
+        "I500132"
+      ],
+      "husband": "I500130",
+      "wife": "I500123",
+      "marriage": {}
+    },
+    "F500050": {
+      "id": "F500050",
+      "children": [
+        "I500135",
+        "I500138"
+      ],
+      "husband": "I500134",
+      "wife": "I500133",
+      "marriage": {}
+    },
+    "F500051": {
+      "id": "F500051",
+      "children": [
+        "I500137"
+      ],
+      "husband": "I500135",
+      "wife": "I500136",
+      "marriage": {}
+    },
+    "F500052": {
+      "id": "F500052",
+      "children": [
+        "I500140",
+        "I500141"
+      ],
+      "husband": "I500139",
+      "wife": "I500138",
+      "marriage": {}
+    },
+    "F500053": {
+      "id": "F500053",
+      "children": [
+        "I500144",
+        "I500147",
+        "I500150"
+      ],
+      "husband": "I500143",
+      "wife": "I500142",
+      "marriage": {}
+    },
+    "F500054": {
+      "id": "F500054",
+      "children": [
+        "I500146"
+      ],
+      "husband": "I500144",
+      "wife": "I500145",
+      "marriage": {}
+    },
+    "F500055": {
+      "id": "F500055",
+      "children": [
+        "I500149"
+      ],
+      "husband": "I500147",
+      "wife": "I500148",
+      "marriage": {}
+    },
+    "F500056": {
+      "id": "F500056",
+      "children": [
+        "I500152",
+        "I500153"
+      ],
+      "husband": "I500151",
+      "wife": "I500150",
+      "marriage": {}
+    },
+    "F500057": {
+      "id": "F500057",
+      "children": [
+        "I500020",
+        "I500160"
+      ],
+      "husband": "I500155",
+      "wife": "I500154"
+    },
+    "F500058": {
+      "id": "F500058",
+      "children": [
+        "I500038"
+      ],
+      "husband": "I500156"
+    },
+    "F500059": {
+      "id": "F500059",
+      "children": [
+        "I500156"
+      ],
+      "husband": "I500157"
+    },
+    "F500060": {
+      "id": "F500060",
+      "children": [
+        "I500022"
+      ],
+      "husband": "I500158"
+    },
+    "F500061": {
+      "id": "F500061",
+      "children": [
+        "I500014"
+      ],
+      "husband": "I500159"
+    },
+    "F500062": {
+      "id": "F500062",
+      "children": [
+        "I500162",
+        "I500163"
+      ],
+      "husband": "I500160",
+      "wife": "I500161",
+      "marriage": {}
+    },
+    "F500063": {
+      "id": "F500063",
+      "children": [],
+      "husband": "I500013",
+      "wife": "I500164",
+      "marriage": {
+        "date": "2024-03-02",
+        "dateDisplay": "2 MAR 2024",
+        "approximate": false
+      }
+    },
+    "F500064": {
+      "id": "F500064",
+      "children": [
+        "I500166"
+      ],
+      "husband": "I500014",
+      "wife": "I500165",
+      "marriage": {}
+    },
+    "F500066": {
+      "id": "F500066",
+      "children": [
+        "I500060"
+      ],
+      "husband": "I500167",
+      "wife": "I500168",
+      "marriage": {}
+    },
+    "F500068": {
+      "id": "F500068",
+      "children": [
+        "I500061"
+      ],
+      "husband": "I500169",
+      "wife": "I500170",
+      "marriage": {}
+    },
+    "F500069": {
+      "id": "F500069",
+      "children": [
+        "I500167"
+      ],
+      "husband": "I500171"
+    },
+    "F500070": {
+      "id": "F500070",
+      "children": [
+        "I500169"
+      ],
+      "husband": "I500172"
+    },
+    "F500071": {
+      "id": "F500071",
+      "children": [
+        "I500171"
+      ],
+      "husband": "I500173"
+    },
+    "F500072": {
+      "id": "F500072",
+      "children": [
+        "I500173"
+      ],
+      "husband": "I500174"
+    },
+    "F500073": {
+      "id": "F500073",
+      "children": [
+        "I500174"
+      ],
+      "husband": "I500175"
+    },
+    "F500074": {
+      "id": "F500074",
+      "children": [],
+      "husband": "I500177",
+      "wife": "I500021",
+      "marriage": {
+        "date": "2025-11-20",
+        "dateDisplay": "20 NOV 2025",
+        "approximate": false
+      }
+    },
+    "F500075": {
+      "id": "F500075",
+      "children": [
+        "I500181",
+        "I500182"
+      ],
+      "husband": "I500179",
+      "wife": "I500180",
+      "marriage": {}
+    },
+    "F500076": {
+      "id": "F500076",
+      "children": [
+        "I500184",
+        "I500185"
+      ],
+      "husband": "I500183",
+      "wife": "I500181",
+      "marriage": {}
+    },
+    "F500077": {
+      "id": "F500077",
+      "children": [
+        "I500187",
+        "I500188"
+      ],
+      "husband": "I500182",
+      "wife": "I500186",
+      "marriage": {}
+    },
+    "F500078": {
+      "id": "F500078",
+      "children": [
+        "I500190",
+        "I500193"
+      ],
+      "husband": "I500029",
+      "wife": "I500189",
+      "marriage": {}
+    },
+    "F500079": {
+      "id": "F500079",
+      "children": [
+        "I500192"
+      ],
+      "husband": "I500191",
+      "wife": "I500190",
+      "marriage": {}
+    },
+    "F500080": {
+      "id": "F500080",
+      "children": [],
+      "husband": "I500193",
+      "wife": "I500194",
+      "marriage": {}
+    },
+    "F500081": {
+      "id": "F500081",
+      "children": [
+        "I500024"
+      ],
+      "husband": "I500195"
+    },
+    "F500082": {
+      "id": "F500082",
+      "children": [
+        "I500018",
+        "I500197"
+      ],
+      "husband": "I500198",
+      "wife": "I500199",
+      "marriage": {}
+    },
+    "F500083": {
+      "id": "F500083",
+      "children": [
+        "I500201"
+      ],
+      "husband": "I500197",
+      "wife": "I500200",
+      "marriage": {}
+    },
+    "F500084": {
+      "id": "F500084",
+      "children": [
+        "I500177",
+        "I500202"
+      ],
+      "husband": "I500203",
+      "wife": "I500204",
+      "marriage": {}
+    },
+    "F500085": {
+      "id": "F500085",
+      "children": [
+        "I500206"
+      ],
+      "husband": "I500202",
+      "wife": "I500205",
+      "marriage": {}
+    },
+    "F500086": {
+      "id": "F500086",
+      "children": [
+        "I500015",
+        "I500207"
+      ],
+      "husband": "I500208",
+      "wife": "I500209",
+      "marriage": {}
+    },
+    "F500087": {
+      "id": "F500087",
+      "children": [
+        "I500211"
+      ],
+      "husband": "I500207",
+      "wife": "I500210",
+      "marriage": {}
+    },
+    "F500088": {
+      "id": "F500088",
+      "children": [],
+      "husband": "I500212",
+      "wife": "I500115",
+      "marriage": {}
+    },
+    "F500089": {
+      "id": "F500089",
+      "children": [],
+      "husband": "I500071",
+      "wife": "I500213",
+      "marriage": {}
+    },
+    "F500090": {
+      "id": "F500090",
+      "children": [],
+      "husband": "I500074",
+      "wife": "I500214",
+      "marriage": {}
+    }
+  },
+  "indexes": {
+    "byLastName": {
+      "Ray": [
+        "I500001",
+        "I500003",
+        "I500007",
+        "I500008",
+        "I500011",
+        "I500012",
+        "I500021",
+        "I500038",
+        "I500091",
+        "I500156"
+      ],
+      "Chakrabarti": [
+        "I500002",
+        "I500005",
+        "I500009",
+        "I500010",
+        "I500016",
+        "I500017",
+        "I500019",
+        "I500022",
+        "I500023",
+        "I500158"
+      ],
+      "Sanyal": [
+        "I500004",
+        "I500024",
+        "I500026",
+        "I500028",
+        "I500029",
+        "I500030",
+        "I500032",
+        "I500033",
+        "I500034",
+        "I500046",
+        "I500048",
+        "I500049",
+        "I500050",
+        "I500052",
+        "I500053",
+        "I500054",
+        "I500139",
+        "I500140",
+        "I500141",
+        "I500179",
+        "I500182",
+        "I500186",
+        "I500187",
+        "I500188",
+        "I500190",
+        "I500193",
+        "I500195"
+      ],
+      "Mukherjee": [
+        "I500006",
+        "I500018",
+        "I500037",
+        "I500068",
+        "I500069",
+        "I500197",
+        "I500198",
+        "I500199",
+        "I500201"
+      ],
+      "Halder": [
+        "I500013",
+        "I500014",
+        "I500159"
+      ],
+      "Roychoudhury": [
+        "I500015",
+        "I500207",
+        "I500208",
+        "I500211"
+      ],
+      "Thakur": [
+        "I500020",
+        "I500160",
+        "I500162",
+        "I500163"
+      ],
+      "Unknown": [
+        "I500025",
+        "I500031",
+        "I500039",
+        "I500040",
+        "I500041",
+        "I500042",
+        "I500045",
+        "I500047",
+        "I500051",
+        "I500058",
+        "I500063",
+        "I500064",
+        "I500065",
+        "I500066",
+        "I500067",
+        "I500070",
+        "I500071",
+        "I500072",
+        "I500073",
+        "I500074",
+        "I500075",
+        "I500076",
+        "I500077",
+        "I500078",
+        "I500079",
+        "I500081",
+        "I500082",
+        "I500086",
+        "I500087",
+        "I500088",
+        "I500089",
+        "I500090",
+        "I500092",
+        "I500094",
+        "I500095",
+        "I500096",
+        "I500097",
+        "I500098",
+        "I500099",
+        "I500100",
+        "I500101",
+        "I500102",
+        "I500103",
+        "I500104",
+        "I500105",
+        "I500106",
+        "I500107",
+        "I500108",
+        "I500109",
+        "I500110",
+        "I500111",
+        "I500112",
+        "I500113",
+        "I500114",
+        "I500116",
+        "I500117",
+        "I500119",
+        "I500124",
+        "I500126",
+        "I500136",
+        "I500145",
+        "I500148",
+        "I500154",
+        "I500155",
+        "I500161",
+        "I500165",
+        "I500166",
+        "I500168",
+        "I500180",
+        "I500181",
+        "I500189",
+        "I500191",
+        "I500192",
+        "I500194",
+        "I500196",
+        "I500200",
+        "I500204",
+        "I500209",
+        "I500210",
+        "I500212",
+        "I500213",
+        "I500214"
+      ],
+      "Dey": [
+        "I500035"
+      ],
+      "Ghosh": [
+        "I500043",
+        "I500044"
+      ],
+      "Kundu": [
+        "I500055",
+        "I500056",
+        "I500057"
+      ],
+      "Chakraborty": [
+        "I500059",
+        "I500060",
+        "I500062",
+        "I500118",
+        "I500120",
+        "I500121",
+        "I500122",
+        "I500123",
+        "I500125",
+        "I500127",
+        "I500129",
+        "I500132",
+        "I500133",
+        "I500142",
+        "I500143",
+        "I500144",
+        "I500146",
+        "I500147",
+        "I500149",
+        "I500150",
+        "I500167",
+        "I500171",
+        "I500173",
+        "I500174",
+        "I500175"
+      ],
+      "Lahiri": [
+        "I500061",
+        "I500169",
+        "I500172"
+      ],
+      "Jaganath Ray": [
+        "I500093"
+      ],
+      "Pishi Thamma": [
+        "I500115"
+      ],
+      "Ghoshdas": [
+        "I500128"
+      ],
+      "Basu": [
+        "I500130",
+        "I500131"
+      ],
+      "Maitra": [
+        "I500134",
+        "I500135",
+        "I500137",
+        "I500138",
+        "I500151",
+        "I500152",
+        "I500153"
+      ],
+      "Ray chatterjee": [
+        "I500157"
+      ],
+      "Hoare": [
+        "I500164"
+      ],
+      "Bhattacharya": [
+        "I500170"
+      ],
+      "Nath": [
+        "I500176"
+      ],
+      "Gupta": [
+        "I500177",
+        "I500202",
+        "I500203"
+      ],
+      "Chowdhury": [
+        "I500183",
+        "I500184",
+        "I500185"
+      ],
+      "Sanghvi": [
+        "I500205",
+        "I500206"
+      ]
+    },
+    "deceased": [
+      "I500004",
+      "I500005",
+      "I500006",
+      "I500007",
+      "I500012",
+      "I500022",
+      "I500023",
+      "I500024",
+      "I500025",
+      "I500026",
+      "I500029",
+      "I500037",
+      "I500038",
+      "I500039",
+      "I500040",
+      "I500046",
+      "I500070",
+      "I500092",
+      "I500118",
+      "I500119",
+      "I500127",
+      "I500133",
+      "I500134",
+      "I500155",
+      "I500156",
+      "I500157",
+      "I500158",
+      "I500159",
+      "I500167",
+      "I500168",
+      "I500169",
+      "I500171",
+      "I500172",
+      "I500173",
+      "I500174",
+      "I500175",
+      "I500179",
+      "I500195",
+      "I500212"
+    ],
+    "rootPerson": "I500001"
+  }
+}
