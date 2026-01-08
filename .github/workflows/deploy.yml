@@ -35,6 +35,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          NEXT_PUBLIC_GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          NEXT_PUBLIC_GITHUB_OWNER: ${{ github.repository_owner }}
+          NEXT_PUBLIC_GITHUB_REPO: ${{ github.event.repository.name }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

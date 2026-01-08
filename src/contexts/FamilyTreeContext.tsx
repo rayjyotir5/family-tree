@@ -1,8 +1,9 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, ReactNode, useMemo, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useMemo, useEffect, useRef } from 'react';
 import type { FamilyTreeData, Individual, Family } from '@/lib/types';
 import { RelationshipCalculator, createRelationshipCalculator } from '@/lib/relationships/calculator';
+import { updateFamilyTreeData, isGitHubConfigured } from '@/lib/github';
 
 // Default empty data
 const emptyData: FamilyTreeData = {
@@ -17,6 +18,9 @@ type RelationType = 'parent' | 'child' | 'spouse' | 'sibling';
 interface FamilyTreeContextType {
   data: FamilyTreeData;
   isLoading: boolean;
+  isSaving: boolean;
+  saveError: string | null;
+  isGitHubEnabled: boolean;
   rootPersonId: string;
   setRootPersonId: (id: string) => void;
   getIndividual: (id: string) => Individual | undefined;
@@ -33,6 +37,7 @@ interface FamilyTreeContextType {
   linkRelationship: (personId: string, relatedPersonId: string, relationType: RelationType) => void;
   findRelationshipPath: (fromId: string, toId: string) => string[];
   exportData: () => string;
+  saveToGitHub: () => Promise<boolean>;
 }
 
 const FamilyTreeContext = createContext<FamilyTreeContextType | null>(null);
@@ -40,7 +45,12 @@ const FamilyTreeContext = createContext<FamilyTreeContextType | null>(null);
 export function FamilyTreeProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<FamilyTreeData>(emptyData);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [rootPersonId, setRootPersonId] = useState<string>('I500001');
+  const [isInitialized, setIsInitialized] = useState(false);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isGitHubEnabled = isGitHubConfigured();
 
   // Load data from public folder
   useEffect(() => {
@@ -54,12 +64,59 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
           setRootPersonId(loadedData.indexes.rootPerson);
         }
         setIsLoading(false);
+        setIsInitialized(true);
       })
       .catch(err => {
         console.error('Failed to load family tree data:', err);
         setIsLoading(false);
+        setIsInitialized(true);
       });
   }, []);
+
+  // Save to GitHub function
+  const saveToGitHub = useCallback(async (): Promise<boolean> => {
+    if (!isGitHubEnabled) {
+      setSaveError('GitHub is not configured');
+      return false;
+    }
+
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      const success = await updateFamilyTreeData(data);
+      if (!success) {
+        setSaveError('Failed to save to GitHub');
+      }
+      return success;
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Unknown error');
+      return false;
+    } finally {
+      setIsSaving(false);
+    }
+  }, [data, isGitHubEnabled]);
+
+  // Auto-save to GitHub when data changes (debounced)
+  useEffect(() => {
+    if (!isInitialized || !isGitHubEnabled) return;
+
+    // Clear any pending save
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    // Debounce save by 2 seconds
+    saveTimeoutRef.current = setTimeout(() => {
+      saveToGitHub();
+    }, 2000);
+
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [data, isInitialized, isGitHubEnabled, saveToGitHub]);
 
   const calculator = useMemo(() => {
     if (Object.keys(data.individuals).length === 0) return null;
@@ -579,6 +636,9 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
     <FamilyTreeContext.Provider value={{
       data,
       isLoading,
+      isSaving,
+      saveError,
+      isGitHubEnabled,
       rootPersonId,
       setRootPersonId,
       getIndividual,
@@ -594,7 +654,8 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
       addFamily,
       linkRelationship,
       findRelationshipPath,
-      exportData
+      exportData,
+      saveToGitHub
     }}>
       {children}
     </FamilyTreeContext.Provider>
