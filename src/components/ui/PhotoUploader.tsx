@@ -10,8 +10,58 @@ interface PhotoUploaderProps {
   onPhotosChange: (photos: Photo[]) => void;
 }
 
+// Compress image using Canvas API
+async function compressImage(file: File, maxWidth = 1200, maxHeight = 1200, quality = 0.8): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      // Calculate new dimensions while maintaining aspect ratio
+      let { width, height } = img;
+
+      if (width > maxWidth || height > maxHeight) {
+        const ratio = Math.min(maxWidth / width, maxHeight / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+
+      // Create canvas and draw resized image
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Failed to get canvas context'));
+        return;
+      }
+
+      // Use better quality interpolation
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Convert to blob as JPEG
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error('Failed to compress image'));
+          }
+        },
+        'image/jpeg',
+        quality
+      );
+    };
+
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 export function PhotoUploader({ individualId, photos, onPhotosChange }: PhotoUploaderProps) {
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -25,24 +75,33 @@ export function PhotoUploader({ individualId, photos, onPhotosChange }: PhotoUpl
       return;
     }
 
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Image must be less than 5MB');
+    // Validate file size (max 10MB before compression)
+    if (file.size > 10 * 1024 * 1024) {
+      setError('Image must be less than 10MB');
       return;
     }
 
     setUploading(true);
     setError(null);
+    setUploadProgress('Compressing...');
 
     try {
-      const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
-      const fileName = `${individualId}/${Date.now()}.${fileExt}`;
+      // Compress the image
+      const compressedBlob = await compressImage(file);
+      const originalSize = (file.size / 1024).toFixed(0);
+      const compressedSize = (compressedBlob.size / 1024).toFixed(0);
+      console.log(`Image compressed: ${originalSize}KB → ${compressedSize}KB`);
+
+      setUploadProgress('Uploading...');
+
+      const fileName = `${individualId}/${Date.now()}.jpg`;
 
       const { error: uploadError } = await supabase.storage
         .from('photos')
-        .upload(fileName, file, {
+        .upload(fileName, compressedBlob, {
           cacheControl: '3600',
-          upsert: false
+          upsert: false,
+          contentType: 'image/jpeg'
         });
 
       if (uploadError) throw uploadError;
@@ -65,6 +124,7 @@ export function PhotoUploader({ individualId, photos, onPhotosChange }: PhotoUpl
       setError(err instanceof Error ? err.message : 'Failed to upload photo');
     } finally {
       setUploading(false);
+      setUploadProgress('');
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -180,7 +240,7 @@ export function PhotoUploader({ individualId, photos, onPhotosChange }: PhotoUpl
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
-              Uploading...
+              {uploadProgress || 'Processing...'}
             </>
           ) : (
             <>
@@ -192,7 +252,7 @@ export function PhotoUploader({ individualId, photos, onPhotosChange }: PhotoUpl
           )}
         </button>
         <p className="text-xs text-warm-500 mt-2 text-center">
-          Supports JPG, PNG, GIF up to 5MB
+          Images are auto-compressed to save space (max 1200px, JPEG)
         </p>
       </div>
     </div>
