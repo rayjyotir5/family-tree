@@ -14,7 +14,7 @@
         "given": "Jyotirmoy",
         "surname": "Ray"
       },
-      "sex": "U",
+      "sex": "M",
       "photos": [
         {
           "id": "P500090",
@@ -45,10 +45,11 @@
       "birth": {
         "date": "1995-10-14",
         "dateDisplay": "14 OCT 1995",
-        "approximate": false
+        "place": "Kolkata"
       },
       "contact": {
-        "email": "8kq8hg72t9@@privaterelay.appleid.com"
+        "email": "rayjyotir5@gmail.com",
+        "phone": "8826518154"
       },
       "familyAsChild": "F500001"
     },
