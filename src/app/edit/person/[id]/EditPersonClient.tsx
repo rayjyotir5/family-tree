@@ -86,6 +86,7 @@ export default function EditPersonClient() {
     updateIndividual,
     addIndividual,
     linkRelationship,
+    unlinkRelationship,
     getFamily
   } = useFamilyTree();
 
@@ -194,14 +195,20 @@ export default function EditPersonClient() {
     router.push('/edit');
   };
 
+  const handleRemoveExistingRelationship = (relatedPersonId: string, relationType: RelationType) => {
+    if (formData.id) {
+      unlinkRelationship(formData.id, relatedPersonId, relationType);
+    }
+  };
+
   const parentFamily = formData.familyAsChild ? getFamily(formData.familyAsChild) : null;
   const father = parentFamily?.husband ? getIndividual(parentFamily.husband) : null;
   const mother = parentFamily?.wife ? getIndividual(parentFamily.wife) : null;
 
-  const existingRelationships: Array<{ person: Individual; relation: string }> = [];
+  const existingRelationships: Array<{ person: Individual; relation: string; relationType: RelationType }> = [];
 
-  if (father) existingRelationships.push({ person: father, relation: 'Father' });
-  if (mother) existingRelationships.push({ person: mother, relation: 'Mother' });
+  if (father) existingRelationships.push({ person: father, relation: 'Father', relationType: 'parent' });
+  if (mother) existingRelationships.push({ person: mother, relation: 'Mother', relationType: 'parent' });
 
   if (parentFamily) {
     parentFamily.children.forEach(siblingId => {
@@ -210,7 +217,8 @@ export default function EditPersonClient() {
         if (sibling) {
           existingRelationships.push({
             person: sibling,
-            relation: sibling.sex === 'M' ? 'Brother' : sibling.sex === 'F' ? 'Sister' : 'Sibling'
+            relation: sibling.sex === 'M' ? 'Brother' : sibling.sex === 'F' ? 'Sister' : 'Sibling',
+            relationType: 'sibling'
           });
         }
       }
@@ -226,7 +234,8 @@ export default function EditPersonClient() {
         if (spouse) {
           existingRelationships.push({
             person: spouse,
-            relation: spouse.sex === 'M' ? 'Husband' : spouse.sex === 'F' ? 'Wife' : 'Spouse'
+            relation: spouse.sex === 'M' ? 'Husband' : spouse.sex === 'F' ? 'Wife' : 'Spouse',
+            relationType: 'spouse'
           });
         }
       }
@@ -235,7 +244,8 @@ export default function EditPersonClient() {
         if (child) {
           existingRelationships.push({
             person: child,
-            relation: child.sex === 'M' ? 'Son' : child.sex === 'F' ? 'Daughter' : 'Child'
+            relation: child.sex === 'M' ? 'Son' : child.sex === 'F' ? 'Daughter' : 'Child',
+            relationType: 'child'
           });
         }
       });
@@ -469,24 +479,36 @@ export default function EditPersonClient() {
             </div>
 
             {/* Existing Relationships */}
-            {existingRelationships.length > 0 && (
+            {existingRelationships.length > 0 && !isNew && (
               <div className="pt-4 border-t border-warm-100">
                 <h2 className="font-semibold text-warm-800 mb-4">Current Relationships</h2>
                 <div className="space-y-2">
                   {existingRelationships.map(rel => (
                     <div
                       key={rel.person.id}
-                      className="flex items-center gap-3 bg-warm-50 rounded-xl px-4 py-3"
+                      className="flex items-center justify-between gap-3 bg-warm-50 rounded-xl px-4 py-3"
                     >
-                      <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                        rel.person.sex === 'M' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'
-                      }`}>
-                        {rel.person.name.given[0]}
-                      </span>
-                      <span className="flex-1">
-                        <strong className="text-warm-800">{rel.person.name.full}</strong>
-                        <span className="text-warm-500 ml-2">({rel.relation})</span>
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                          rel.person.sex === 'M' ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'
+                        }`}>
+                          {rel.person.name.given[0]}
+                        </span>
+                        <span>
+                          <strong className="text-warm-800">{rel.person.name.full}</strong>
+                          <span className="text-warm-500 ml-2">({rel.relation})</span>
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveExistingRelationship(rel.person.id, rel.relationType)}
+                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                        title={`Remove ${rel.relation.toLowerCase()}`}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
                     </div>
                   ))}
                 </div>

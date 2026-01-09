@@ -36,6 +36,7 @@ interface FamilyTreeContextType {
   updateFamily: (id: string, updates: Partial<Family>) => void;
   addFamily: (family: Family) => void;
   linkRelationship: (personId: string, relatedPersonId: string, relationType: RelationType) => void;
+  unlinkRelationship: (personId: string, relatedPersonId: string, relationType: RelationType) => void;
   findRelationshipPath: (fromId: string, toId: string) => string[];
   exportData: () => string;
   refreshData: () => Promise<void>;
@@ -613,6 +614,146 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
     }
   }, [data, isSupabaseEnabled]);
 
+  // Unlink a relationship between two people
+  const unlinkRelationship = useCallback(async (personId: string, relatedPersonId: string, relationType: RelationType) => {
+    const person = data.individuals[personId];
+    const relatedPerson = data.individuals[relatedPersonId];
+
+    if (!person || !relatedPerson) return;
+
+    let updatedPerson: Individual | null = null;
+    let updatedRelatedPerson: Individual | null = null;
+    let updatedFamily: Family | null = null;
+
+    switch (relationType) {
+      case 'spouse': {
+        // Find the family where they are spouses and remove it
+        for (const familyId of person.familyAsSpouse) {
+          const family = data.families[familyId];
+          if (family) {
+            const isSpouseInFamily =
+              (family.husband === personId && family.wife === relatedPersonId) ||
+              (family.wife === personId && family.husband === relatedPersonId);
+            if (isSpouseInFamily) {
+              // Remove family reference from both
+              updatedPerson = {
+                ...person,
+                familyAsSpouse: person.familyAsSpouse.filter(fId => fId !== familyId)
+              };
+              updatedRelatedPerson = {
+                ...relatedPerson,
+                familyAsSpouse: relatedPerson.familyAsSpouse.filter(fId => fId !== familyId)
+              };
+              // If family has no children, we could delete it, but for now just clear the spouse
+              if (family.children.length === 0) {
+                // Family will be orphaned - could delete but leaving for now
+              }
+              break;
+            }
+          }
+        }
+        break;
+      }
+
+      case 'parent': {
+        // relatedPerson is parent of person - remove person from parent's family
+        if (person.familyAsChild) {
+          const family = data.families[person.familyAsChild];
+          if (family && (family.husband === relatedPersonId || family.wife === relatedPersonId)) {
+            // Remove person as child from this family
+            updatedFamily = {
+              ...family,
+              children: family.children.filter(cId => cId !== personId)
+            };
+            updatedPerson = {
+              ...person,
+              familyAsChild: undefined
+            };
+          }
+        }
+        break;
+      }
+
+      case 'child': {
+        // relatedPerson is child of person - remove relatedPerson from person's family
+        for (const familyId of person.familyAsSpouse) {
+          const family = data.families[familyId];
+          if (family && family.children.includes(relatedPersonId)) {
+            updatedFamily = {
+              ...family,
+              children: family.children.filter(cId => cId !== relatedPersonId)
+            };
+            updatedRelatedPerson = {
+              ...relatedPerson,
+              familyAsChild: undefined
+            };
+            break;
+          }
+        }
+        break;
+      }
+
+      case 'sibling': {
+        // Remove relatedPerson from the same parent family
+        if (person.familyAsChild && person.familyAsChild === relatedPerson.familyAsChild) {
+          const family = data.families[person.familyAsChild];
+          if (family) {
+            updatedFamily = {
+              ...family,
+              children: family.children.filter(cId => cId !== relatedPersonId)
+            };
+            updatedRelatedPerson = {
+              ...relatedPerson,
+              familyAsChild: undefined
+            };
+          }
+        }
+        break;
+      }
+    }
+
+    // Apply optimistic updates
+    setData(prev => {
+      const newData = { ...prev };
+
+      if (updatedFamily) {
+        newData.families = { ...newData.families, [updatedFamily.id]: updatedFamily };
+      }
+
+      if (updatedPerson) {
+        newData.individuals = { ...newData.individuals, [updatedPerson.id]: updatedPerson };
+      }
+
+      if (updatedRelatedPerson) {
+        newData.individuals = { ...newData.individuals, [updatedRelatedPerson.id]: updatedRelatedPerson };
+      }
+
+      return newData;
+    });
+
+    // Save to Supabase
+    if (isSupabaseEnabled) {
+      setIsSaving(true);
+      setSaveError(null);
+
+      try {
+        if (updatedFamily) {
+          await saveFamily(updatedFamily);
+        }
+        if (updatedPerson) {
+          await saveIndividual(updatedPerson);
+        }
+        if (updatedRelatedPerson) {
+          await saveIndividual(updatedRelatedPerson);
+        }
+      } catch (err) {
+        setSaveError(err instanceof Error ? err.message : 'Failed to remove relationship');
+      } finally {
+        setIsSaving(false);
+      }
+    }
+  }, [data, isSupabaseEnabled]);
+
   // Find path between two people (returns array of person IDs)
   const findRelationshipPath = useCallback((fromId: string, toId: string): string[] => {
     if (fromId === toId) return [fromId];
@@ -695,6 +836,7 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
       updateFamily,
       addFamily,
       linkRelationship,
+      unlinkRelationship,
       findRelationshipPath,
       exportData,
       refreshData
