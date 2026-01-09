@@ -8,12 +8,12 @@ import { TreeCanvas } from '@/components/tree/TreeCanvas';
 import { useFamilyTree } from '@/contexts/FamilyTreeContext';
 
 function PersonDetailPanel({ personId, onClose }: { personId: string; onClose: () => void }) {
-  const { getIndividual, getRelationship, rootPersonId, setRootPersonId } = useFamilyTree();
+  const { getIndividual, getRelationshipWithChain, rootPersonId, setRootPersonId } = useFamilyTree();
   const person = getIndividual(personId);
 
   if (!person) return null;
 
-  const relationship = getRelationship(rootPersonId, personId);
+  const relationship = getRelationshipWithChain(rootPersonId, personId);
   const primaryPhoto = person.photos.find(p => p.isPrimary) || person.photos[0];
 
   return (

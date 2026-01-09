@@ -134,7 +134,7 @@ function getStepRelationship(
 
 function PathView() {
   const searchParams = useSearchParams();
-  const { findRelationshipPath, getIndividual, getRelationship, rootPersonId, setRootPersonId, isLoading, data } = useFamilyTree();
+  const { findRelationshipPath, getIndividual, getRelationshipWithChain, rootPersonId, setRootPersonId, isLoading, data } = useFamilyTree();
   const [fromId, setFromId] = useState('');
   const [toId, setToId] = useState('');
   const [selectedPersonId, setSelectedPersonId] = useState<string | null>(null);
@@ -161,8 +161,8 @@ function PathView() {
 
   const overallRelationship = useMemo(() => {
     if (!fromId || !toId) return '';
-    return getRelationship(fromId, toId);
-  }, [fromId, toId, getRelationship]);
+    return getRelationshipWithChain(fromId, toId);
+  }, [fromId, toId, getRelationshipWithChain]);
 
   if (isLoading) {
     return (

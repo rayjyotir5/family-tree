@@ -18,7 +18,7 @@ interface TreePerson {
 }
 
 export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps) {
-  const { data, rootPersonId, setRootPersonId, getRelationship, getIndividual, getFamily } = useFamilyTree();
+  const { data, rootPersonId, setRootPersonId, getRelationshipWithChain, getIndividual, getFamily } = useFamilyTree();
   const [viewMode, setViewMode] = useState<'ancestors' | 'descendants' | 'both'>('both');
   const [maxGenerations, setMaxGenerations] = useState(3);
 
@@ -48,7 +48,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
         if (father) {
           ancestors[level].push({
             person: father,
-            relationship: getRelationship(rootPersonId, family.husband),
+            relationship: getRelationshipWithChain(rootPersonId, family.husband),
             level,
             position: ancestors[level].length
           });
@@ -61,7 +61,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
         if (mother) {
           ancestors[level].push({
             person: mother,
-            relationship: getRelationship(rootPersonId, family.wife),
+            relationship: getRelationshipWithChain(rootPersonId, family.wife),
             level,
             position: ancestors[level].length
           });
@@ -88,7 +88,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
           if (child) {
             descendants[level].push({
               person: child,
-              relationship: getRelationship(rootPersonId, childId),
+              relationship: getRelationshipWithChain(rootPersonId, childId),
               level,
               position: descendants[level].length
             });
@@ -112,7 +112,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
         if (sibling) {
           siblings.push({
             person: sibling,
-            relationship: getRelationship(rootPersonId, siblingId),
+            relationship: getRelationshipWithChain(rootPersonId, siblingId),
             level: 0,
             position: siblings.length
           });
@@ -136,7 +136,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
           if (spouse) {
             spouses.push({
               person: spouse,
-              relationship: getRelationship(rootPersonId, spouseId),
+              relationship: getRelationshipWithChain(rootPersonId, spouseId),
               level: 0,
               position: spouses.length
             });
@@ -162,7 +162,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
         position: 0
       }
     };
-  }, [rootPersonId, rootPerson, maxGenerations, getIndividual, getFamily, getRelationship]);
+  }, [rootPersonId, rootPerson, maxGenerations, getIndividual, getFamily, getRelationshipWithChain]);
 
   const handlePersonClick = useCallback((personId: string) => {
     onPersonSelect?.(personId);
