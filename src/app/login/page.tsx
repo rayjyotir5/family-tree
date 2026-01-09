@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login, isAuthenticated, isLoading, isFirstTime } = useAuth();
+  const { login, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function LoginPage() {
     setError('');
 
     if (!password.trim()) {
-      setError('Please enter a password');
+      setError('Please enter the password');
       return;
     }
 
@@ -52,25 +52,24 @@ export default function LoginPage() {
           </div>
           <h1 className="text-2xl font-bold text-warm-800">Family Tree</h1>
           <p className="text-warm-500 mt-2">
-            {isFirstTime
-              ? 'Set a password to protect your family tree'
-              : 'Enter the family password to continue'}
+            Enter the family password to continue
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-warm-700 mb-1.5">
-              {isFirstTime ? 'Create Password' : 'Password'}
+              Password
             </label>
             <input
               type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder={isFirstTime ? 'Create a family password' : 'Enter password'}
+              placeholder="Enter family password"
               className="w-full px-4 py-3 border border-warm-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-warm-800 placeholder-warm-400 transition-colors"
               autoFocus
+              autoComplete="current-password"
             />
           </div>
 
@@ -87,15 +86,13 @@ export default function LoginPage() {
             type="submit"
             className="w-full bg-primary-500 text-white py-3 rounded-xl font-medium hover:bg-primary-600 active:bg-primary-700 transition-colors shadow-sm"
           >
-            {isFirstTime ? 'Set Password & Enter' : 'Enter'}
+            Enter
           </button>
         </form>
 
-        {isFirstTime && (
-          <p className="text-xs text-warm-500 mt-5 text-center leading-relaxed">
-            This password will be stored locally in your browser. You can change it later in settings.
-          </p>
-        )}
+        <p className="text-xs text-warm-500 mt-5 text-center leading-relaxed">
+          Ask a family member for the password if you don't have it.
+        </p>
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, ReactNode, useMemo, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useMemo, useEffect } from 'react';
 import type { FamilyTreeData, Individual, Family } from '@/lib/types';
 import { RelationshipCalculator, createRelationshipCalculator } from '@/lib/relationships/calculator';
-import { updateFamilyTreeData, isGitHubConfigured } from '@/lib/github';
+import { supabase } from '@/lib/supabase/client';
+import { fetchFamilyTreeData, saveIndividual, saveFamily, saveRootPerson, isSupabaseConfigured } from '@/lib/supabase/queries';
 
 // Default empty data
 const emptyData: FamilyTreeData = {
@@ -20,7 +21,7 @@ interface FamilyTreeContextType {
   isLoading: boolean;
   isSaving: boolean;
   saveError: string | null;
-  isGitHubEnabled: boolean;
+  isSupabaseEnabled: boolean;
   rootPersonId: string;
   setRootPersonId: (id: string) => void;
   getIndividual: (id: string) => Individual | undefined;
@@ -37,7 +38,7 @@ interface FamilyTreeContextType {
   linkRelationship: (personId: string, relatedPersonId: string, relationType: RelationType) => void;
   findRelationshipPath: (fromId: string, toId: string) => string[];
   exportData: () => string;
-  saveToGitHub: () => Promise<boolean>;
+  refreshData: () => Promise<void>;
 }
 
 const FamilyTreeContext = createContext<FamilyTreeContextType | null>(null);
@@ -47,76 +48,89 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [rootPersonId, setRootPersonId] = useState<string>('I500001');
-  const [isInitialized, setIsInitialized] = useState(false);
-  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isGitHubEnabled = isGitHubConfigured();
+  const [rootPersonId, setRootPersonIdState] = useState<string>('I500001');
+  const isSupabaseEnabled = isSupabaseConfigured();
 
-  // Load data from public folder
-  useEffect(() => {
-    // Use basePath for GitHub Pages deployment
-    const basePath = process.env.NODE_ENV === 'production' ? '/family-tree' : '';
-    fetch(`${basePath}/family-tree.json`)
-      .then(res => res.json())
-      .then((loadedData: FamilyTreeData) => {
-        setData(loadedData);
-        if (loadedData.indexes.rootPerson) {
-          setRootPersonId(loadedData.indexes.rootPerson);
-        }
-        setIsLoading(false);
-        setIsInitialized(true);
-      })
-      .catch(err => {
-        console.error('Failed to load family tree data:', err);
-        setIsLoading(false);
-        setIsInitialized(true);
-      });
-  }, []);
-
-  // Save to GitHub function
-  const saveToGitHub = useCallback(async (): Promise<boolean> => {
-    if (!isGitHubEnabled) {
-      setSaveError('GitHub is not configured');
-      return false;
+  // Load data from Supabase
+  const loadData = useCallback(async () => {
+    if (!isSupabaseEnabled) {
+      setIsLoading(false);
+      return;
     }
-
-    setIsSaving(true);
-    setSaveError(null);
 
     try {
-      const success = await updateFamilyTreeData(data);
-      if (!success) {
-        setSaveError('Failed to save to GitHub');
+      const { data: treeData, error } = await fetchFamilyTreeData();
+
+      if (error) {
+        console.error('Failed to load family tree data:', error);
+        setIsLoading(false);
+        return;
       }
-      return success;
+
+      if (treeData) {
+        setData(treeData);
+        if (treeData.indexes.rootPerson) {
+          setRootPersonIdState(treeData.indexes.rootPerson);
+        }
+      }
     } catch (err) {
-      setSaveError(err instanceof Error ? err.message : 'Unknown error');
-      return false;
+      console.error('Failed to load family tree data:', err);
     } finally {
-      setIsSaving(false);
+      setIsLoading(false);
     }
-  }, [data, isGitHubEnabled]);
+  }, [isSupabaseEnabled]);
 
-  // Auto-save to GitHub when data changes (debounced)
+  // Initial load
   useEffect(() => {
-    if (!isInitialized || !isGitHubEnabled) return;
+    loadData();
+  }, [loadData]);
 
-    // Clear any pending save
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
+  // Set up real-time subscription for changes
+  useEffect(() => {
+    if (!isSupabaseEnabled) return;
 
-    // Debounce save by 2 seconds
-    saveTimeoutRef.current = setTimeout(() => {
-      saveToGitHub();
-    }, 2000);
+    const channel = supabase
+      .channel('family-tree-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'individuals' },
+        () => {
+          loadData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'families' },
+        () => {
+          loadData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'photos' },
+        () => {
+          loadData();
+        }
+      )
+      .subscribe();
 
     return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
-      }
+      supabase.removeChannel(channel);
     };
-  }, [data, isInitialized, isGitHubEnabled, saveToGitHub]);
+  }, [isSupabaseEnabled, loadData]);
+
+  // Refresh data manually
+  const refreshData = useCallback(async () => {
+    await loadData();
+  }, [loadData]);
+
+  // Set root person (also saves to Supabase)
+  const setRootPersonId = useCallback(async (id: string) => {
+    setRootPersonIdState(id);
+    if (isSupabaseEnabled) {
+      await saveRootPerson(id);
+    }
+  }, [isSupabaseEnabled]);
 
   const calculator = useMemo(() => {
     if (Object.keys(data.individuals).length === 0) return null;
@@ -294,17 +308,32 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
     );
   }, [data]);
 
-  const updateIndividual = useCallback((id: string, updates: Partial<Individual>) => {
+  const updateIndividual = useCallback(async (id: string, updates: Partial<Individual>) => {
+    const updatedIndividual = { ...data.individuals[id], ...updates };
+
+    // Optimistic update
     setData(prev => ({
       ...prev,
       individuals: {
         ...prev.individuals,
-        [id]: { ...prev.individuals[id], ...updates }
+        [id]: updatedIndividual
       }
     }));
-  }, []);
 
-  const addIndividual = useCallback((individual: Individual) => {
+    // Save to Supabase
+    if (isSupabaseEnabled) {
+      setIsSaving(true);
+      setSaveError(null);
+      const { error } = await saveIndividual(updatedIndividual);
+      setIsSaving(false);
+      if (error) {
+        setSaveError(error.message);
+      }
+    }
+  }, [data, isSupabaseEnabled]);
+
+  const addIndividual = useCallback(async (individual: Individual) => {
+    // Optimistic update
     setData(prev => ({
       ...prev,
       individuals: {
@@ -316,19 +345,45 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
         totalIndividuals: prev.meta.totalIndividuals + 1
       }
     }));
-  }, []);
 
-  const updateFamily = useCallback((id: string, updates: Partial<Family>) => {
+    // Save to Supabase
+    if (isSupabaseEnabled) {
+      setIsSaving(true);
+      setSaveError(null);
+      const { error } = await saveIndividual(individual);
+      setIsSaving(false);
+      if (error) {
+        setSaveError(error.message);
+      }
+    }
+  }, [isSupabaseEnabled]);
+
+  const updateFamily = useCallback(async (id: string, updates: Partial<Family>) => {
+    const updatedFamily = { ...data.families[id], ...updates };
+
+    // Optimistic update
     setData(prev => ({
       ...prev,
       families: {
         ...prev.families,
-        [id]: { ...prev.families[id], ...updates }
+        [id]: updatedFamily
       }
     }));
-  }, []);
 
-  const addFamily = useCallback((family: Family) => {
+    // Save to Supabase
+    if (isSupabaseEnabled) {
+      setIsSaving(true);
+      setSaveError(null);
+      const { error } = await saveFamily(updatedFamily);
+      setIsSaving(false);
+      if (error) {
+        setSaveError(error.message);
+      }
+    }
+  }, [data, isSupabaseEnabled]);
+
+  const addFamily = useCallback(async (family: Family) => {
+    // Optimistic update
     setData(prev => ({
       ...prev,
       families: {
@@ -340,236 +395,223 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
         totalFamilies: prev.meta.totalFamilies + 1
       }
     }));
-  }, []);
+
+    // Save to Supabase
+    if (isSupabaseEnabled) {
+      setIsSaving(true);
+      setSaveError(null);
+      const { error } = await saveFamily(family);
+      setIsSaving(false);
+      if (error) {
+        setSaveError(error.message);
+      }
+    }
+  }, [isSupabaseEnabled]);
 
   const exportData = useCallback(() => {
     return JSON.stringify(data, null, 2);
   }, [data]);
 
   // Link two people with a relationship
-  const linkRelationship = useCallback((personId: string, relatedPersonId: string, relationType: RelationType) => {
+  const linkRelationship = useCallback(async (personId: string, relatedPersonId: string, relationType: RelationType) => {
+    const person = data.individuals[personId];
+    const relatedPerson = data.individuals[relatedPersonId];
+
+    if (!person || !relatedPerson) return;
+
+    const generateFamilyId = () => `F${Date.now()}`;
+
+    let newFamily: Family | null = null;
+    let updatedPerson: Individual | null = null;
+    let updatedRelatedPerson: Individual | null = null;
+    let updatedExistingFamily: Family | null = null;
+
+    switch (relationType) {
+      case 'spouse': {
+        // Create a new family with these two as spouses
+        const newFamilyId = generateFamilyId();
+        const husband = person.sex === 'M' ? personId : relatedPersonId;
+        const wife = person.sex === 'F' ? personId : relatedPersonId;
+
+        newFamily = {
+          id: newFamilyId,
+          husband: husband,
+          wife: wife,
+          children: []
+        };
+
+        updatedPerson = {
+          ...person,
+          familyAsSpouse: [...(person.familyAsSpouse || []), newFamilyId]
+        };
+
+        updatedRelatedPerson = {
+          ...relatedPerson,
+          familyAsSpouse: [...(relatedPerson.familyAsSpouse || []), newFamilyId]
+        };
+        break;
+      }
+
+      case 'parent': {
+        // relatedPerson is parent of person
+        let familyId = relatedPerson.familyAsSpouse?.[0];
+
+        if (!familyId) {
+          familyId = generateFamilyId();
+          const isHusband = relatedPerson.sex === 'M';
+
+          newFamily = {
+            id: familyId,
+            husband: isHusband ? relatedPersonId : undefined,
+            wife: isHusband ? undefined : relatedPersonId,
+            children: [personId]
+          };
+
+          updatedRelatedPerson = {
+            ...relatedPerson,
+            familyAsSpouse: [...(relatedPerson.familyAsSpouse || []), familyId]
+          };
+        } else {
+          const existingFamily = data.families[familyId];
+          updatedExistingFamily = {
+            ...existingFamily,
+            children: [...existingFamily.children, personId]
+          };
+        }
+
+        updatedPerson = {
+          ...person,
+          familyAsChild: familyId
+        };
+        break;
+      }
+
+      case 'child': {
+        // relatedPerson is child of person
+        let familyId = person.familyAsSpouse?.[0];
+
+        if (!familyId) {
+          familyId = generateFamilyId();
+          const isHusband = person.sex === 'M';
+
+          newFamily = {
+            id: familyId,
+            husband: isHusband ? personId : undefined,
+            wife: isHusband ? undefined : personId,
+            children: [relatedPersonId]
+          };
+
+          updatedPerson = {
+            ...person,
+            familyAsSpouse: [...(person.familyAsSpouse || []), familyId]
+          };
+        } else {
+          const existingFamily = data.families[familyId];
+          updatedExistingFamily = {
+            ...existingFamily,
+            children: [...existingFamily.children, relatedPersonId]
+          };
+        }
+
+        updatedRelatedPerson = {
+          ...relatedPerson,
+          familyAsChild: familyId
+        };
+        break;
+      }
+
+      case 'sibling': {
+        const personParentFamily = person.familyAsChild;
+        const relatedParentFamily = relatedPerson.familyAsChild;
+
+        if (personParentFamily && !relatedParentFamily) {
+          const existingFamily = data.families[personParentFamily];
+          updatedExistingFamily = {
+            ...existingFamily,
+            children: [...existingFamily.children, relatedPersonId]
+          };
+          updatedRelatedPerson = {
+            ...relatedPerson,
+            familyAsChild: personParentFamily
+          };
+        } else if (!personParentFamily && relatedParentFamily) {
+          const existingFamily = data.families[relatedParentFamily];
+          updatedExistingFamily = {
+            ...existingFamily,
+            children: [...existingFamily.children, personId]
+          };
+          updatedPerson = {
+            ...person,
+            familyAsChild: relatedParentFamily
+          };
+        } else if (!personParentFamily && !relatedParentFamily) {
+          const familyId = generateFamilyId();
+          newFamily = {
+            id: familyId,
+            children: [personId, relatedPersonId]
+          };
+          updatedPerson = {
+            ...person,
+            familyAsChild: familyId
+          };
+          updatedRelatedPerson = {
+            ...relatedPerson,
+            familyAsChild: familyId
+          };
+        }
+        break;
+      }
+    }
+
+    // Apply optimistic updates
     setData(prev => {
       const newData = { ...prev };
-      const person = newData.individuals[personId];
-      const relatedPerson = newData.individuals[relatedPersonId];
 
-      if (!person || !relatedPerson) return prev;
+      if (newFamily) {
+        newData.families = { ...newData.families, [newFamily.id]: newFamily };
+        newData.meta = { ...newData.meta, totalFamilies: newData.meta.totalFamilies + 1 };
+      }
 
-      const generateFamilyId = () => `F${Date.now()}`;
+      if (updatedExistingFamily) {
+        newData.families = { ...newData.families, [updatedExistingFamily.id]: updatedExistingFamily };
+      }
 
-      switch (relationType) {
-        case 'spouse': {
-          // Create a new family with these two as spouses
-          const newFamilyId = generateFamilyId();
-          const husband = person.sex === 'M' ? personId : relatedPersonId;
-          const wife = person.sex === 'F' ? personId : relatedPersonId;
+      if (updatedPerson) {
+        newData.individuals = { ...newData.individuals, [updatedPerson.id]: updatedPerson };
+      }
 
-          newData.families = {
-            ...newData.families,
-            [newFamilyId]: {
-              id: newFamilyId,
-              husband: husband,
-              wife: wife,
-              children: []
-            }
-          };
-
-          // Update both people's familyAsSpouse
-          newData.individuals = {
-            ...newData.individuals,
-            [personId]: {
-              ...newData.individuals[personId],
-              familyAsSpouse: [...(newData.individuals[personId].familyAsSpouse || []), newFamilyId]
-            },
-            [relatedPersonId]: {
-              ...newData.individuals[relatedPersonId],
-              familyAsSpouse: [...(newData.individuals[relatedPersonId].familyAsSpouse || []), newFamilyId]
-            }
-          };
-
-          newData.meta = { ...newData.meta, totalFamilies: newData.meta.totalFamilies + 1 };
-          break;
-        }
-
-        case 'parent': {
-          // relatedPerson is parent of person
-          // Find or create a family where relatedPerson is a spouse
-          let familyId = relatedPerson.familyAsSpouse?.[0];
-
-          if (!familyId) {
-            // Create new family with relatedPerson as parent
-            familyId = generateFamilyId();
-            const isHusband = relatedPerson.sex === 'M';
-
-            newData.families = {
-              ...newData.families,
-              [familyId]: {
-                id: familyId,
-                husband: isHusband ? relatedPersonId : undefined,
-                wife: isHusband ? undefined : relatedPersonId,
-                children: [personId]
-              }
-            };
-
-            newData.individuals = {
-              ...newData.individuals,
-              [relatedPersonId]: {
-                ...newData.individuals[relatedPersonId],
-                familyAsSpouse: [...(newData.individuals[relatedPersonId].familyAsSpouse || []), familyId]
-              },
-              [personId]: {
-                ...newData.individuals[personId],
-                familyAsChild: familyId
-              }
-            };
-
-            newData.meta = { ...newData.meta, totalFamilies: newData.meta.totalFamilies + 1 };
-          } else {
-            // Add person as child to existing family
-            const family = newData.families[familyId];
-            newData.families = {
-              ...newData.families,
-              [familyId]: {
-                ...family,
-                children: [...family.children, personId]
-              }
-            };
-
-            newData.individuals = {
-              ...newData.individuals,
-              [personId]: {
-                ...newData.individuals[personId],
-                familyAsChild: familyId
-              }
-            };
-          }
-          break;
-        }
-
-        case 'child': {
-          // relatedPerson is child of person
-          // Find or create a family where person is a spouse
-          let familyId = person.familyAsSpouse?.[0];
-
-          if (!familyId) {
-            // Create new family with person as parent
-            familyId = generateFamilyId();
-            const isHusband = person.sex === 'M';
-
-            newData.families = {
-              ...newData.families,
-              [familyId]: {
-                id: familyId,
-                husband: isHusband ? personId : undefined,
-                wife: isHusband ? undefined : personId,
-                children: [relatedPersonId]
-              }
-            };
-
-            newData.individuals = {
-              ...newData.individuals,
-              [personId]: {
-                ...newData.individuals[personId],
-                familyAsSpouse: [...(newData.individuals[personId].familyAsSpouse || []), familyId]
-              },
-              [relatedPersonId]: {
-                ...newData.individuals[relatedPersonId],
-                familyAsChild: familyId
-              }
-            };
-
-            newData.meta = { ...newData.meta, totalFamilies: newData.meta.totalFamilies + 1 };
-          } else {
-            // Add relatedPerson as child to existing family
-            const family = newData.families[familyId];
-            newData.families = {
-              ...newData.families,
-              [familyId]: {
-                ...family,
-                children: [...family.children, relatedPersonId]
-              }
-            };
-
-            newData.individuals = {
-              ...newData.individuals,
-              [relatedPersonId]: {
-                ...newData.individuals[relatedPersonId],
-                familyAsChild: familyId
-              }
-            };
-          }
-          break;
-        }
-
-        case 'sibling': {
-          // Make them share the same parent family
-          const personParentFamily = person.familyAsChild;
-          const relatedParentFamily = relatedPerson.familyAsChild;
-
-          if (personParentFamily && !relatedParentFamily) {
-            // Add relatedPerson to person's parent family
-            const family = newData.families[personParentFamily];
-            newData.families = {
-              ...newData.families,
-              [personParentFamily]: {
-                ...family,
-                children: [...family.children, relatedPersonId]
-              }
-            };
-            newData.individuals = {
-              ...newData.individuals,
-              [relatedPersonId]: {
-                ...newData.individuals[relatedPersonId],
-                familyAsChild: personParentFamily
-              }
-            };
-          } else if (!personParentFamily && relatedParentFamily) {
-            // Add person to relatedPerson's parent family
-            const family = newData.families[relatedParentFamily];
-            newData.families = {
-              ...newData.families,
-              [relatedParentFamily]: {
-                ...family,
-                children: [...family.children, personId]
-              }
-            };
-            newData.individuals = {
-              ...newData.individuals,
-              [personId]: {
-                ...newData.individuals[personId],
-                familyAsChild: relatedParentFamily
-              }
-            };
-          } else if (!personParentFamily && !relatedParentFamily) {
-            // Create a new family for them both
-            const familyId = generateFamilyId();
-            newData.families = {
-              ...newData.families,
-              [familyId]: {
-                id: familyId,
-                children: [personId, relatedPersonId]
-              }
-            };
-            newData.individuals = {
-              ...newData.individuals,
-              [personId]: {
-                ...newData.individuals[personId],
-                familyAsChild: familyId
-              },
-              [relatedPersonId]: {
-                ...newData.individuals[relatedPersonId],
-                familyAsChild: familyId
-              }
-            };
-            newData.meta = { ...newData.meta, totalFamilies: newData.meta.totalFamilies + 1 };
-          }
-          break;
-        }
+      if (updatedRelatedPerson) {
+        newData.individuals = { ...newData.individuals, [updatedRelatedPerson.id]: updatedRelatedPerson };
       }
 
       return newData;
     });
-  }, []);
+
+    // Save to Supabase
+    if (isSupabaseEnabled) {
+      setIsSaving(true);
+      setSaveError(null);
+
+      try {
+        if (newFamily) {
+          await saveFamily(newFamily);
+        }
+        if (updatedExistingFamily) {
+          await saveFamily(updatedExistingFamily);
+        }
+        if (updatedPerson) {
+          await saveIndividual(updatedPerson);
+        }
+        if (updatedRelatedPerson) {
+          await saveIndividual(updatedRelatedPerson);
+        }
+      } catch (err) {
+        setSaveError(err instanceof Error ? err.message : 'Failed to save relationship');
+      } finally {
+        setIsSaving(false);
+      }
+    }
+  }, [data, isSupabaseEnabled]);
 
   // Find path between two people (returns array of person IDs)
   const findRelationshipPath = useCallback((fromId: string, toId: string): string[] => {
@@ -638,7 +680,7 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
       isLoading,
       isSaving,
       saveError,
-      isGitHubEnabled,
+      isSupabaseEnabled,
       rootPersonId,
       setRootPersonId,
       getIndividual,
@@ -655,7 +697,7 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
       linkRelationship,
       findRelationshipPath,
       exportData,
-      saveToGitHub
+      refreshData
     }}>
       {children}
     </FamilyTreeContext.Provider>

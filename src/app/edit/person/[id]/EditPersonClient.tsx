@@ -5,8 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Header } from '@/components/ui/Header';
+import { PhotoUploader } from '@/components/ui/PhotoUploader';
 import { useFamilyTree } from '@/contexts/FamilyTreeContext';
-import type { Individual } from '@/lib/types';
+import type { Individual, Photo } from '@/lib/types';
 
 function generateId(): string {
   return `I${Date.now()}`;
@@ -455,6 +456,16 @@ export default function EditPersonClient() {
                   />
                 </div>
               </div>
+            </div>
+
+            {/* Photos */}
+            <div className="pt-4 border-t border-warm-100">
+              <h2 className="font-semibold text-warm-800 mb-4">Photos</h2>
+              <PhotoUploader
+                individualId={formData.id || ''}
+                photos={formData.photos || []}
+                onPhotosChange={(photos: Photo[]) => setFormData(prev => ({ ...prev, photos }))}
+              />
             </div>
 
             {/* Existing Relationships */}
