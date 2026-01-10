@@ -257,7 +257,7 @@ function PathView() {
                         isRoot={isStart}
                         isSelected={selectedPersonId === personId}
                         onClick={() => setSelectedPersonId(personId)}
-                        onDoubleClick={() => setRootPersonId(personId)}
+                        onViewAs={() => setRootPersonId(personId)}
                       />
                     </div>
                   </React.Fragment>
@@ -266,7 +266,7 @@ function PathView() {
             </div>
 
             <p className="text-sm text-warm-500 text-center mt-6">
-              Double-tap any person to set them as the tree root
+              Tap any person to select, use View button to center tree on them
             </p>
           </div>
         ) : fromId && toId ? (

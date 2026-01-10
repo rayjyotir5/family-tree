@@ -9,7 +9,7 @@ interface PersonNodeProps {
   isRoot?: boolean;
   isSelected?: boolean;
   onClick?: () => void;
-  onDoubleClick?: () => void;
+  onViewAs?: () => void;
 }
 
 export function PersonNode({
@@ -18,7 +18,7 @@ export function PersonNode({
   isRoot = false,
   isSelected = false,
   onClick,
-  onDoubleClick
+  onViewAs
 }: PersonNodeProps) {
   const primaryPhoto = person.photos.find(p => p.isPrimary) || person.photos[0];
   const isDeceased = !!person.death;
@@ -32,18 +32,22 @@ export function PersonNode({
     return '';
   };
 
+  const handleViewAs = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onViewAs?.();
+  };
+
   return (
     <div
       className={`
         relative p-3 bg-white rounded-xl shadow-sm border-2 cursor-pointer
         transition-all duration-200 hover:shadow-md hover:scale-[1.02]
-        w-40 sm:w-44 md:w-48
-        ${isRoot ? 'border-primary-400 ring-2 ring-primary-100 shadow-md' : 'border-warm-200'}
+        w-40 sm:w-44 md:w-48 group
+        ${isRoot ? 'border-primary-400 ring-2 ring-primary-100 shadow-md' : 'border-warm-200 hover:border-warm-300'}
         ${isSelected ? 'ring-2 ring-accent-400' : ''}
         ${isDeceased ? 'bg-warm-50' : ''}
       `}
       onClick={onClick}
-      onDoubleClick={onDoubleClick}
     >
       <div className="flex items-start gap-3">
         {/* Photo */}
@@ -86,10 +90,27 @@ export function PersonNode({
       </div>
 
       {/* Lifespan */}
-      <p className="text-xs text-warm-400 mt-2 text-right">
-        {formatLifespan()}
-        {isDeceased && <span className="ml-1 text-warm-400">✝</span>}
-      </p>
+      <div className="flex items-center justify-between mt-2">
+        <p className="text-xs text-warm-400">
+          {formatLifespan()}
+          {isDeceased && <span className="ml-1">✝</span>}
+        </p>
+
+        {/* Quick View As button - shows on hover (desktop) or always visible (mobile) */}
+        {!isRoot && onViewAs && (
+          <button
+            onClick={handleViewAs}
+            className="opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity px-2 py-1 text-xs bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium flex items-center gap-1"
+            title={`View as ${person.name.given}`}
+          >
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <span className="hidden sm:inline">View</span>
+          </button>
+        )}
+      </div>
 
       {/* Gender indicator */}
       <div className={`
