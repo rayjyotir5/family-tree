@@ -7,14 +7,15 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login, isAuthenticated, isLoading } = useAuth();
+  const { login, isAuthenticated, isLoading, userIdentity } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.push('/');
+      // If already identified, go to home; otherwise go to identify page
+      router.push(userIdentity ? '/' : '/identify');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, userIdentity, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +27,8 @@ export default function LoginPage() {
     }
 
     if (login(password)) {
-      router.push('/');
+      // Always go to identify page after fresh login
+      router.push('/identify');
     } else {
       setError('Incorrect password');
     }

@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Header } from '@/components/ui/Header';
 import { TreeCanvas } from '@/components/tree/TreeCanvas';
 import { useFamilyTree } from '@/contexts/FamilyTreeContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 function PersonDetailPanel({ personId, onClose }: { personId: string; onClose: () => void }) {
   const { getIndividual, getRelationshipWithChain, rootPersonId, setRootPersonId } = useFamilyTree();
@@ -135,7 +136,17 @@ function PersonDetailPanel({ personId, onClose }: { personId: string; onClose: (
 
 function MainContent() {
   const [selectedPersonId, setSelectedPersonId] = useState<string | null>(null);
-  const { isLoading } = useFamilyTree();
+  const { isLoading, setRootPersonId } = useFamilyTree();
+  const { userIdentity } = useAuth();
+  const hasSyncedRef = useRef(false);
+
+  // Sync root person with user identity once on initial load
+  useEffect(() => {
+    if (!isLoading && userIdentity && !hasSyncedRef.current) {
+      hasSyncedRef.current = true;
+      setRootPersonId(userIdentity);
+    }
+  }, [isLoading, userIdentity, setRootPersonId]);
 
   if (isLoading) {
     return (

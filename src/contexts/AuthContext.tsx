@@ -5,12 +5,16 @@ import React, { createContext, useContext, useState, useEffect, useCallback, Rea
 // Simple password - change this to your family's secret password
 const FAMILY_PASSWORD = 'poribar';
 const SESSION_KEY = 'family-tree-session';
+const IDENTITY_KEY = 'family-tree-identity';
 
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
+  userIdentity: string | null; // Person ID of the current user
   login: (password: string) => boolean;
   logout: () => void;
+  setUserIdentity: (personId: string) => void;
+  clearIdentity: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -18,12 +22,18 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [userIdentity, setUserIdentityState] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check for existing session
+    // Check for existing session and identity
     const session = localStorage.getItem(SESSION_KEY);
+    const identity = localStorage.getItem(IDENTITY_KEY);
+
     if (session === 'authenticated') {
       setIsAuthenticated(true);
+    }
+    if (identity) {
+      setUserIdentityState(identity);
     }
     setIsLoading(false);
   }, []);
@@ -39,15 +49,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(IDENTITY_KEY);
     setIsAuthenticated(false);
+    setUserIdentityState(null);
+  }, []);
+
+  const setUserIdentity = useCallback((personId: string) => {
+    localStorage.setItem(IDENTITY_KEY, personId);
+    setUserIdentityState(personId);
+  }, []);
+
+  const clearIdentity = useCallback(() => {
+    localStorage.removeItem(IDENTITY_KEY);
+    setUserIdentityState(null);
   }, []);
 
   return (
     <AuthContext.Provider value={{
       isAuthenticated,
       isLoading,
+      userIdentity,
       login,
       logout,
+      setUserIdentity,
+      clearIdentity,
     }}>
       {children}
     </AuthContext.Provider>
