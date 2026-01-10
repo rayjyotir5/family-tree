@@ -14,14 +14,15 @@ interface TreeNode {
   person: Individual;
   x: number;
   y: number;
+  spouseId?: string;
 }
 
 interface Connection {
-  fromX: number;
-  fromY: number;
-  toX: number;
-  toY: number;
-  isSpouse?: boolean;
+  type: 'vertical' | 'horizontal' | 'spouse' | 'child-bar';
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
 }
 
 interface Position {
@@ -29,339 +30,288 @@ interface Position {
   y: number;
 }
 
-const NODE_WIDTH = 150;
-const NODE_HEIGHT = 90;
-const H_GAP = 30;
-const V_GAP = 100;
+// Compact card dimensions (MyHeritage style)
+const CARD_W = 100;
+const CARD_H = 75;
+const H_GAP = 15;
+const V_GAP = 60;
+const SPOUSE_GAP = 8;
 
 export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps) {
-  const { rootPersonId, setRootPersonId, getRelationshipWithChain, getIndividual, getFamily } = useFamilyTree();
-  const [zoom, setZoom] = useState(0.8);
+  const { rootPersonId, setRootPersonId, getRelationshipWithChain, getIndividual, getFamily, data } = useFamilyTree();
+  const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState<Position>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 });
-  const [maxGenerations, setMaxGenerations] = useState(3);
+  const [maxGenerations, setMaxGenerations] = useState(5);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [hasInitialized, setHasInitialized] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   const rootPerson = getIndividual(rootPersonId);
 
-  // Build hierarchical tree
-  const { nodes, connections, centerX, centerY } = useMemo(() => {
-    if (!rootPerson) return { nodes: [], connections: [], centerX: 0, centerY: 0 };
+  // Build the tree
+  const { nodes, connections, centerX, centerY, totalPeople } = useMemo(() => {
+    if (!rootPerson) return { nodes: [], connections: [], centerX: 0, centerY: 0, totalPeople: 0 };
 
     const nodes: TreeNode[] = [];
     const connections: Connection[] = [];
     const placed = new Set<string>();
 
-    // Place a person node
-    const placeNode = (id: string, x: number, y: number): boolean => {
+    const placeNode = (id: string, x: number, y: number, spouseId?: string): boolean => {
       if (placed.has(id)) return false;
       const person = getIndividual(id);
       if (!person) return false;
-
       placed.add(id);
-      nodes.push({ id, person, x, y });
+      nodes.push({ id, person, x, y, spouseId });
       return true;
     };
 
-    // Get all children of a person
-    const getChildren = (personId: string): string[] => {
-      const person = getIndividual(personId);
-      if (!person) return [];
-
-      const children: string[] = [];
-      for (const familyId of person.familyAsSpouse) {
-        const family = getFamily(familyId);
-        if (family) {
-          for (const childId of family.children) {
-            if (!children.includes(childId)) {
-              children.push(childId);
-            }
-          }
-        }
-      }
-      return children;
-    };
-
-    // Get parents of a person
     const getParents = (personId: string): string[] => {
       const person = getIndividual(personId);
       if (!person?.familyAsChild) return [];
-
       const family = getFamily(person.familyAsChild);
       if (!family) return [];
-
       const parents: string[] = [];
       if (family.husband) parents.push(family.husband);
       if (family.wife) parents.push(family.wife);
       return parents;
     };
 
-    // Get siblings of a person
-    const getSiblings = (personId: string): string[] => {
+    const getSpouse = (personId: string): string | null => {
       const person = getIndividual(personId);
-      if (!person?.familyAsChild) return [];
-
-      const family = getFamily(person.familyAsChild);
-      if (!family) return [];
-
-      return family.children.filter(id => id !== personId);
-    };
-
-    // Get spouse(s) of a person
-    const getSpouses = (personId: string): string[] => {
-      const person = getIndividual(personId);
-      if (!person) return [];
-
-      const spouses: string[] = [];
+      if (!person) return null;
       for (const familyId of person.familyAsSpouse) {
         const family = getFamily(familyId);
         if (family) {
           const spouseId = family.husband === personId ? family.wife : family.husband;
-          if (spouseId && !spouses.includes(spouseId)) {
-            spouses.push(spouseId);
+          if (spouseId) return spouseId;
+        }
+      }
+      return null;
+    };
+
+    const getChildren = (personId: string): string[] => {
+      const person = getIndividual(personId);
+      if (!person) return [];
+      const children: string[] = [];
+      for (const familyId of person.familyAsSpouse) {
+        const family = getFamily(familyId);
+        if (family) {
+          for (const childId of family.children) {
+            if (!children.includes(childId)) children.push(childId);
           }
         }
       }
-      return spouses;
+      return children;
     };
 
-    // Calculate width needed for a subtree
-    const calcWidth = (personId: string, gen: number, direction: 'up' | 'down'): number => {
-      if (gen > maxGenerations) return NODE_WIDTH;
-
+    const getSiblings = (personId: string): string[] => {
       const person = getIndividual(personId);
-      if (!person) return NODE_WIDTH;
-
-      if (direction === 'up') {
-        const parents = getParents(personId);
-        if (parents.length === 0) return NODE_WIDTH;
-
-        let w = 0;
-        for (const pid of parents) {
-          w += calcWidth(pid, gen + 1, 'up');
-        }
-        w += (parents.length - 1) * H_GAP;
-        return Math.max(NODE_WIDTH, w);
-      } else {
-        const children = getChildren(personId);
-        if (children.length === 0) return NODE_WIDTH;
-
-        let w = 0;
-        for (const cid of children) {
-          w += calcWidth(cid, gen + 1, 'down');
-        }
-        w += (children.length - 1) * H_GAP;
-        return Math.max(NODE_WIDTH, w);
-      }
+      if (!person?.familyAsChild) return [];
+      const family = getFamily(person.familyAsChild);
+      if (!family) return [];
+      return family.children.filter(id => id !== personId);
     };
 
-    // Place ancestors recursively
-    const placeAncestors = (personId: string, cx: number, cy: number, gen: number) => {
-      if (gen > maxGenerations) return;
+    // Calculate width of a family unit (person + spouse)
+    const unitWidth = (hasSpouse: boolean) => hasSpouse ? CARD_W * 2 + SPOUSE_GAP : CARD_W;
 
+    // Calculate total width needed for children
+    const calcChildrenWidth = (personId: string, gen: number): number => {
+      if (gen > maxGenerations) return 0;
+      const children = getChildren(personId);
+      if (children.length === 0) return unitWidth(!!getSpouse(personId));
+
+      let totalW = 0;
+      for (const cid of children) {
+        const childSpouse = getSpouse(cid);
+        const childW = calcChildrenWidth(cid, gen + 1);
+        totalW += Math.max(unitWidth(!!childSpouse), childW);
+      }
+      totalW += (children.length - 1) * H_GAP;
+      return Math.max(unitWidth(!!getSpouse(personId)), totalW);
+    };
+
+    // Place ancestors going up
+    const placeAncestors = (personId: string, x: number, y: number, gen: number) => {
+      if (gen > maxGenerations) return;
       const parents = getParents(personId);
       if (parents.length === 0) return;
 
-      const py = cy - V_GAP;
-      let totalW = 0;
-      const widths: number[] = [];
+      const parentY = y - V_GAP;
 
-      for (const pid of parents) {
-        const w = calcWidth(pid, gen + 1, 'up');
-        widths.push(w);
-        totalW += w;
-      }
-      totalW += (parents.length - 1) * H_GAP;
-
-      let startX = cx - totalW / 2;
-
-      for (let i = 0; i < parents.length; i++) {
-        const pid = parents[i];
-        const px = startX + widths[i] / 2;
-
-        if (placeNode(pid, px, py)) {
-          // Connect parent to child
-          connections.push({
-            fromX: px,
-            fromY: py + NODE_HEIGHT / 2,
-            toX: cx,
-            toY: cy - NODE_HEIGHT / 2
-          });
-
-          // Recurse up
-          placeAncestors(pid, px, py, gen + 1);
-        }
-
-        startX += widths[i] + H_GAP;
-      }
-
-      // Connect parents as spouses
+      // Calculate positions for parent pair
       if (parents.length === 2) {
-        const n1 = nodes.find(n => n.id === parents[0]);
-        const n2 = nodes.find(n => n.id === parents[1]);
-        if (n1 && n2) {
-          connections.push({
-            fromX: n1.x + NODE_WIDTH / 2 - 10,
-            fromY: n1.y,
-            toX: n2.x - NODE_WIDTH / 2 + 10,
-            toY: n2.y,
-            isSpouse: true
-          });
+        const p1x = x - (CARD_W + SPOUSE_GAP) / 2;
+        const p2x = x + (CARD_W + SPOUSE_GAP) / 2;
+
+        if (placeNode(parents[0], p1x, parentY, parents[1])) {
+          // Vertical line from parent to child connection point
+          connections.push({ type: 'vertical', x1: p1x + CARD_W / 2 + SPOUSE_GAP / 2, y1: parentY + CARD_H, x2: p1x + CARD_W / 2 + SPOUSE_GAP / 2, y2: y - 10 });
+          connections.push({ type: 'vertical', x1: x, y1: y - 10, x2: x, y2: y });
+          placeAncestors(parents[0], p1x, parentY, gen + 1);
+        }
+        if (placeNode(parents[1], p2x, parentY)) {
+          // Spouse connector
+          connections.push({ type: 'spouse', x1: p1x + CARD_W, y1: parentY + CARD_H / 2, x2: p2x, y2: parentY + CARD_H / 2 });
+          placeAncestors(parents[1], p2x, parentY, gen + 1);
+        }
+      } else if (parents.length === 1) {
+        if (placeNode(parents[0], x, parentY)) {
+          connections.push({ type: 'vertical', x1: x + CARD_W / 2, y1: parentY + CARD_H, x2: x + CARD_W / 2, y2: y });
+          placeAncestors(parents[0], x, parentY, gen + 1);
         }
       }
     };
 
-    // Place descendants recursively
-    const placeDescendants = (personId: string, cx: number, cy: number, gen: number) => {
+    // Place descendants going down
+    const placeDescendants = (personId: string, centerX: number, y: number, gen: number) => {
       if (gen > maxGenerations) return;
-
       const children = getChildren(personId);
       if (children.length === 0) return;
 
-      const childY = cy + V_GAP;
-      let totalW = 0;
-      const widths: number[] = [];
+      const childY = y + V_GAP;
 
+      // Calculate widths
+      const childWidths: number[] = [];
+      let totalWidth = 0;
       for (const cid of children) {
-        const w = calcWidth(cid, gen + 1, 'down');
-        widths.push(w);
-        totalW += w;
+        const spouse = getSpouse(cid);
+        const w = Math.max(unitWidth(!!spouse), calcChildrenWidth(cid, gen + 1));
+        childWidths.push(w);
+        totalWidth += w;
       }
-      totalW += (children.length - 1) * H_GAP;
+      totalWidth += (children.length - 1) * H_GAP;
 
-      let startX = cx - totalW / 2;
+      // Draw parent-to-children connector
+      const barY = y + CARD_H + 15;
+      connections.push({ type: 'vertical', x1: centerX, y1: y + CARD_H, x2: centerX, y2: barY });
+
+      let startX = centerX - totalWidth / 2;
+      const childCenters: number[] = [];
 
       for (let i = 0; i < children.length; i++) {
         const cid = children[i];
-        const childX = startX + widths[i] / 2;
+        const spouse = getSpouse(cid);
+        const w = childWidths[i];
+        const childCenterX = startX + w / 2;
+        childCenters.push(childCenterX);
 
-        if (placeNode(cid, childX, childY)) {
-          // Connect to parent
-          connections.push({
-            fromX: cx,
-            fromY: cy + NODE_HEIGHT / 2,
-            toX: childX,
-            toY: childY - NODE_HEIGHT / 2
-          });
-
-          // Add spouse next to child
-          const spouses = getSpouses(cid);
-          for (const sid of spouses) {
-            if (placeNode(sid, childX + NODE_WIDTH + 20, childY)) {
-              connections.push({
-                fromX: childX + NODE_WIDTH / 2 - 10,
-                fromY: childY,
-                toX: childX + NODE_WIDTH + 20 - NODE_WIDTH / 2 + 10,
-                toY: childY,
-                isSpouse: true
-              });
-            }
-          }
-
-          // Recurse down
-          placeDescendants(cid, childX, childY, gen + 1);
+        // Place child
+        const childX = spouse ? childCenterX - (CARD_W + SPOUSE_GAP) / 2 : childCenterX - CARD_W / 2;
+        if (placeNode(cid, childX, childY, spouse || undefined)) {
+          // Vertical line to child
+          connections.push({ type: 'vertical', x1: childCenterX, y1: barY, x2: childCenterX, y2: childY });
         }
 
-        startX += widths[i] + H_GAP;
+        // Place spouse
+        if (spouse) {
+          const spouseX = childX + CARD_W + SPOUSE_GAP;
+          if (placeNode(spouse, spouseX, childY)) {
+            connections.push({ type: 'spouse', x1: childX + CARD_W, y1: childY + CARD_H / 2, x2: spouseX, y2: childY + CARD_H / 2 });
+          }
+        }
+
+        // Recurse for grandchildren
+        placeDescendants(cid, childCenterX, childY, gen + 1);
+
+        startX += w + H_GAP;
+      }
+
+      // Horizontal bar connecting all children
+      if (childCenters.length > 1) {
+        connections.push({ type: 'child-bar', x1: childCenters[0], y1: barY, x2: childCenters[childCenters.length - 1], y2: barY });
       }
     };
 
-    // Start with root at center
+    // Start with root
     const rootX = 0;
     const rootY = 0;
-    placeNode(rootPersonId, rootX, rootY);
+    const rootSpouse = getSpouse(rootPersonId);
 
-    // Add spouse(s) to the right
-    const rootSpouses = getSpouses(rootPersonId);
-    let spouseX = rootX + NODE_WIDTH + 20;
-    for (const sid of rootSpouses) {
-      if (placeNode(sid, spouseX, rootY)) {
-        connections.push({
-          fromX: rootX + NODE_WIDTH / 2 - 10,
-          fromY: rootY,
-          toX: spouseX - NODE_WIDTH / 2 + 10,
-          toY: rootY,
-          isSpouse: true
-        });
-        spouseX += NODE_WIDTH + 20;
-      }
+    if (rootSpouse) {
+      // Place root and spouse as a pair
+      placeNode(rootPersonId, rootX - CARD_W - SPOUSE_GAP / 2, rootY, rootSpouse);
+      placeNode(rootSpouse, rootX + SPOUSE_GAP / 2, rootY);
+      connections.push({ type: 'spouse', x1: rootX - SPOUSE_GAP / 2, y1: rootY + CARD_H / 2, x2: rootX + SPOUSE_GAP / 2, y2: rootY + CARD_H / 2 });
+
+      placeAncestors(rootPersonId, rootX - CARD_W / 2 - SPOUSE_GAP / 2, rootY, 1);
+      placeDescendants(rootPersonId, rootX, rootY, 1);
+    } else {
+      placeNode(rootPersonId, rootX - CARD_W / 2, rootY);
+      placeAncestors(rootPersonId, rootX - CARD_W / 2, rootY, 1);
+      placeDescendants(rootPersonId, rootX, rootY, 1);
     }
 
-    // Add siblings to the left
+    // Place siblings (same level as root)
     const siblings = getSiblings(rootPersonId);
-    let sibX = rootX - NODE_WIDTH - H_GAP;
+    let sibX = rootX - (rootSpouse ? CARD_W * 2 + SPOUSE_GAP : CARD_W) - H_GAP - CARD_W;
     for (const sibId of siblings) {
-      if (placeNode(sibId, sibX, rootY)) {
-        // Add sibling's spouse
-        const sibSpouses = getSpouses(sibId);
-        for (const sid of sibSpouses) {
-          if (placeNode(sid, sibX - NODE_WIDTH - 20, rootY)) {
-            connections.push({
-              fromX: sibX - NODE_WIDTH / 2 + 10,
-              fromY: rootY,
-              toX: sibX - NODE_WIDTH - 20 + NODE_WIDTH / 2 - 10,
-              toY: rootY,
-              isSpouse: true
-            });
-          }
+      const sibSpouse = getSpouse(sibId);
+      if (sibSpouse) {
+        if (placeNode(sibId, sibX - CARD_W - SPOUSE_GAP, rootY, sibSpouse)) {
+          placeNode(sibSpouse, sibX, rootY);
+          connections.push({ type: 'spouse', x1: sibX - SPOUSE_GAP, y1: rootY + CARD_H / 2, x2: sibX, y2: rootY + CARD_H / 2 });
+          placeDescendants(sibId, sibX - CARD_W / 2 - SPOUSE_GAP / 2, rootY, 1);
         }
-
-        // Place sibling's children
-        placeDescendants(sibId, sibX, rootY, 1);
-
-        sibX -= NODE_WIDTH + H_GAP;
+        sibX -= CARD_W * 2 + SPOUSE_GAP + H_GAP;
+      } else {
+        if (placeNode(sibId, sibX, rootY)) {
+          placeDescendants(sibId, sibX + CARD_W / 2, rootY, 1);
+        }
+        sibX -= CARD_W + H_GAP;
       }
     }
 
-    // Place ancestors (parents, grandparents, etc.)
-    placeAncestors(rootPersonId, rootX, rootY, 1);
-
-    // Place descendants (children, grandchildren, etc.)
-    placeDescendants(rootPersonId, rootX, rootY, 1);
-
-    // Find center of all nodes
-    let sumX = 0, sumY = 0;
+    // Calculate center
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     for (const n of nodes) {
-      sumX += n.x;
-      sumY += n.y;
+      minX = Math.min(minX, n.x);
+      maxX = Math.max(maxX, n.x + CARD_W);
+      minY = Math.min(minY, n.y);
+      maxY = Math.max(maxY, n.y + CARD_H);
     }
-    const centerX = nodes.length > 0 ? sumX / nodes.length : 0;
-    const centerY = nodes.length > 0 ? sumY / nodes.length : 0;
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
 
-    return { nodes, connections, centerX, centerY };
-  }, [rootPersonId, rootPerson, maxGenerations, getIndividual, getFamily]);
+    return { nodes, connections, centerX, centerY, totalPeople: Object.keys(data.individuals).length };
+  }, [rootPersonId, rootPerson, maxGenerations, getIndividual, getFamily, data.individuals]);
 
-  // Center view when tree changes
+  // Center on load
   useEffect(() => {
-    if (containerRef.current && nodes.length > 0) {
+    if (containerRef.current && nodes.length > 0 && !initialized) {
       const rect = containerRef.current.getBoundingClientRect();
       setPan({
         x: rect.width / 2 - centerX * zoom,
-        y: rect.height / 2 - centerY * zoom
+        y: rect.height / 3 - centerY * zoom + 100
       });
-      setHasInitialized(true);
+      setInitialized(true);
     }
-  }, [nodes.length, centerX, centerY, rootPersonId]);
+  }, [nodes.length, centerX, centerY, zoom, initialized]);
 
-  // Recenter when zoom changes (only after init)
+  // Reset on root change
   useEffect(() => {
-    if (hasInitialized && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setPan({
-        x: rect.width / 2 - centerX * zoom,
-        y: rect.height / 2 - centerY * zoom
-      });
-    }
-  }, [zoom, hasInitialized, centerX, centerY]);
+    setInitialized(false);
+  }, [rootPersonId]);
 
-  // Mouse handlers
+  // Mouse/touch handlers
   const handleWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
-    setZoom(z => Math.min(Math.max(z * delta, 0.2), 2));
-  }, []);
+    const newZoom = Math.min(Math.max(zoom * delta, 0.3), 2.5);
+
+    // Zoom towards mouse position
+    setPan({
+      x: mouseX - (mouseX - pan.x) * (newZoom / zoom),
+      y: mouseY - (mouseY - pan.y) * (newZoom / zoom)
+    });
+    setZoom(newZoom);
+  }, [zoom, pan]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (e.button === 0) {
@@ -372,124 +322,77 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isDragging) {
-      setPan({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y
-      });
+      setPan({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
     }
   }, [isDragging, dragStart]);
 
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  const handleMouseUp = useCallback(() => setIsDragging(false), []);
 
-  // Touch handlers
-  const [touchStart, setTouchStart] = useState<Position | null>(null);
-  const [pinchStart, setPinchStart] = useState<{ dist: number; zoom: number } | null>(null);
+  const [touchState, setTouchState] = useState<{ start: Position | null; pinch: { dist: number; zoom: number } | null }>({ start: null, pinch: null });
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 1) {
-      setTouchStart({ x: e.touches[0].clientX - pan.x, y: e.touches[0].clientY - pan.y });
+      setTouchState({ start: { x: e.touches[0].clientX - pan.x, y: e.touches[0].clientY - pan.y }, pinch: null });
     } else if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
-      setPinchStart({ dist: Math.sqrt(dx * dx + dy * dy), zoom });
+      setTouchState({ start: null, pinch: { dist: Math.sqrt(dx * dx + dy * dy), zoom } });
     }
   }, [pan, zoom]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 1 && touchStart) {
-      setPan({
-        x: e.touches[0].clientX - touchStart.x,
-        y: e.touches[0].clientY - touchStart.y
-      });
-    } else if (e.touches.length === 2 && pinchStart) {
+    if (e.touches.length === 1 && touchState.start) {
+      setPan({ x: e.touches[0].clientX - touchState.start.x, y: e.touches[0].clientY - touchState.start.y });
+    } else if (e.touches.length === 2 && touchState.pinch) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      setZoom(Math.min(Math.max(pinchStart.zoom * (dist / pinchStart.dist), 0.2), 2));
+      setZoom(Math.min(Math.max(touchState.pinch.zoom * (dist / touchState.pinch.dist), 0.3), 2.5));
     }
-  }, [touchStart, pinchStart]);
+  }, [touchState]);
 
-  const handleTouchEnd = useCallback(() => {
-    setTouchStart(null);
-    setPinchStart(null);
-  }, []);
+  const handleTouchEnd = useCallback(() => setTouchState({ start: null, pinch: null }), []);
 
-  const handlePersonClick = useCallback((personId: string) => {
-    onPersonSelect?.(personId);
-  }, [onPersonSelect]);
-
-  const handleViewAs = useCallback((personId: string, e: React.MouseEvent) => {
+  const handleViewAs = useCallback((id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setHasInitialized(false);
-    setRootPersonId(personId);
+    setInitialized(false);
+    setRootPersonId(id);
   }, [setRootPersonId]);
 
   const resetView = useCallback(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      setZoom(0.8);
-      setPan({
-        x: rect.width / 2 - centerX * 0.8,
-        y: rect.height / 2 - centerY * 0.8
-      });
+      setZoom(1);
+      setPan({ x: rect.width / 2 - centerX, y: rect.height / 3 - centerY + 100 });
     }
   }, [centerX, centerY]);
 
   if (!rootPerson) {
-    return (
-      <div className="flex items-center justify-center h-full text-warm-500">
-        <p>No person selected</p>
-      </div>
-    );
+    return <div className="flex items-center justify-center h-full text-warm-500">No person selected</div>;
   }
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-b from-warm-50 to-warm-100">
-      {/* Controls */}
-      <div className="flex-shrink-0 p-3 flex flex-wrap gap-3 items-center justify-center border-b border-warm-200 bg-white/90 backdrop-blur-sm">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setZoom(z => Math.min(z * 1.25, 2))}
-            className="w-9 h-9 flex items-center justify-center bg-white border border-warm-300 rounded-lg hover:bg-warm-50 text-warm-700 font-bold text-lg"
-          >
-            +
-          </button>
-          <span className="text-sm text-warm-600 w-12 text-center font-medium">{Math.round(zoom * 100)}%</span>
-          <button
-            onClick={() => setZoom(z => Math.max(z * 0.8, 0.2))}
-            className="w-9 h-9 flex items-center justify-center bg-white border border-warm-300 rounded-lg hover:bg-warm-50 text-warm-700 font-bold text-lg"
-          >
-            -
-          </button>
+    <div className="h-full flex flex-col bg-stone-100">
+      {/* Header */}
+      <div className="flex-shrink-0 px-4 py-2 flex items-center justify-between border-b border-stone-200 bg-white">
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-stone-600">{nodes.length} of {totalPeople} people</span>
         </div>
-
-        <button
-          onClick={resetView}
-          className="px-3 py-2 bg-white border border-warm-300 rounded-lg hover:bg-warm-50 text-sm text-warm-700 font-medium"
-        >
-          Center
-        </button>
-
-        <label className="flex items-center gap-2 text-sm text-warm-600">
-          <span>Depth:</span>
+        <div className="flex items-center gap-3">
           <select
             value={maxGenerations}
-            onChange={(e) => setMaxGenerations(parseInt(e.target.value))}
-            className="px-2 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            onChange={(e) => { setInitialized(false); setMaxGenerations(parseInt(e.target.value)); }}
+            className="px-2 py-1 text-sm border border-stone-300 rounded-md bg-white"
           >
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-            <option value={5}>5</option>
+            <option value={2}>2 gen</option>
+            <option value={3}>3 gen</option>
+            <option value={4}>4 gen</option>
+            <option value={5}>5+</option>
           </select>
-        </label>
-
-        <span className="text-xs text-warm-500">
-          {nodes.length} people
-        </span>
+          <button onClick={resetView} className="px-3 py-1 text-sm border border-stone-300 rounded-md hover:bg-stone-50">
+            Center
+          </button>
+        </div>
       </div>
 
       {/* Canvas */}
@@ -509,128 +412,93 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
           style={{
             transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
             transformOrigin: '0 0',
-            position: 'absolute',
-            left: 0,
-            top: 0
+            position: 'absolute'
           }}
         >
-          {/* SVG for connections */}
-          <svg
-            style={{
-              position: 'absolute',
-              left: -2000,
-              top: -2000,
-              width: 4000,
-              height: 4000,
-              pointerEvents: 'none'
-            }}
-          >
-            {connections.map((conn, i) => (
-              <path
+          {/* Connection lines */}
+          <svg style={{ position: 'absolute', left: -3000, top: -3000, width: 6000, height: 6000, pointerEvents: 'none' }}>
+            {connections.map((c, i) => (
+              <line
                 key={i}
-                d={conn.isSpouse
-                  ? `M ${conn.fromX + 2000} ${conn.fromY + 2000} L ${conn.toX + 2000} ${conn.toY + 2000}`
-                  : `M ${conn.fromX + 2000} ${conn.fromY + 2000}
-                     C ${conn.fromX + 2000} ${(conn.fromY + conn.toY) / 2 + 2000},
-                       ${conn.toX + 2000} ${(conn.fromY + conn.toY) / 2 + 2000},
-                       ${conn.toX + 2000} ${conn.toY + 2000}`
-                }
-                stroke={conn.isSpouse ? '#dd6b5b' : '#a8a29e'}
-                strokeWidth={conn.isSpouse ? 3 : 2}
-                strokeDasharray={conn.isSpouse ? '8,4' : 'none'}
-                fill="none"
+                x1={c.x1 + 3000}
+                y1={c.y1 + 3000}
+                x2={c.x2 + 3000}
+                y2={c.y2 + 3000}
+                stroke={c.type === 'spouse' ? '#f97316' : '#a8a29e'}
+                strokeWidth={c.type === 'spouse' ? 2 : 1.5}
               />
             ))}
           </svg>
 
-          {/* Person nodes */}
+          {/* Person cards */}
           {nodes.map((node) => {
             const isRoot = node.id === rootPersonId;
             const isSelected = selectedPersonId === node.id;
-            const relationship = getRelationshipWithChain(rootPersonId, node.id);
             const photo = node.person.photos.find(p => p.isPrimary) || node.person.photos[0];
             const isDeceased = !!node.person.death;
 
             return (
               <div
                 key={node.id}
-                className={`
-                  absolute rounded-xl shadow-md border-2 cursor-pointer select-none
-                  transition-shadow hover:shadow-xl
-                  ${isRoot ? 'border-primary-500 bg-primary-50' : 'border-warm-200 bg-white'}
-                  ${isSelected ? 'ring-2 ring-accent-500 ring-offset-2' : ''}
-                  ${isDeceased ? 'opacity-80' : ''}
-                `}
-                style={{
-                  left: node.x - NODE_WIDTH / 2,
-                  top: node.y - NODE_HEIGHT / 2,
-                  width: NODE_WIDTH,
-                  height: NODE_HEIGHT
-                }}
-                onClick={() => handlePersonClick(node.id)}
+                className={`absolute bg-white rounded-lg shadow-sm border overflow-hidden cursor-pointer hover:shadow-md transition-shadow ${
+                  isRoot ? 'border-orange-400 border-2' : 'border-stone-200'
+                } ${isSelected ? 'ring-2 ring-blue-400' : ''}`}
+                style={{ left: node.x, top: node.y, width: CARD_W, height: CARD_H }}
+                onClick={() => onPersonSelect?.(node.id)}
               >
-                <div className="p-2 h-full flex gap-2">
-                  {/* Photo */}
-                  <div className="flex-shrink-0">
-                    {photo ? (
-                      <img
-                        src={photo.url}
-                        alt=""
-                        className="w-10 h-10 rounded-full object-cover border border-warm-200"
-                        onError={(e) => (e.currentTarget.style.display = 'none')}
-                      />
-                    ) : (
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-                        node.person.sex === 'M' ? 'bg-blue-100 text-blue-700' :
-                        node.person.sex === 'F' ? 'bg-pink-100 text-pink-700' :
-                        'bg-warm-100 text-warm-600'
-                      }`}>
-                        {node.person.name.given[0]}
-                      </div>
-                    )}
-                  </div>
+                {/* Orange accent bar for root */}
+                {isRoot && <div className="absolute left-0 top-0 bottom-0 w-1 bg-orange-400" />}
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-center">
-                    <p className="font-semibold text-warm-800 text-sm truncate leading-tight">
-                      {node.person.name.given}
-                    </p>
-                    <p className="text-xs text-warm-500 truncate">
-                      {node.person.name.surname}
-                    </p>
-                    <p className="text-xs text-primary-600 font-medium truncate mt-0.5">
-                      {isRoot ? 'You' : relationship}
-                    </p>
-                  </div>
+                <div className="p-1.5 h-full flex flex-col items-center justify-center">
+                  {/* Photo */}
+                  {photo ? (
+                    <img
+                      src={photo.url}
+                      alt=""
+                      className={`w-9 h-9 rounded-full object-cover border-2 ${
+                        node.person.sex === 'M' ? 'border-blue-300' : node.person.sex === 'F' ? 'border-pink-300' : 'border-stone-300'
+                      } ${isDeceased ? 'grayscale opacity-70' : ''}`}
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  ) : (
+                    <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold ${
+                      node.person.sex === 'M' ? 'bg-blue-100 text-blue-600 border-2 border-blue-300' :
+                      node.person.sex === 'F' ? 'bg-pink-100 text-pink-600 border-2 border-pink-300' :
+                      'bg-stone-100 text-stone-500 border-2 border-stone-300'
+                    } ${isDeceased ? 'opacity-70' : ''}`}>
+                      {node.person.name.given[0]}
+                    </div>
+                  )}
+
+                  {/* Name */}
+                  <p className={`text-xs font-medium text-center leading-tight mt-1 truncate w-full px-1 ${isDeceased ? 'text-stone-400' : 'text-stone-700'}`}>
+                    {node.person.name.given}
+                  </p>
+                  <p className={`text-[10px] text-center truncate w-full px-1 ${isDeceased ? 'text-stone-300' : 'text-stone-400'}`}>
+                    {node.person.name.surname}
+                  </p>
                 </div>
 
-                {/* View button */}
+                {/* View button on hover */}
                 {!isRoot && (
                   <button
                     onClick={(e) => handleViewAs(node.id, e)}
-                    className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-2 py-0.5 text-xs bg-primary-500 hover:bg-primary-600 text-white rounded-full font-medium shadow"
+                    className="absolute inset-0 bg-black/50 text-white text-xs font-medium opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center"
                   >
-                    View
+                    View Tree
                   </button>
                 )}
-
-                {/* Gender badge */}
-                <div className={`absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full text-xs flex items-center justify-center border-2 border-white shadow ${
-                  node.person.sex === 'M' ? 'bg-blue-100 text-blue-600' :
-                  node.person.sex === 'F' ? 'bg-pink-100 text-pink-600' :
-                  'bg-warm-100 text-warm-500'
-                }`}>
-                  {node.person.sex === 'M' ? '♂' : node.person.sex === 'F' ? '♀' : '?'}
-                </div>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="flex-shrink-0 p-2 text-center text-xs text-warm-500 bg-white/90 border-t border-warm-200">
-        Drag to pan • Scroll to zoom • Tap person for details
+      {/* Zoom controls */}
+      <div className="absolute right-4 bottom-20 flex flex-col gap-1 bg-white rounded-lg shadow-md border border-stone-200">
+        <button onClick={() => setZoom(z => Math.min(z * 1.2, 2.5))} className="w-8 h-8 flex items-center justify-center hover:bg-stone-50 text-stone-600 text-lg font-medium">+</button>
+        <div className="border-t border-stone-200" />
+        <button onClick={() => setZoom(z => Math.max(z * 0.8, 0.3))} className="w-8 h-8 flex items-center justify-center hover:bg-stone-50 text-stone-600 text-lg font-medium">−</button>
       </div>
     </div>
   );
