@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { useFamilyTree } from '@/contexts/FamilyTreeContext';
-import { PersonNode } from './PersonNode';
 import type { Individual } from '@/lib/types';
 
 interface TreeCanvasProps {
@@ -10,40 +9,96 @@ interface TreeCanvasProps {
   selectedPersonId?: string;
 }
 
-interface TreePerson {
+interface TreeNode {
+  id: string;
   person: Individual;
-  relationship: string;
-  level: number;
-  position: number;
+  x: number;
+  y: number;
+  children: TreeNode[];
+  spouseId?: string;
 }
+
+interface Position {
+  x: number;
+  y: number;
+}
+
+const NODE_WIDTH = 160;
+const NODE_HEIGHT = 100;
+const HORIZONTAL_SPACING = 40;
+const VERTICAL_SPACING = 120;
+const SPOUSE_SPACING = 20;
 
 export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps) {
   const { rootPersonId, setRootPersonId, getRelationshipWithChain, getIndividual, getFamily } = useFamilyTree();
-  const [viewMode, setViewMode] = useState<'ancestors' | 'descendants' | 'both'>('both');
-  const [maxGenerations, setMaxGenerations] = useState(2);
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState<Position>({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 });
+  const [maxGenerations, setMaxGenerations] = useState(3);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const rootPerson = getIndividual(rootPersonId);
 
-  // Build tree structure including aunts/uncles and cousins
-  const treeData = useMemo(() => {
-    if (!rootPerson) return {
-      ancestors: [],
-      descendants: [],
-      siblings: [],
-      spouses: [],
-      auntsUncles: [],
-      cousins: [],
-      niblings: [], // nieces and nephews
-      root: null
+  // Build hierarchical tree structure
+  const { nodes, connections, bounds } = useMemo(() => {
+    if (!rootPerson) return { nodes: [], connections: [], bounds: { minX: 0, maxX: 0, minY: 0, maxY: 0 } };
+
+    const allNodes: TreeNode[] = [];
+    const connections: { from: Position; to: Position; isSpouse?: boolean }[] = [];
+    const processedIds = new Set<string>();
+
+    // Calculate tree width for a subtree
+    const calculateSubtreeWidth = (personId: string, generation: number, isAncestor: boolean): number => {
+      if (generation > maxGenerations) return NODE_WIDTH;
+
+      const person = getIndividual(personId);
+      if (!person) return NODE_WIDTH;
+
+      let width = NODE_WIDTH;
+
+      // Add spouse width
+      for (const familyId of person.familyAsSpouse) {
+        const family = getFamily(familyId);
+        if (family) {
+          const spouseId = family.husband === personId ? family.wife : family.husband;
+          if (spouseId) width += NODE_WIDTH + SPOUSE_SPACING;
+        }
+      }
+
+      if (isAncestor) {
+        // For ancestors, look at parents
+        if (person.familyAsChild) {
+          const family = getFamily(person.familyAsChild);
+          if (family) {
+            let parentWidth = 0;
+            if (family.husband) parentWidth += calculateSubtreeWidth(family.husband, generation + 1, true);
+            if (family.wife) parentWidth += calculateSubtreeWidth(family.wife, generation + 1, true) + HORIZONTAL_SPACING;
+            width = Math.max(width, parentWidth);
+          }
+        }
+      } else {
+        // For descendants, look at children
+        let childrenWidth = 0;
+        for (const familyId of person.familyAsSpouse) {
+          const family = getFamily(familyId);
+          if (family) {
+            for (const childId of family.children) {
+              if (childrenWidth > 0) childrenWidth += HORIZONTAL_SPACING;
+              childrenWidth += calculateSubtreeWidth(childId, generation + 1, false);
+            }
+          }
+        }
+        width = Math.max(width, childrenWidth);
+      }
+
+      return width;
     };
 
-    const ancestors: TreePerson[][] = [];
-    const descendants: TreePerson[][] = [];
-    const addedIds = new Set<string>([rootPersonId]);
-
-    // Get ancestors
-    const getAncestors = (personId: string, level: number) => {
-      if (level > maxGenerations) return;
+    // Position ancestors (going up)
+    const positionAncestors = (personId: string, x: number, y: number, generation: number) => {
+      if (generation > maxGenerations || processedIds.has(personId)) return;
 
       const person = getIndividual(personId);
       if (!person?.familyAsChild) return;
@@ -51,257 +106,391 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
       const family = getFamily(person.familyAsChild);
       if (!family) return;
 
-      if (!ancestors[level]) ancestors[level] = [];
+      const parentY = y - VERTICAL_SPACING;
+      const parents: string[] = [];
+      if (family.husband) parents.push(family.husband);
+      if (family.wife) parents.push(family.wife);
 
-      if (family.husband && !addedIds.has(family.husband)) {
-        const father = getIndividual(family.husband);
-        if (father) {
-          addedIds.add(family.husband);
-          ancestors[level].push({
-            person: father,
-            relationship: getRelationshipWithChain(rootPersonId, family.husband),
-            level,
-            position: ancestors[level].length
-          });
-          getAncestors(family.husband, level + 1);
-        }
+      if (parents.length === 0) return;
+
+      // Calculate total width needed for parents and their ancestors
+      let totalWidth = 0;
+      const parentWidths: number[] = [];
+
+      for (const parentId of parents) {
+        const width = calculateSubtreeWidth(parentId, generation + 1, true);
+        parentWidths.push(width);
+        totalWidth += width;
+      }
+      if (parents.length > 1) totalWidth += HORIZONTAL_SPACING;
+
+      let currentX = x - totalWidth / 2;
+
+      for (let i = 0; i < parents.length; i++) {
+        const parentId = parents[i];
+        if (processedIds.has(parentId)) continue;
+
+        const parent = getIndividual(parentId);
+        if (!parent) continue;
+
+        const parentX = currentX + parentWidths[i] / 2;
+
+        processedIds.add(parentId);
+        allNodes.push({
+          id: parentId,
+          person: parent,
+          x: parentX,
+          y: parentY,
+          children: []
+        });
+
+        // Connect to child
+        connections.push({
+          from: { x: parentX, y: parentY + NODE_HEIGHT / 2 },
+          to: { x, y: y - NODE_HEIGHT / 2 }
+        });
+
+        // Recurse for grandparents
+        positionAncestors(parentId, parentX, parentY, generation + 1);
+
+        currentX += parentWidths[i] + HORIZONTAL_SPACING;
       }
 
-      if (family.wife && !addedIds.has(family.wife)) {
-        const mother = getIndividual(family.wife);
-        if (mother) {
-          addedIds.add(family.wife);
-          ancestors[level].push({
-            person: mother,
-            relationship: getRelationshipWithChain(rootPersonId, family.wife),
-            level,
-            position: ancestors[level].length
+      // Connect parents with spouse line
+      if (parents.length === 2) {
+        const p1 = allNodes.find(n => n.id === parents[0]);
+        const p2 = allNodes.find(n => n.id === parents[1]);
+        if (p1 && p2) {
+          connections.push({
+            from: { x: p1.x + NODE_WIDTH / 2, y: p1.y },
+            to: { x: p2.x - NODE_WIDTH / 2, y: p2.y },
+            isSpouse: true
           });
-          getAncestors(family.wife, level + 1);
         }
       }
     };
 
-    // Get descendants
-    const getDescendants = (personId: string, level: number) => {
-      if (level > maxGenerations) return;
+    // Position descendants (going down)
+    const positionDescendants = (personId: string, x: number, y: number, generation: number) => {
+      if (generation > maxGenerations) return;
 
       const person = getIndividual(personId);
       if (!person) return;
 
+      // Get all children from all marriages
+      const allChildren: string[] = [];
       for (const familyId of person.familyAsSpouse) {
         const family = getFamily(familyId);
-        if (!family) continue;
-
-        if (!descendants[level]) descendants[level] = [];
-
-        for (const childId of family.children) {
-          if (addedIds.has(childId)) continue;
-          const child = getIndividual(childId);
-          if (child) {
-            addedIds.add(childId);
-            descendants[level].push({
-              person: child,
-              relationship: getRelationshipWithChain(rootPersonId, childId),
-              level,
-              position: descendants[level].length
-            });
-            getDescendants(childId, level + 1);
-          }
-        }
-      }
-    };
-
-    // Get siblings
-    const getSiblings = (): TreePerson[] => {
-      const siblings: TreePerson[] = [];
-      if (!rootPerson.familyAsChild) return siblings;
-
-      const family = getFamily(rootPerson.familyAsChild);
-      if (!family) return siblings;
-
-      for (const siblingId of family.children) {
-        if (siblingId === rootPersonId || addedIds.has(siblingId)) continue;
-        const sibling = getIndividual(siblingId);
-        if (sibling) {
-          addedIds.add(siblingId);
-          siblings.push({
-            person: sibling,
-            relationship: getRelationshipWithChain(rootPersonId, siblingId),
-            level: 0,
-            position: siblings.length
-          });
-        }
-      }
-
-      return siblings;
-    };
-
-    // Get spouse(s)
-    const getSpouses = (): TreePerson[] => {
-      const spouses: TreePerson[] = [];
-
-      for (const familyId of rootPerson.familyAsSpouse) {
-        const family = getFamily(familyId);
-        if (!family) continue;
-
-        const spouseId = family.husband === rootPersonId ? family.wife : family.wife === rootPersonId ? family.husband : null;
-        if (spouseId && !addedIds.has(spouseId)) {
-          const spouse = getIndividual(spouseId);
-          if (spouse) {
-            addedIds.add(spouseId);
-            spouses.push({
-              person: spouse,
-              relationship: getRelationshipWithChain(rootPersonId, spouseId),
-              level: 0,
-              position: spouses.length
-            });
+        if (family) {
+          for (const childId of family.children) {
+            if (!processedIds.has(childId) && !allChildren.includes(childId)) {
+              allChildren.push(childId);
+            }
           }
         }
       }
 
-      return spouses;
-    };
+      if (allChildren.length === 0) return;
 
-    // Get aunts and uncles (parents' siblings)
-    const getAuntsUncles = (): TreePerson[] => {
-      const auntsUncles: TreePerson[] = [];
-      if (!rootPerson.familyAsChild) return auntsUncles;
+      const childY = y + VERTICAL_SPACING;
 
-      const myParentFamily = getFamily(rootPerson.familyAsChild);
-      if (!myParentFamily) return auntsUncles;
+      // Calculate total width needed
+      let totalWidth = 0;
+      const childWidths: number[] = [];
 
-      const parentIds = [myParentFamily.husband, myParentFamily.wife].filter(Boolean) as string[];
+      for (const childId of allChildren) {
+        const width = calculateSubtreeWidth(childId, generation + 1, false);
+        childWidths.push(width);
+        totalWidth += width;
+      }
+      totalWidth += (allChildren.length - 1) * HORIZONTAL_SPACING;
 
-      for (const parentId of parentIds) {
-        const parent = getIndividual(parentId);
-        if (!parent?.familyAsChild) continue;
+      let currentX = x - totalWidth / 2;
 
-        const grandparentFamily = getFamily(parent.familyAsChild);
-        if (!grandparentFamily) continue;
+      for (let i = 0; i < allChildren.length; i++) {
+        const childId = allChildren[i];
+        if (processedIds.has(childId)) continue;
 
-        for (const siblingOfParentId of grandparentFamily.children) {
-          if (siblingOfParentId === parentId || addedIds.has(siblingOfParentId)) continue;
-          const auntUncle = getIndividual(siblingOfParentId);
-          if (auntUncle) {
-            addedIds.add(siblingOfParentId);
-            auntsUncles.push({
-              person: auntUncle,
-              relationship: getRelationshipWithChain(rootPersonId, siblingOfParentId),
-              level: 0,
-              position: auntsUncles.length
-            });
+        const child = getIndividual(childId);
+        if (!child) continue;
 
-            // Also add their spouses
-            for (const familyId of auntUncle.familyAsSpouse) {
-              const family = getFamily(familyId);
-              if (!family) continue;
-              const spouseId = family.husband === siblingOfParentId ? family.wife : family.husband;
-              if (spouseId && !addedIds.has(spouseId)) {
-                const spouse = getIndividual(spouseId);
-                if (spouse) {
-                  addedIds.add(spouseId);
-                  auntsUncles.push({
-                    person: spouse,
-                    relationship: getRelationshipWithChain(rootPersonId, spouseId),
-                    level: 0,
-                    position: auntsUncles.length
-                  });
-                }
+        const childX = currentX + childWidths[i] / 2;
+
+        processedIds.add(childId);
+        allNodes.push({
+          id: childId,
+          person: child,
+          x: childX,
+          y: childY,
+          children: []
+        });
+
+        // Connect from parent
+        connections.push({
+          from: { x, y: y + NODE_HEIGHT / 2 },
+          to: { x: childX, y: childY - NODE_HEIGHT / 2 }
+        });
+
+        // Add spouse if exists
+        for (const familyId of child.familyAsSpouse) {
+          const family = getFamily(familyId);
+          if (family) {
+            const spouseId = family.husband === childId ? family.wife : family.husband;
+            if (spouseId && !processedIds.has(spouseId)) {
+              const spouse = getIndividual(spouseId);
+              if (spouse) {
+                processedIds.add(spouseId);
+                const spouseX = childX + NODE_WIDTH + SPOUSE_SPACING;
+                allNodes.push({
+                  id: spouseId,
+                  person: spouse,
+                  x: spouseX,
+                  y: childY,
+                  children: [],
+                  spouseId: childId
+                });
+                connections.push({
+                  from: { x: childX + NODE_WIDTH / 2, y: childY },
+                  to: { x: spouseX - NODE_WIDTH / 2, y: childY },
+                  isSpouse: true
+                });
               }
             }
           }
         }
-      }
 
-      return auntsUncles;
+        // Recurse for grandchildren
+        positionDescendants(childId, childX, childY, generation + 1);
+
+        currentX += childWidths[i] + HORIZONTAL_SPACING;
+      }
     };
 
-    // Get cousins (children of aunts and uncles)
-    const getCousins = (auntsUncles: TreePerson[]): TreePerson[] => {
-      const cousins: TreePerson[] = [];
+    // Position siblings
+    const positionSiblings = (rootX: number, rootY: number) => {
+      if (!rootPerson.familyAsChild) return;
 
-      for (const auntUncle of auntsUncles) {
-        for (const familyId of auntUncle.person.familyAsSpouse) {
-          const family = getFamily(familyId);
-          if (!family) continue;
+      const family = getFamily(rootPerson.familyAsChild);
+      if (!family) return;
 
-          for (const cousinId of family.children) {
-            if (addedIds.has(cousinId)) continue;
-            const cousin = getIndividual(cousinId);
-            if (cousin) {
-              addedIds.add(cousinId);
-              cousins.push({
-                person: cousin,
-                relationship: getRelationshipWithChain(rootPersonId, cousinId),
-                level: 0,
-                position: cousins.length
-              });
+      const siblings = family.children.filter(id => id !== rootPersonId && !processedIds.has(id));
+      if (siblings.length === 0) return;
+
+      // Position siblings to the left of root
+      let currentX = rootX - (NODE_WIDTH + HORIZONTAL_SPACING);
+
+      for (const siblingId of siblings) {
+        const sibling = getIndividual(siblingId);
+        if (!sibling || processedIds.has(siblingId)) continue;
+
+        processedIds.add(siblingId);
+        allNodes.push({
+          id: siblingId,
+          person: sibling,
+          x: currentX,
+          y: rootY,
+          children: []
+        });
+
+        // Add spouse
+        for (const familyId of sibling.familyAsSpouse) {
+          const fam = getFamily(familyId);
+          if (fam) {
+            const spouseId = fam.husband === siblingId ? fam.wife : fam.husband;
+            if (spouseId && !processedIds.has(spouseId)) {
+              const spouse = getIndividual(spouseId);
+              if (spouse) {
+                processedIds.add(spouseId);
+                const spouseX = currentX - NODE_WIDTH - SPOUSE_SPACING;
+                allNodes.push({
+                  id: spouseId,
+                  person: spouse,
+                  x: spouseX,
+                  y: rootY,
+                  children: [],
+                  spouseId: siblingId
+                });
+                connections.push({
+                  from: { x: currentX - NODE_WIDTH / 2, y: rootY },
+                  to: { x: spouseX + NODE_WIDTH / 2, y: rootY },
+                  isSpouse: true
+                });
+                currentX = spouseX;
+              }
             }
           }
         }
-      }
 
-      return cousins;
+        // Position sibling's children
+        positionDescendants(siblingId, currentX + NODE_WIDTH / 2 + HORIZONTAL_SPACING / 2, rootY, 1);
+
+        currentX -= (NODE_WIDTH + HORIZONTAL_SPACING);
+      }
     };
 
-    // Get nieces and nephews (siblings' children)
-    const getNiblings = (siblings: TreePerson[]): TreePerson[] => {
-      const niblings: TreePerson[] = [];
+    // Start with root person at center
+    const rootX = 0;
+    const rootY = 0;
 
-      for (const sibling of siblings) {
-        for (const familyId of sibling.person.familyAsSpouse) {
-          const family = getFamily(familyId);
-          if (!family) continue;
+    processedIds.add(rootPersonId);
+    allNodes.push({
+      id: rootPersonId,
+      person: rootPerson,
+      x: rootX,
+      y: rootY,
+      children: []
+    });
 
-          for (const niblingId of family.children) {
-            if (addedIds.has(niblingId)) continue;
-            const nibling = getIndividual(niblingId);
-            if (nibling) {
-              addedIds.add(niblingId);
-              niblings.push({
-                person: nibling,
-                relationship: getRelationshipWithChain(rootPersonId, niblingId),
-                level: 0,
-                position: niblings.length
-              });
-            }
+    // Add root person's spouse(s)
+    let spouseX = rootX + NODE_WIDTH + SPOUSE_SPACING;
+    for (const familyId of rootPerson.familyAsSpouse) {
+      const family = getFamily(familyId);
+      if (family) {
+        const spouseId = family.husband === rootPersonId ? family.wife : family.husband;
+        if (spouseId && !processedIds.has(spouseId)) {
+          const spouse = getIndividual(spouseId);
+          if (spouse) {
+            processedIds.add(spouseId);
+            allNodes.push({
+              id: spouseId,
+              person: spouse,
+              x: spouseX,
+              y: rootY,
+              children: [],
+              spouseId: rootPersonId
+            });
+            connections.push({
+              from: { x: rootX + NODE_WIDTH / 2, y: rootY },
+              to: { x: spouseX - NODE_WIDTH / 2, y: rootY },
+              isSpouse: true
+            });
+            spouseX += NODE_WIDTH + SPOUSE_SPACING;
           }
         }
       }
+    }
 
-      return niblings;
-    };
+    // Position ancestors (parents, grandparents, etc.)
+    positionAncestors(rootPersonId, rootX, rootY, 1);
 
-    getAncestors(rootPersonId, 1);
-    getDescendants(rootPersonId, 1);
-    const siblings = getSiblings();
-    const auntsUncles = getAuntsUncles();
-    const cousins = getCousins(auntsUncles);
-    const niblings = getNiblings(siblings);
+    // Position siblings
+    positionSiblings(rootX, rootY);
+
+    // Position descendants (children, grandchildren, etc.)
+    positionDescendants(rootPersonId, rootX, rootY, 1);
+
+    // Calculate bounds
+    let minX = 0, maxX = 0, minY = 0, maxY = 0;
+    for (const node of allNodes) {
+      minX = Math.min(minX, node.x - NODE_WIDTH / 2);
+      maxX = Math.max(maxX, node.x + NODE_WIDTH / 2);
+      minY = Math.min(minY, node.y - NODE_HEIGHT / 2);
+      maxY = Math.max(maxY, node.y + NODE_HEIGHT / 2);
+    }
 
     return {
-      ancestors,
-      descendants,
-      siblings,
-      spouses: getSpouses(),
-      auntsUncles,
-      cousins,
-      niblings,
-      root: {
-        person: rootPerson,
-        relationship: 'Self',
-        level: 0,
-        position: 0
-      }
+      nodes: allNodes,
+      connections,
+      bounds: { minX, maxX, minY, maxY }
     };
-  }, [rootPersonId, rootPerson, maxGenerations, getIndividual, getFamily, getRelationshipWithChain]);
+  }, [rootPersonId, rootPerson, maxGenerations, getIndividual, getFamily]);
+
+  // Center tree on load
+  useEffect(() => {
+    if (containerRef.current && bounds) {
+      const containerWidth = containerRef.current.clientWidth;
+      const containerHeight = containerRef.current.clientHeight;
+
+      const treeWidth = bounds.maxX - bounds.minX + 100;
+      const treeHeight = bounds.maxY - bounds.minY + 100;
+
+      // Calculate zoom to fit
+      const zoomToFit = Math.min(
+        containerWidth / treeWidth,
+        containerHeight / treeHeight,
+        1
+      );
+
+      setZoom(Math.max(0.3, zoomToFit));
+      setPan({
+        x: containerWidth / 2,
+        y: containerHeight / 2 - bounds.minY * zoomToFit
+      });
+    }
+  }, [bounds, rootPersonId]);
+
+  // Handle mouse wheel zoom
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    setZoom(z => Math.min(Math.max(z * delta, 0.2), 3));
+  }, []);
+
+  // Handle pan start
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.button === 0) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y });
+    }
+  }, [pan]);
+
+  // Handle pan move
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (isDragging) {
+      setPan({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y
+      });
+    }
+  }, [isDragging, dragStart]);
+
+  // Handle pan end
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Touch handlers for mobile
+  const [touchStart, setTouchStart] = useState<Position | null>(null);
+  const [initialPinchDistance, setInitialPinchDistance] = useState<number | null>(null);
+  const [initialZoom, setInitialZoom] = useState(1);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      setTouchStart({ x: e.touches[0].clientX - pan.x, y: e.touches[0].clientY - pan.y });
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      setInitialPinchDistance(Math.sqrt(dx * dx + dy * dy));
+      setInitialZoom(zoom);
+    }
+  }, [pan, zoom]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 1 && touchStart) {
+      setPan({
+        x: e.touches[0].clientX - touchStart.x,
+        y: e.touches[0].clientY - touchStart.y
+      });
+    } else if (e.touches.length === 2 && initialPinchDistance) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const scale = distance / initialPinchDistance;
+      setZoom(Math.min(Math.max(initialZoom * scale, 0.2), 3));
+    }
+  }, [touchStart, initialPinchDistance, initialZoom]);
+
+  const handleTouchEnd = useCallback(() => {
+    setTouchStart(null);
+    setInitialPinchDistance(null);
+  }, []);
 
   const handlePersonClick = useCallback((personId: string) => {
     onPersonSelect?.(personId);
   }, [onPersonSelect]);
 
-  const handleViewAs = useCallback((personId: string) => {
+  const handleViewAs = useCallback((personId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     setRootPersonId(personId);
   }, [setRootPersonId]);
 
@@ -313,215 +502,201 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
     );
   }
 
-  const hasAncestors = treeData.ancestors.some(level => level.length > 0);
-  const hasDescendants = treeData.descendants.some(level => level.length > 0);
-
   return (
-    <div className="h-full overflow-auto bg-gradient-to-b from-warm-50 to-warm-100 p-4 sm:p-6 lg:p-8">
+    <div className="h-full flex flex-col bg-gradient-to-b from-warm-50 to-warm-100">
       {/* Controls */}
-      <div className="mb-6 flex flex-wrap gap-3 items-center justify-center">
-        <select
-          value={viewMode}
-          onChange={(e) => setViewMode(e.target.value as 'ancestors' | 'descendants' | 'both')}
-          className="px-3 py-2 border border-warm-300 rounded-xl bg-white text-sm text-warm-700 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+      <div className="flex-shrink-0 p-3 sm:p-4 flex flex-wrap gap-3 items-center justify-center border-b border-warm-200 bg-white/80 backdrop-blur-sm">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setZoom(z => Math.min(z * 1.2, 3))}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-warm-300 rounded-lg hover:bg-warm-50 text-warm-700 font-bold"
+          >
+            +
+          </button>
+          <span className="text-sm text-warm-600 w-14 text-center">{Math.round(zoom * 100)}%</span>
+          <button
+            onClick={() => setZoom(z => Math.max(z * 0.8, 0.2))}
+            className="w-9 h-9 flex items-center justify-center bg-white border border-warm-300 rounded-lg hover:bg-warm-50 text-warm-700 font-bold"
+          >
+            -
+          </button>
+        </div>
+
+        <button
+          onClick={() => {
+            if (containerRef.current) {
+              const containerWidth = containerRef.current.clientWidth;
+              const containerHeight = containerRef.current.clientHeight;
+              setZoom(0.6);
+              setPan({ x: containerWidth / 2, y: containerHeight / 2 });
+            }
+          }}
+          className="px-3 py-2 bg-white border border-warm-300 rounded-lg hover:bg-warm-50 text-sm text-warm-700"
         >
-          <option value="both">Show All</option>
-          <option value="ancestors">Ancestors Only</option>
-          <option value="descendants">Descendants Only</option>
-        </select>
+          Reset View
+        </button>
 
         <label className="flex items-center gap-2 text-sm text-warm-600">
-          <span className="hidden sm:inline">Generations:</span>
-          <span className="sm:hidden">Gen:</span>
+          <span>Generations:</span>
           <input
             type="number"
             min={1}
-            max={10}
+            max={5}
             value={maxGenerations}
-            onChange={(e) => setMaxGenerations(parseInt(e.target.value) || 2)}
-            className="w-14 px-2 py-2 border border-warm-300 rounded-xl text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            onChange={(e) => setMaxGenerations(parseInt(e.target.value) || 3)}
+            className="w-14 px-2 py-2 border border-warm-300 rounded-lg text-center focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           />
         </label>
       </div>
 
-      {/* Tree View */}
-      <div className="flex flex-col items-center gap-6 sm:gap-8">
-        {/* Ancestors */}
-        {(viewMode === 'ancestors' || viewMode === 'both') && treeData.ancestors.slice().reverse().map((level, reverseIdx) => {
-          if (level.length === 0) return null;
-          const idx = treeData.ancestors.length - 1 - reverseIdx;
-          return (
-            <div key={`ancestors-${idx}`} className="w-full">
-              <div className="text-xs font-semibold text-accent-600 text-center mb-3 uppercase tracking-wider">
-                {idx === 1 ? 'Parents' : idx === 2 ? 'Grandparents' : `${idx} Generations Back`}
-              </div>
-              <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
-                {level.map((item) => (
-                  <PersonNode
-                    key={item.person.id}
-                    person={item.person}
-                    relationship={item.relationship}
-                    isSelected={selectedPersonId === item.person.id}
-                    onClick={() => handlePersonClick(item.person.id)}
-                    onViewAs={() => handleViewAs(item.person.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Connector */}
-        {hasAncestors && (viewMode === 'ancestors' || viewMode === 'both') && (
-          <div className="w-0.5 h-6 bg-warm-300 rounded-full" />
-        )}
-
-        {/* Aunts, Uncles & Cousins Section */}
-        {(viewMode === 'ancestors' || viewMode === 'both') && (treeData.auntsUncles.length > 0 || treeData.cousins.length > 0) && (
-          <div className="w-full bg-accent-50/50 rounded-2xl p-4 sm:p-6 border border-accent-100">
-            {/* Aunts & Uncles */}
-            {treeData.auntsUncles.length > 0 && (
-              <div className="mb-4">
-                <div className="text-xs font-semibold text-accent-600 text-center mb-3 uppercase tracking-wider">
-                  Aunts & Uncles
-                </div>
-                <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
-                  {treeData.auntsUncles.map((item) => (
-                    <PersonNode
-                      key={item.person.id}
-                      person={item.person}
-                      relationship={item.relationship}
-                      isSelected={selectedPersonId === item.person.id}
-                      onClick={() => handlePersonClick(item.person.id)}
-                      onViewAs={() => handleViewAs(item.person.id)}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Cousins */}
-            {treeData.cousins.length > 0 && (
-              <div>
-                <div className="text-xs font-semibold text-accent-600 text-center mb-3 uppercase tracking-wider">
-                  Cousins
-                </div>
-                <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
-                  {treeData.cousins.map((item) => (
-                    <PersonNode
-                      key={item.person.id}
-                      person={item.person}
-                      relationship={item.relationship}
-                      isSelected={selectedPersonId === item.person.id}
-                      onClick={() => handlePersonClick(item.person.id)}
-                      onViewAs={() => handleViewAs(item.person.id)}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Root Person + Siblings + Spouse */}
-        <div className="w-full bg-primary-50/50 rounded-2xl p-4 sm:p-6 border border-primary-100">
-          <div className="text-xs font-semibold text-primary-600 text-center mb-3 uppercase tracking-wider">
-            You & Siblings
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 flex-wrap justify-center">
-            {/* Siblings */}
-            {treeData.siblings.map((item) => (
-              <PersonNode
-                key={item.person.id}
-                person={item.person}
-                relationship={item.relationship}
-                isSelected={selectedPersonId === item.person.id}
-                onClick={() => handlePersonClick(item.person.id)}
-                onViewAs={() => handleViewAs(item.person.id)}
+      {/* Tree Canvas */}
+      <div
+        ref={containerRef}
+        className="flex-1 overflow-hidden cursor-grab active:cursor-grabbing"
+        onWheel={handleWheel}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div
+          ref={contentRef}
+          className="relative"
+          style={{
+            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+            transformOrigin: '0 0',
+            willChange: 'transform'
+          }}
+        >
+          {/* Connection Lines */}
+          <svg
+            className="absolute pointer-events-none"
+            style={{
+              left: bounds.minX - 50,
+              top: bounds.minY - 50,
+              width: bounds.maxX - bounds.minX + 100,
+              height: bounds.maxY - bounds.minY + 100,
+              overflow: 'visible'
+            }}
+          >
+            {connections.map((conn, idx) => (
+              <path
+                key={idx}
+                d={conn.isSpouse
+                  ? `M ${conn.from.x - bounds.minX + 50} ${conn.from.y - bounds.minY + 50} L ${conn.to.x - bounds.minX + 50} ${conn.to.y - bounds.minY + 50}`
+                  : `M ${conn.from.x - bounds.minX + 50} ${conn.from.y - bounds.minY + 50}
+                     C ${conn.from.x - bounds.minX + 50} ${(conn.from.y + conn.to.y) / 2 - bounds.minY + 50},
+                       ${conn.to.x - bounds.minX + 50} ${(conn.from.y + conn.to.y) / 2 - bounds.minY + 50},
+                       ${conn.to.x - bounds.minX + 50} ${conn.to.y - bounds.minY + 50}`
+                }
+                fill="none"
+                stroke={conn.isSpouse ? '#dd6b5b' : '#a8a29e'}
+                strokeWidth={conn.isSpouse ? 3 : 2}
+                strokeDasharray={conn.isSpouse ? '6,4' : 'none'}
               />
             ))}
+          </svg>
 
-            {/* Root */}
-            {treeData.root && (
-              <PersonNode
-                person={treeData.root.person}
-                relationship="You"
-                isRoot={true}
-                isSelected={selectedPersonId === treeData.root.person.id}
-                onClick={() => handlePersonClick(treeData.root!.person.id)}
-              />
-            )}
+          {/* Person Nodes */}
+          {nodes.map((node) => {
+            const isRoot = node.id === rootPersonId;
+            const isSelected = selectedPersonId === node.id;
+            const relationship = getRelationshipWithChain(rootPersonId, node.id);
+            const primaryPhoto = node.person.photos.find(p => p.isPrimary) || node.person.photos[0];
+            const isDeceased = !!node.person.death;
 
-            {/* Spouses */}
-            {treeData.spouses.map((item) => (
-              <React.Fragment key={item.person.id}>
-                <div className="text-primary-400 text-xl sm:text-2xl">♥</div>
-                <PersonNode
-                  person={item.person}
-                  relationship={item.relationship}
-                  isSelected={selectedPersonId === item.person.id}
-                  onClick={() => handlePersonClick(item.person.id)}
-                  onViewAs={() => handleViewAs(item.person.id)}
-                />
-              </React.Fragment>
-            ))}
-          </div>
+            return (
+              <div
+                key={node.id}
+                className={`
+                  absolute p-2.5 bg-white rounded-xl shadow-md border-2 cursor-pointer
+                  transition-all duration-150 hover:shadow-lg hover:scale-105
+                  ${isRoot ? 'border-primary-500 ring-2 ring-primary-200 shadow-lg' : 'border-warm-200'}
+                  ${isSelected ? 'ring-2 ring-accent-400' : ''}
+                  ${isDeceased ? 'bg-warm-50/90' : ''}
+                `}
+                style={{
+                  left: node.x - NODE_WIDTH / 2,
+                  top: node.y - NODE_HEIGHT / 2,
+                  width: NODE_WIDTH,
+                  height: NODE_HEIGHT
+                }}
+                onClick={() => handlePersonClick(node.id)}
+              >
+                <div className="flex items-start gap-2 h-full">
+                  {/* Photo */}
+                  <div className="flex-shrink-0">
+                    {primaryPhoto ? (
+                      <img
+                        src={primaryPhoto.url}
+                        alt={node.person.name.full}
+                        className="w-10 h-10 rounded-full object-cover border-2 border-warm-200"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`${primaryPhoto ? 'hidden' : ''} w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                      node.person.sex === 'M'
+                        ? 'bg-amber-100 text-amber-700'
+                        : node.person.sex === 'F'
+                          ? 'bg-rose-100 text-rose-700'
+                          : 'bg-warm-200 text-warm-600'
+                    }`}>
+                      {node.person.name.given[0] || '?'}
+                    </div>
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0 flex flex-col">
+                    <p className="font-semibold text-warm-800 text-sm truncate leading-tight">
+                      {node.person.name.given}
+                    </p>
+                    <p className="text-xs text-warm-500 truncate">
+                      {node.person.name.surname}
+                    </p>
+                    <p className="text-xs text-primary-600 font-medium mt-auto truncate">
+                      {isRoot ? 'You' : relationship}
+                    </p>
+                  </div>
+                </div>
+
+                {/* View As Button */}
+                {!isRoot && (
+                  <button
+                    onClick={(e) => handleViewAs(node.id, e)}
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 text-xs bg-primary-500 hover:bg-primary-600 text-white rounded-full font-medium shadow-md opacity-0 hover:opacity-100 transition-opacity group-hover:opacity-100"
+                    style={{ opacity: isSelected ? 1 : undefined }}
+                  >
+                    View
+                  </button>
+                )}
+
+                {/* Gender indicator */}
+                <div className={`
+                  absolute -top-1 -right-1 w-5 h-5 rounded-full text-xs flex items-center justify-center font-medium border-2 border-white shadow-sm
+                  ${node.person.sex === 'M'
+                    ? 'bg-amber-100 text-amber-700'
+                    : node.person.sex === 'F'
+                      ? 'bg-rose-100 text-rose-700'
+                      : 'bg-warm-200 text-warm-600'}
+                `}>
+                  {node.person.sex === 'M' ? '♂' : node.person.sex === 'F' ? '♀' : '?'}
+                </div>
+              </div>
+            );
+          })}
         </div>
-
-        {/* Nieces & Nephews */}
-        {(viewMode === 'descendants' || viewMode === 'both') && treeData.niblings.length > 0 && (
-          <div className="w-full bg-amber-50/50 rounded-2xl p-4 sm:p-6 border border-amber-100">
-            <div className="text-xs font-semibold text-amber-600 text-center mb-3 uppercase tracking-wider">
-              Nieces & Nephews
-            </div>
-            <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
-              {treeData.niblings.map((item) => (
-                <PersonNode
-                  key={item.person.id}
-                  person={item.person}
-                  relationship={item.relationship}
-                  isSelected={selectedPersonId === item.person.id}
-                  onClick={() => handlePersonClick(item.person.id)}
-                  onViewAs={() => handleViewAs(item.person.id)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Connector */}
-        {hasDescendants && (viewMode === 'descendants' || viewMode === 'both') && (
-          <div className="w-0.5 h-6 bg-warm-300 rounded-full" />
-        )}
-
-        {/* Descendants */}
-        {(viewMode === 'descendants' || viewMode === 'both') && treeData.descendants.map((level, idx) => {
-          if (level.length === 0) return null;
-          return (
-            <div key={`descendants-${idx}`} className="w-full">
-              <div className="text-xs font-semibold text-accent-600 text-center mb-3 uppercase tracking-wider">
-                {idx === 0 ? 'Children' : idx === 1 ? 'Grandchildren' : `${idx + 1} Generations`}
-              </div>
-              <div className="flex flex-wrap gap-3 sm:gap-4 justify-center">
-                {level.map((item) => (
-                  <PersonNode
-                    key={item.person.id}
-                    person={item.person}
-                    relationship={item.relationship}
-                    isSelected={selectedPersonId === item.person.id}
-                    onClick={() => handlePersonClick(item.person.id)}
-                    onViewAs={() => handleViewAs(item.person.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          );
-        })}
       </div>
 
-      {/* Legend */}
-      <div className="mt-8 text-center text-sm text-warm-500">
-        <p>Tap to view details</p>
+      {/* Instructions */}
+      <div className="flex-shrink-0 p-2 text-center text-xs text-warm-500 bg-white/80 border-t border-warm-200">
+        Drag to pan • Scroll/pinch to zoom • Tap person for details
       </div>
     </div>
   );
