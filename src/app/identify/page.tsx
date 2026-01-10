@@ -133,10 +133,10 @@ export default function IdentifyPage() {
 
   if (authLoading || dataLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-warm-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 via-accent-500 to-primary-600">
         <div className="flex flex-col items-center gap-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
-          <p className="text-warm-500 text-sm">Loading family data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+          <p className="text-white/80 text-sm">Loading family data...</p>
         </div>
       </div>
     );
@@ -147,133 +147,142 @@ export default function IdentifyPage() {
       className={`min-h-screen flex flex-col transition-opacity duration-300 ${
         isEntering ? 'opacity-0' : 'opacity-100'
       }`}
-      style={{ backgroundColor: '#fafaf9' }}
     >
+      {/* Colorful gradient background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-primary-400 via-accent-500 to-primary-600">
+        {/* Decorative shapes */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-accent-400/20 rounded-full blur-3xl translate-x-1/4 translate-y-1/4"></div>
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-primary-300/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+      </div>
+
       {/* Main content - centered */}
-      <div className="flex-1 flex items-center justify-center px-6">
+      <div className="relative flex-1 flex items-center justify-center px-6">
         <div className="w-full max-w-2xl">
           {/* Question number indicator (typeform style) */}
-          <div className="flex items-center gap-2 mb-6">
-            <span className="inline-flex items-center justify-center w-6 h-6 bg-primary-500 text-white text-xs font-medium rounded">
+          <div className="flex items-center gap-3 mb-8">
+            <span className="inline-flex items-center justify-center w-8 h-8 bg-white text-primary-600 text-sm font-bold rounded-lg shadow-lg">
               1
             </span>
-            <div className="h-px flex-1 bg-warm-200"></div>
+            <div className="h-px flex-1 bg-white/30"></div>
           </div>
 
           {/* Main question */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-light text-warm-800 mb-3 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
             Who are you?
           </h1>
 
-          <p className="text-warm-500 text-lg mb-10">
+          <p className="text-white/80 text-xl mb-12">
             Start typing your name to find yourself in the family tree
           </p>
 
-          {/* Input area */}
+          {/* Input area - white card */}
           <div className="relative">
-            <input
-              ref={inputRef}
-              type="text"
-              value={query}
-              onChange={handleInputChange}
-              onFocus={() => query.trim() && setShowSuggestions(true)}
-              onKeyDown={handleKeyDown}
-              placeholder="Type your name..."
-              className="w-full text-2xl sm:text-3xl font-light text-warm-800 bg-transparent border-b-2 border-warm-300 focus:border-primary-500 outline-none pb-3 placeholder-warm-300 transition-colors"
-              autoComplete="off"
-              spellCheck={false}
-            />
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 sm:p-8">
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={handleInputChange}
+                onFocus={() => query.trim() && setShowSuggestions(true)}
+                onKeyDown={handleKeyDown}
+                placeholder="Type your name..."
+                className="w-full text-2xl sm:text-3xl font-light text-warm-800 bg-transparent border-b-2 border-warm-200 focus:border-primary-500 outline-none pb-3 placeholder-warm-300 transition-colors"
+                autoComplete="off"
+                spellCheck={false}
+              />
 
-            {/* Suggestions dropdown */}
-            {showSuggestions && suggestions.length > 0 && (
-              <div
-                ref={suggestionsRef}
-                className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-warm-200 overflow-hidden z-10"
-              >
-                {suggestions.map((person, index) => (
-                  <button
-                    key={person.id}
-                    onClick={() => handleSelectPerson(person)}
-                    onMouseEnter={() => setHighlightedIndex(index)}
-                    className={`w-full text-left px-5 py-4 flex items-center gap-4 transition-colors ${
-                      index === highlightedIndex
-                        ? 'bg-primary-50'
-                        : 'hover:bg-warm-50'
-                    }`}
-                  >
-                    {/* Avatar */}
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-medium flex-shrink-0 ${
-                      person.sex === 'M'
-                        ? 'bg-amber-100 text-amber-700'
-                        : person.sex === 'F'
-                        ? 'bg-rose-100 text-rose-700'
-                        : 'bg-warm-100 text-warm-700'
-                    }`}>
-                      {person.name.given.charAt(0)}
-                    </div>
-
-                    {/* Name info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-warm-800 text-lg truncate">
-                        {person.name.full}
+              {/* Suggestions dropdown */}
+              {showSuggestions && suggestions.length > 0 && (
+                <div
+                  ref={suggestionsRef}
+                  className="mt-4 rounded-xl border border-warm-100 overflow-hidden"
+                >
+                  {suggestions.map((person, index) => (
+                    <button
+                      key={person.id}
+                      onClick={() => handleSelectPerson(person)}
+                      onMouseEnter={() => setHighlightedIndex(index)}
+                      className={`w-full text-left px-5 py-4 flex items-center gap-4 transition-all ${
+                        index === highlightedIndex
+                          ? 'bg-gradient-to-r from-primary-50 to-accent-50'
+                          : 'hover:bg-warm-50'
+                      }`}
+                    >
+                      {/* Avatar */}
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0 shadow-md ${
+                        person.sex === 'M'
+                          ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-white'
+                          : person.sex === 'F'
+                          ? 'bg-gradient-to-br from-rose-400 to-pink-500 text-white'
+                          : 'bg-gradient-to-br from-warm-400 to-warm-500 text-white'
+                      }`}>
+                        {person.name.given.charAt(0)}
                       </div>
-                      {person.name.nickname && (
-                        <div className="text-warm-500 text-sm truncate">
-                          "{person.name.nickname}"
+
+                      {/* Name info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-warm-800 text-lg truncate">
+                          {person.name.full}
                         </div>
+                        {person.name.nickname && (
+                          <div className="text-warm-500 text-sm truncate">
+                            "{person.name.nickname}"
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Arrow indicator when highlighted */}
+                      {index === highlightedIndex && (
+                        <svg
+                          className="w-6 h-6 text-primary-500 flex-shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       )}
-                    </div>
+                    </button>
+                  ))}
+                </div>
+              )}
 
-                    {/* Arrow indicator when highlighted */}
-                    {index === highlightedIndex && (
-                      <svg
-                        className="w-5 h-5 text-primary-500 flex-shrink-0"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    )}
+              {/* No results message */}
+              {showSuggestions && query.trim() && suggestions.length === 0 && (
+                <div className="mt-4 p-6 text-center bg-warm-50 rounded-xl">
+                  <div className="text-warm-600 font-medium mb-1">
+                    No one found with that name
+                  </div>
+                  <div className="text-warm-400 text-sm">
+                    Make sure you're in the family tree, or try a different spelling
+                  </div>
+                </div>
+              )}
+
+              {/* Continue button - shows when a person is selected */}
+              {selectedPerson && (
+                <div className="mt-6 animate-fade-in">
+                  <button
+                    onClick={handleContinue}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-primary-600 hover:to-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  >
+                    Continue as {selectedPerson.name.given}
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
                   </button>
-                ))}
-              </div>
-            )}
-
-            {/* No results message */}
-            {showSuggestions && query.trim() && suggestions.length === 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-warm-200 p-6 text-center">
-                <div className="text-warm-500 mb-2">
-                  No one found with that name
                 </div>
-                <div className="text-warm-400 text-sm">
-                  Make sure you're in the family tree, or try a different spelling
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Continue button - shows when a person is selected */}
-          {selectedPerson && (
-            <div className="mt-10 animate-fade-in">
-              <button
-                onClick={handleContinue}
-                className="inline-flex items-center gap-3 bg-primary-500 text-white px-8 py-4 rounded-xl text-lg font-medium hover:bg-primary-600 active:bg-primary-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                Continue as {selectedPerson.name.given}
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
 
       {/* Footer hint */}
-      <div className="p-6 text-center">
-        <p className="text-warm-400 text-sm">
-          Press <kbd className="px-2 py-1 bg-warm-100 rounded text-warm-600 font-mono text-xs">Enter</kbd> to select
+      <div className="relative p-6 text-center">
+        <p className="text-white/60 text-sm">
+          Press <kbd className="px-2 py-1 bg-white/20 rounded text-white font-mono text-xs">Enter</kbd> to select
         </p>
       </div>
 
