@@ -25,41 +25,59 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 });
   const [maxGen, setMaxGen] = useState(3);
+  const [collapsedAncestors, setCollapsedAncestors] = useState<Set<string>>(() => new Set());
+  const [collapsedDescendants, setCollapsedDescendants] = useState<Set<string>>(() => new Set());
   const containerRef = useRef<HTMLDivElement>(null);
   const [initialized, setInitialized] = useState(false);
 
   const rootPerson = getIndividual(rootPersonId);
 
+  const toggleCollapse = useCallback((setState: React.Dispatch<React.SetStateAction<Set<string>>>, id: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setState((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
   // Build tree data
   const { nodes, lines, bounds } = useMemo(() => {
     if (!rootPerson) return { nodes: [], lines: [], bounds: { minX: 0, maxX: 0, minY: 0, maxY: 0 } };
 
-    const nodes: { id: string; x: number; y: number; person: Individual }[] = [];
+    const nodes: { id: string; x: number; y: number; person: Individual; canCollapseAncestors: boolean; canCollapseDescendants: boolean }[] = [];
     const lines: { x1: number; y1: number; x2: number; y2: number; color: string }[] = [];
     const placed = new Set<string>();
 
     // Helpers
-    const getParentIds = (pid: string): [string | null, string | null] => {
+    const getParentIdsRaw = (pid: string): [string | null, string | null] => {
       const p = getIndividual(pid);
       if (!p?.familyAsChild) return [null, null];
       const f = getFamily(p.familyAsChild);
       return f ? [f.husband || null, f.wife || null] : [null, null];
     };
 
-    const getSpouseId = (pid: string): string | null => {
+    const getParentIds = (pid: string): [string | null, string | null] => {
+      if (collapsedAncestors.has(pid)) return [null, null];
+      return getParentIdsRaw(pid);
+    };
+
+    const getSpouseIds = (pid: string): string[] => {
       const p = getIndividual(pid);
-      if (!p) return null;
+      if (!p) return [];
+      const spouses: string[] = [];
       for (const fid of p.familyAsSpouse) {
         const f = getFamily(fid);
         if (f) {
           const sid = f.husband === pid ? f.wife : f.husband;
-          if (sid) return sid;
+          if (sid && !spouses.includes(sid)) spouses.push(sid);
         }
       }
-      return null;
+      return spouses;
     };
 
-    const getChildIds = (pid: string): string[] => {
+    const getChildIdsRaw = (pid: string): string[] => {
       const p = getIndividual(pid);
       if (!p) return [];
       const kids: string[] = [];
@@ -70,21 +88,23 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
       return kids;
     };
 
-    const getSiblingIds = (pid: string): string[] => {
-      const p = getIndividual(pid);
-      if (!p?.familyAsChild) return [];
-      const f = getFamily(p.familyAsChild);
-      return f ? f.children.filter(c => c !== pid) : [];
+    const getChildIds = (pid: string): string[] => {
+      if (collapsedDescendants.has(pid)) return [];
+      return getChildIdsRaw(pid);
     };
 
-    // Calculate width of a family unit (person + spouse + all descendants)
-    const calcUnitWidth = (pid: string, depth: number, memo: Map<string, number>): number => {
+    const getGroupWidth = (pid: string): number => {
+      const spouses = getSpouseIds(pid);
+      return CARD_W * (1 + spouses.length) + COUPLE_GAP * spouses.length;
+    };
+
+    // Calculate width of a descendant unit (person + spouses + all descendants)
+    const calcDescWidth = (pid: string, depth: number, memo: Map<string, number>): number => {
       const key = `${pid}-${depth}`;
       if (memo.has(key)) return memo.get(key)!;
       if (depth > maxGen) { memo.set(key, CARD_W); return CARD_W; }
 
-      const spouse = getSpouseId(pid);
-      const selfWidth = spouse ? CARD_W * 2 + COUPLE_GAP : CARD_W;
+      const selfWidth = getGroupWidth(pid);
       const children = getChildIds(pid);
 
       if (children.length === 0) {
@@ -94,11 +114,25 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
 
       let childrenWidth = 0;
       children.forEach(cid => {
-        childrenWidth += calcUnitWidth(cid, depth + 1, memo);
+        childrenWidth += calcDescWidth(cid, depth + 1, memo);
       });
       childrenWidth += (children.length - 1) * H_SPACE;
 
       const width = Math.max(selfWidth, childrenWidth);
+      memo.set(key, width);
+      return width;
+    };
+
+    // Calculate width of an ancestor subtree (direct ancestors only)
+    const calcAncestorWidth = (pid: string, depth: number, memo: Map<string, number>): number => {
+      const key = `${pid}-${depth}`;
+      if (memo.has(key)) return memo.get(key)!;
+      if (depth > maxGen) { memo.set(key, CARD_W); return CARD_W; }
+      const [fatherId, motherId] = getParentIds(pid);
+      if (!fatherId && !motherId) { memo.set(key, CARD_W); return CARD_W; }
+      const fatherWidth = fatherId ? calcAncestorWidth(fatherId, depth + 1, memo) : CARD_W;
+      const motherWidth = motherId ? calcAncestorWidth(motherId, depth + 1, memo) : CARD_W;
+      const width = Math.max(CARD_W, fatherWidth + motherWidth + H_SPACE);
       memo.set(key, width);
       return width;
     };
@@ -109,7 +143,15 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
       const person = getIndividual(id);
       if (!person) return false;
       placed.add(id);
-      nodes.push({ id, x, y, person });
+      const [fatherId, motherId] = getParentIdsRaw(id);
+      nodes.push({
+        id,
+        x,
+        y,
+        person,
+        canCollapseAncestors: !!(fatherId || motherId),
+        canCollapseDescendants: getChildIdsRaw(id).length > 0
+      });
       return true;
     };
 
@@ -118,23 +160,32 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
       lines.push({ x1, y1, x2, y2, color: isSpouse ? '#f97316' : '#9ca3af' });
     };
 
-    // Place a family unit and return its center X
-    const placeUnit = (pid: string, centerX: number, y: number, depth: number, memo: Map<string, number>): number => {
+    const placeGroup = (pid: string, centerX: number, y: number) => {
+      const spouses = getSpouseIds(pid);
+      const groupWidth = getGroupWidth(pid);
+      const startX = centerX - groupWidth / 2;
+      let currentX = startX;
+
+      place(pid, currentX, y);
+      const personCenterX = currentX + CARD_W / 2;
+      currentX += CARD_W + COUPLE_GAP;
+
+      spouses.forEach(spouseId => {
+        const placedSpouse = place(spouseId, currentX, y);
+        if (placedSpouse) {
+          line(personCenterX + CARD_W / 2, y + CARD_H / 2, currentX, y + CARD_H / 2, true);
+        }
+        currentX += CARD_W + COUPLE_GAP;
+      });
+
+      return { groupWidth, personCenterX };
+    };
+
+    // Place a descendant unit and return its center X
+    const placeDescendants = (pid: string, centerX: number, y: number, depth: number, memo: Map<string, number>): number => {
       if (depth > maxGen) return centerX;
 
-      const spouse = getSpouseId(pid);
-      const hasSpouse = spouse && !placed.has(spouse);
-
-      if (hasSpouse) {
-        const px = centerX - CARD_W - COUPLE_GAP / 2;
-        const sx = centerX + COUPLE_GAP / 2;
-        place(pid, px, y);
-        place(spouse!, sx, y);
-        // Spouse connector
-        line(px + CARD_W, y + CARD_H / 2, sx, y + CARD_H / 2, true);
-      } else {
-        place(pid, centerX - CARD_W / 2, y);
-      }
+      placeGroup(pid, centerX, y);
 
       // Place children
       const children = getChildIds(pid);
@@ -145,7 +196,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
         let totalWidth = 0;
         const childWidths: number[] = [];
         children.forEach(cid => {
-          const w = calcUnitWidth(cid, depth + 1, memo);
+          const w = calcDescWidth(cid, depth + 1, memo);
           childWidths.push(w);
           totalWidth += w;
         });
@@ -158,7 +209,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
         children.forEach((cid, i) => {
           const childCenterX = startX + childWidths[i] / 2;
           childCenters.push(childCenterX);
-          placeUnit(cid, childCenterX, childY, depth + 1, memo);
+          placeDescendants(cid, childCenterX, childY, depth + 1, memo);
           startX += childWidths[i] + H_SPACE;
         });
 
@@ -183,221 +234,37 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
       return centerX;
     };
 
-    const memo = new Map<string, number>();
+    const placeAncestors = (pid: string, centerX: number, y: number, depth: number, memo: Map<string, number>) => {
+      if (depth > maxGen) return;
+      const [fatherId, motherId] = getParentIds(pid);
+      if (!fatherId && !motherId) return;
 
-    // LEVEL 0: Root level - Root + Siblings + Cousins
-    // LEVEL -1: Parents + Aunts/Uncles
-    // LEVEL -2: Grandparents
-    // LEVEL +1: Children + Nieces/Nephews
+      const parentY = y - V_SPACE;
+      const fatherWidth = fatherId ? calcAncestorWidth(fatherId, depth + 1, memo) : CARD_W;
+      const motherWidth = motherId ? calcAncestorWidth(motherId, depth + 1, memo) : CARD_W;
+      const fatherCenterX = centerX - (motherWidth / 2 + H_SPACE / 2);
+      const motherCenterX = centerX + (fatherWidth / 2 + H_SPACE / 2);
 
-    const [fatherId, motherId] = getParentIds(rootPersonId);
-    const rootSiblings = getSiblingIds(rootPersonId);
+      if (fatherId) place(fatherId, fatherCenterX - CARD_W / 2, parentY);
+      if (motherId) place(motherId, motherCenterX - CARD_W / 2, parentY);
 
-    // Get aunts/uncles (parent's siblings) and their children (cousins)
-    const fatherSiblings = fatherId ? getSiblingIds(fatherId) : [];
-    const motherSiblings = motherId ? getSiblingIds(motherId) : [];
+      if (fatherId && motherId) {
+        line(fatherCenterX + CARD_W / 2, parentY + CARD_H / 2, motherCenterX - CARD_W / 2, parentY + CARD_H / 2, true);
+      }
 
-    // Calculate widths for everyone at root level
-    // Root level includes: cousins from father's side, root+siblings, cousins from mother's side
+      line(centerX, parentY + CARD_H, centerX, y);
 
-    // Father's side cousins
-    let fatherSideWidth = 0;
-    const fatherSideUnits: { id: string; width: number; isAuntUncle: boolean }[] = [];
-    fatherSiblings.forEach(auntUncleId => {
-      const children = getChildIds(auntUncleId);
-      children.forEach(cousinId => {
-        const w = calcUnitWidth(cousinId, 1, memo);
-        fatherSideUnits.push({ id: cousinId, width: w, isAuntUncle: false });
-        fatherSideWidth += w + H_SPACE;
-      });
-    });
+      if (fatherId) placeAncestors(fatherId, fatherCenterX, parentY, depth + 1, memo);
+      if (motherId) placeAncestors(motherId, motherCenterX, parentY, depth + 1, memo);
+    };
 
-    // Root + siblings
-    let rootSideWidth = calcUnitWidth(rootPersonId, 1, memo) + H_SPACE;
-    const rootSideUnits: { id: string; width: number }[] = [{ id: rootPersonId, width: calcUnitWidth(rootPersonId, 1, memo) }];
-    rootSiblings.forEach(sibId => {
-      const w = calcUnitWidth(sibId, 1, memo);
-      rootSideUnits.push({ id: sibId, width: w });
-      rootSideWidth += w + H_SPACE;
-    });
+    const descendantMemo = new Map<string, number>();
+    const ancestorMemo = new Map<string, number>();
 
-    // Mother's side cousins
-    let motherSideWidth = 0;
-    const motherSideUnits: { id: string; width: number; isAuntUncle: boolean }[] = [];
-    motherSiblings.forEach(auntUncleId => {
-      const children = getChildIds(auntUncleId);
-      children.forEach(cousinId => {
-        const w = calcUnitWidth(cousinId, 1, memo);
-        motherSideUnits.push({ id: cousinId, width: w, isAuntUncle: false });
-        motherSideWidth += w + H_SPACE;
-      });
-    });
-
-    // Total width at root level
-    const totalRootLevelWidth = fatherSideWidth + rootSideWidth + motherSideWidth + 400;
-
-    // Place root generation (level 0)
     const rootY = 400;
-    let currentX = 200;
-
-    // Place father's side cousins
-    const fatherCousinCenters: { auntUncleId: string; cousinCenters: number[] }[] = [];
-    fatherSiblings.forEach(auntUncleId => {
-      const children = getChildIds(auntUncleId);
-      const centers: number[] = [];
-      children.forEach(cousinId => {
-        const w = calcUnitWidth(cousinId, 1, memo);
-        const cx = currentX + w / 2;
-        centers.push(cx);
-        placeUnit(cousinId, cx, rootY, 1, memo);
-        currentX += w + H_SPACE;
-      });
-      if (centers.length > 0) {
-        fatherCousinCenters.push({ auntUncleId, cousinCenters: centers });
-      }
-    });
-
-    // Place root + siblings
-    let rootCenterX = 0;
-    const rootFamilyCenters: number[] = [];
-    rootSideUnits.forEach((unit, i) => {
-      const cx = currentX + unit.width / 2;
-      if (unit.id === rootPersonId) rootCenterX = cx;
-      rootFamilyCenters.push(cx);
-      placeUnit(unit.id, cx, rootY, 1, memo);
-      currentX += unit.width + H_SPACE;
-    });
-
-    // Place mother's side cousins
-    const motherCousinCenters: { auntUncleId: string; cousinCenters: number[] }[] = [];
-    motherSiblings.forEach(auntUncleId => {
-      const children = getChildIds(auntUncleId);
-      const centers: number[] = [];
-      children.forEach(cousinId => {
-        const w = calcUnitWidth(cousinId, 1, memo);
-        const cx = currentX + w / 2;
-        centers.push(cx);
-        placeUnit(cousinId, cx, rootY, 1, memo);
-        currentX += w + H_SPACE;
-      });
-      if (centers.length > 0) {
-        motherCousinCenters.push({ auntUncleId, cousinCenters: centers });
-      }
-    });
-
-    // Place parents level (level -1)
-    const parentY = rootY - V_SPACE;
-
-    // Father's siblings (aunts/uncles on father's side)
-    fatherCousinCenters.forEach(({ auntUncleId, cousinCenters }) => {
-      const auntUncleCenterX = (cousinCenters[0] + cousinCenters[cousinCenters.length - 1]) / 2;
-      const spouse = getSpouseId(auntUncleId);
-      const hasSpouse = spouse && !placed.has(spouse);
-
-      if (hasSpouse) {
-        place(auntUncleId, auntUncleCenterX - CARD_W - COUPLE_GAP / 2, parentY);
-        place(spouse!, auntUncleCenterX + COUPLE_GAP / 2, parentY);
-        line(auntUncleCenterX - COUPLE_GAP / 2, parentY + CARD_H / 2, auntUncleCenterX + COUPLE_GAP / 2, parentY + CARD_H / 2, true);
-      } else {
-        place(auntUncleId, auntUncleCenterX - CARD_W / 2, parentY);
-      }
-
-      // Connect to children
-      const connY = parentY + CARD_H + 25;
-      line(auntUncleCenterX, parentY + CARD_H, auntUncleCenterX, connY);
-      if (cousinCenters.length > 1) {
-        line(cousinCenters[0], connY, cousinCenters[cousinCenters.length - 1], connY);
-      }
-      cousinCenters.forEach(cx => line(cx, connY, cx, rootY));
-    });
-
-    // Parents (father + mother)
-    const parentsCenterX = (rootFamilyCenters[0] + rootFamilyCenters[rootFamilyCenters.length - 1]) / 2;
-    if (fatherId && motherId) {
-      const fatherX = parentsCenterX - CARD_W - COUPLE_GAP / 2;
-      const motherX = parentsCenterX + COUPLE_GAP / 2;
-      place(fatherId, fatherX, parentY);
-      place(motherId, motherX, parentY);
-      line(fatherX + CARD_W, parentY + CARD_H / 2, motherX, parentY + CARD_H / 2, true);
-
-      // Connect to root + siblings
-      const connY = parentY + CARD_H + 25;
-      line(parentsCenterX, parentY + CARD_H, parentsCenterX, connY);
-      if (rootFamilyCenters.length > 1) {
-        line(rootFamilyCenters[0], connY, rootFamilyCenters[rootFamilyCenters.length - 1], connY);
-      }
-      rootFamilyCenters.forEach(cx => line(cx, connY, cx, rootY));
-    } else if (fatherId || motherId) {
-      const parentId = fatherId || motherId!;
-      place(parentId, parentsCenterX - CARD_W / 2, parentY);
-      line(parentsCenterX, parentY + CARD_H, parentsCenterX, rootY);
-    }
-
-    // Mother's siblings (aunts/uncles on mother's side)
-    motherCousinCenters.forEach(({ auntUncleId, cousinCenters }) => {
-      const auntUncleCenterX = (cousinCenters[0] + cousinCenters[cousinCenters.length - 1]) / 2;
-      const spouse = getSpouseId(auntUncleId);
-      const hasSpouse = spouse && !placed.has(spouse);
-
-      if (hasSpouse) {
-        place(auntUncleId, auntUncleCenterX - CARD_W - COUPLE_GAP / 2, parentY);
-        place(spouse!, auntUncleCenterX + COUPLE_GAP / 2, parentY);
-        line(auntUncleCenterX - COUPLE_GAP / 2, parentY + CARD_H / 2, auntUncleCenterX + COUPLE_GAP / 2, parentY + CARD_H / 2, true);
-      } else {
-        place(auntUncleId, auntUncleCenterX - CARD_W / 2, parentY);
-      }
-
-      // Connect to children
-      const connY = parentY + CARD_H + 25;
-      line(auntUncleCenterX, parentY + CARD_H, auntUncleCenterX, connY);
-      if (cousinCenters.length > 1) {
-        line(cousinCenters[0], connY, cousinCenters[cousinCenters.length - 1], connY);
-      }
-      cousinCenters.forEach(cx => line(cx, connY, cx, rootY));
-    });
-
-    // Place grandparents (level -2) if maxGen >= 2
-    if (maxGen >= 2) {
-      const grandparentY = parentY - V_SPACE;
-
-      // Paternal grandparents
-      if (fatherId) {
-        const [gfId, gmId] = getParentIds(fatherId);
-        const fatherNode = nodes.find(n => n.id === fatherId);
-        if (fatherNode && (gfId || gmId)) {
-          const gpCenterX = fatherNode.x + CARD_W / 2;
-          if (gfId && gmId) {
-            place(gfId, gpCenterX - CARD_W - COUPLE_GAP / 2, grandparentY);
-            place(gmId, gpCenterX + COUPLE_GAP / 2, grandparentY);
-            line(gpCenterX - COUPLE_GAP / 2, grandparentY + CARD_H / 2, gpCenterX + COUPLE_GAP / 2, grandparentY + CARD_H / 2, true);
-            line(gpCenterX, grandparentY + CARD_H, gpCenterX, parentY);
-          } else {
-            const gpId = gfId || gmId!;
-            place(gpId, gpCenterX - CARD_W / 2, grandparentY);
-            line(gpCenterX, grandparentY + CARD_H, gpCenterX, parentY);
-          }
-        }
-      }
-
-      // Maternal grandparents
-      if (motherId) {
-        const [gfId, gmId] = getParentIds(motherId);
-        const motherNode = nodes.find(n => n.id === motherId);
-        if (motherNode && (gfId || gmId)) {
-          const gpCenterX = motherNode.x + CARD_W / 2;
-          if (gfId && gmId) {
-            place(gfId, gpCenterX - CARD_W - COUPLE_GAP / 2, grandparentY);
-            place(gmId, gpCenterX + COUPLE_GAP / 2, grandparentY);
-            line(gpCenterX - COUPLE_GAP / 2, grandparentY + CARD_H / 2, gpCenterX + COUPLE_GAP / 2, grandparentY + CARD_H / 2, true);
-            line(gpCenterX, grandparentY + CARD_H, gpCenterX, parentY);
-          } else {
-            const gpId = gfId || gmId!;
-            place(gpId, gpCenterX - CARD_W / 2, grandparentY);
-            line(gpCenterX, grandparentY + CARD_H, gpCenterX, parentY);
-          }
-        }
-      }
-    }
+    const rootCenterX = 0;
+    placeDescendants(rootPersonId, rootCenterX, rootY, 1, descendantMemo);
+    placeAncestors(rootPersonId, rootCenterX, rootY, 1, ancestorMemo);
 
     // Calculate bounds
     let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
@@ -409,7 +276,7 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
     });
 
     return { nodes, lines, bounds: { minX, maxX, minY, maxY } };
-  }, [rootPersonId, rootPerson, maxGen, getIndividual, getFamily, data]);
+  }, [rootPersonId, rootPerson, maxGen, getIndividual, getFamily, data, collapsedAncestors, collapsedDescendants]);
 
   // Center view
   useEffect(() => {
@@ -517,6 +384,8 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
             const isRoot = node.id === rootPersonId;
             const photo = node.person.photos.find(p => p.isPrimary) || node.person.photos[0];
             const deceased = !!node.person.death;
+            const isAncCollapsed = collapsedAncestors.has(node.id);
+            const isDescCollapsed = collapsedDescendants.has(node.id);
 
             return (
               <div key={node.id}
@@ -552,9 +421,31 @@ export function TreeCanvas({ onPersonSelect, selectedPersonId }: TreeCanvasProps
                   </p>
                 </div>
 
+                {node.canCollapseAncestors && (
+                  <button
+                    onClick={(e) => toggleCollapse(setCollapsedAncestors, node.id, e)}
+                    className="absolute -top-2 right-2 z-20 w-5 h-5 rounded-full bg-white border border-stone-300 text-stone-600 text-[10px] font-bold shadow"
+                    aria-label={isAncCollapsed ? 'Expand ancestors' : 'Collapse ancestors'}
+                    title={isAncCollapsed ? 'Expand ancestors' : 'Collapse ancestors'}
+                  >
+                    {isAncCollapsed ? '+' : '▲'}
+                  </button>
+                )}
+
+                {node.canCollapseDescendants && (
+                  <button
+                    onClick={(e) => toggleCollapse(setCollapsedDescendants, node.id, e)}
+                    className="absolute -bottom-2 right-2 z-20 w-5 h-5 rounded-full bg-white border border-stone-300 text-stone-600 text-[10px] font-bold shadow"
+                    aria-label={isDescCollapsed ? 'Expand descendants' : 'Collapse descendants'}
+                    title={isDescCollapsed ? 'Expand descendants' : 'Collapse descendants'}
+                  >
+                    {isDescCollapsed ? '+' : '▼'}
+                  </button>
+                )}
+
                 {!isRoot && (
                   <button onClick={(e) => handleViewAs(node.id, e)}
-                    className="absolute inset-0 bg-black/60 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
+                    className="absolute inset-0 z-10 bg-black/60 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
                     View Tree
                   </button>
                 )}

@@ -52,10 +52,28 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
   const [rootPersonId, setRootPersonIdState] = useState<string>('I500001');
   const isSupabaseEnabled = isSupabaseConfigured();
 
+  const loadLocalData = useCallback(async () => {
+    try {
+      const response = await fetch('/family-tree.json', { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`Failed to load family-tree.json (${response.status})`);
+      }
+      const treeData = (await response.json()) as FamilyTreeData;
+      setData(treeData);
+      if (treeData.indexes.rootPerson) {
+        setRootPersonIdState(treeData.indexes.rootPerson);
+      }
+    } catch (err) {
+      console.error('Failed to load local family tree data:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   // Load data from Supabase
   const loadData = useCallback(async () => {
     if (!isSupabaseEnabled) {
-      setIsLoading(false);
+      await loadLocalData();
       return;
     }
 
@@ -79,7 +97,7 @@ export function FamilyTreeProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [isSupabaseEnabled]);
+  }, [isSupabaseEnabled, loadLocalData]);
 
   // Initial load
   useEffect(() => {
